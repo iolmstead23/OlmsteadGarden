@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-primary-dark {
+  @apply bg-slate-800;
+}
+
+.sidebar-bg-primary-dark {
+    @apply bg-slate-900;
+  }
