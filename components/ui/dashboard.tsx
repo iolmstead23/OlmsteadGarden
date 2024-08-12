@@ -16,7 +16,7 @@ import Link from 'next/link'
 const navigation = [
   { id: 0, name: 'Dashboard', href: '/', icon: HomeIcon },
   { id: 1, name: 'Reports', href: '/stats', icon: ChartPieIcon },
-  { id: 2, name: 'Files', href: '/stats', icon: FolderIcon },
+  { id: 2, name: 'Files*', href: '#', icon: FolderIcon },
 ]
 
 function classNames(...classes: any[]) {

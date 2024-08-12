@@ -1,9 +1,12 @@
 'use client'
 
-import PlotSummary from "@/components/ui/plot_summary";
+import PlotSummary from "@components/ui/plot_summary";
 import ResourceStats from "@/components/ui/resource_stats"
-import { usePlotDataContext } from "@/components/UIProvider";
-import { useState } from "react";
+import { usePlotDataContext, useSortIndex } from "@/components/UIProvider";
+import { PlotData } from "types";
+import { PlusIcon } from "@heroicons/react/24/outline";
+import { Suspense, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const statuses: { [key: string]: string } = { Healthy: 'text-green-400 bg-green-400/10', Warning: 'text-rose-400 bg-rose-400/10' }
 
@@ -13,47 +16,68 @@ function classNames(...classes: any[]) {
 
 export default function StatsPage() {
 
-  const [summaryOpen, setSummaryOpen] = useState<boolean>(false);
-  const { state } = usePlotDataContext();
-  const plotData = state.data;
+  const plots = usePlotDataContext();
+  const index = useSortIndex();
+  const [focusSummaryToggle, setFocusSummaryToggle] = useState<boolean>(false);
+  const plotData: PlotData[] = plots.state.data;
+  const router = useRouter();
+
+  const plotSummary = () => {
+    return ( 
+      <Suspense>
+        <PlotSummary isOpen={focusSummaryToggle} setIsOpen={setFocusSummaryToggle} />
+      </Suspense>
+    );
+  }
 
   return (
     <div className="bg-primary-dark py-10 h-full pl-[20%]">
+      
       <h2 className="px-4 text-base font-semibold leading-7 text-white sm:px-6 lg:px-8 pb-5">Latest Update: ~timestamp~</h2>
+      
       <ResourceStats />
-      {summaryOpen && (
-        <PlotSummary />)}
+      
+      {focusSummaryToggle && plotSummary()
+        
+}
+
       <table className="w-3/4 text-left">
         <colgroup>
-          <col className="w-full sm:w-4/12" />
+          <col className="lg:w-4/12" />
           <col className="lg:w-4/12" />
           <col className="lg:w-4/12" />
         </colgroup>
-        <thead className="border-b border-white/10 text-sm leading-6 text-white">
+        <thead className="border-b border-white/10 text-2xl leading-6 text-white">
           <tr>
-            <th scope="col" className="py-2 pl-4 pr-8 font-semibold sm:pl-6 lg:pl-8">
+            <th scope="col" className="pb-5 pl-4 pr-8 sm:pl-6 lg:pl-8">
               Plot
             </th>
-            <th scope="col" className="py-2 pl-0 pr-4 text-right font-semibold sm:pr-8 sm:text-left lg:pr-20">
+            <th scope="col" className="pb-5 pl-0 pr-4 text-right sm:pr-8 sm:text-left lg:pr-20">
               Status
             </th>
-            <th scope="col" className="py-2 pl-0 pr-4 text-right font-semibold sm:pr-8 sm:text-left lg:pr-20">
+            <th scope="col" className="pb-5 pl-0 pr-4 text-right sm:pr-8 sm:text-left lg:pr-20">
               Duration
             </th>
-            <th scope="col" className="py-2 pl-0 pr-4 text-right font-semibold sm:pr-8 sm:text-left lg:pr-20">
+            <th scope="col" className="pb-5 pl-0 pr-4 text-right sm:pr-8 sm:text-left lg:pr-20">
               Watered
             </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-white/5">
+          
           {plotData && plotData.map((item: any, index: number) => (
             <tr key={index}>
               <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                 <div className="flex items-center gap-x-4">
                   <div
                     className="truncate text-sm font-medium leading-6 text-white"
-                    onClick={() => setSummaryOpen(true)}
-                  >{item.name}</div>
+                    onClick={() => {
+                      setFocusSummaryToggle(true);
+                      router.replace(`/stats?id=${item.id}`);
+                    }}
+                  >
+                    {item.name}
+                  </div>
                 </div>
               </td>
               <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
@@ -78,6 +102,25 @@ export default function StatsPage() {
           ))}
         </tbody>
       </table>
+      <div className="flex justify-start pt-5 pl-5">
+        <button
+          type="button"
+          className="rounded-full bg-indigo-600 p-1 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          onClick={() => {
+            plots.dispatch({
+              type: "add_plot",
+              payload: [{ id: -1, name: "Plot 4", status: "Healthy", duration: "2 days", water_duration: "1 day" }],
+            });
+            index.setSortIndex(true);
+          }
+          }
+        >
+          <div className="flex flex-row items-center gap-x-2 px-2 ">
+            <PlusIcon aria-hidden="true" className="h-5 w-5" /> 
+            <span className="pr-3">Add Plot</span>
+          </div>
+        </button>
+      </div>
     </div>
   )
 }

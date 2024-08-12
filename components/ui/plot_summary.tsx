@@ -1,14 +1,28 @@
 'use client'
 
-import { useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import { useSearchParams } from 'next/navigation';
+import { usePlotDataContext } from '../UIProvider';
+import { useEffect, useState } from 'react';
+import { PlotData } from 'types';
 
-export default function PlotSummary() {
-  const [open, setOpen] = useState(true)
+export default function PlotSummary({isOpen, setIsOpen}:{isOpen: boolean, setIsOpen: (e:boolean)=>void}) {
+
+    const params = useSearchParams();
+    const plotDataContext = usePlotDataContext();
+    const [plotData,setPlotData] = useState<PlotData | undefined>(undefined);
+
+    useEffect(() => {
+        // make sure not to set any dependencies in the useEffect hook
+        const plotSummaryData: PlotData = plotDataContext.state.data[Number(params.get('id'))];
+        if (plotSummaryData) {
+            setPlotData(plotSummaryData);
+        }
+    });
 
     return (
-        <Dialog open={open} onClose={setOpen} className="relative z-10">
+        <Dialog open={isOpen} onClose={()=>setIsOpen(false)} className="relative z-10">
             <DialogBackdrop
                 transition
                 className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
@@ -25,7 +39,7 @@ export default function PlotSummary() {
                             <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 duration-500 ease-in-out data-[closed]:opacity-0 sm:-ml-10 sm:pr-4">
                             <button
                                 type="button"
-                                onClick={() => setOpen(false)}
+                                onClick={() => setIsOpen(false)}
                                 className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                             >
                                 <span className="absolute -inset-2.5" />
@@ -36,28 +50,16 @@ export default function PlotSummary() {
                             </TransitionChild>
                             <div className="h-full overflow-y-auto bg-white p-8">
                                 <div>
-                                    <h3 className="font-medium text-gray-900">Information</h3>
+                                    <h3 className="font-medium text-gray-900">Summary</h3>
                                     <dl className="mt-2 divide-y divide-gray-200 border-b border-t border-gray-200">
-                                    <div className="flex justify-between py-3 text-sm font-medium">
-                                        <dt className="text-gray-500">Uploaded by</dt>
-                                        <dd className="text-gray-900">Marie Culver</dd>
-                                    </div>
-                                    <div className="flex justify-between py-3 text-sm font-medium">
-                                        <dt className="text-gray-500">Created</dt>
-                                        <dd className="text-gray-900">June 8, 2020</dd>
-                                    </div>
-                                    <div className="flex justify-between py-3 text-sm font-medium">
-                                        <dt className="text-gray-500">Last modified</dt>
-                                        <dd className="text-gray-900">June 8, 2020</dd>
-                                    </div>
-                                    <div className="flex justify-between py-3 text-sm font-medium">
-                                        <dt className="text-gray-500">Dimensions</dt>
-                                        <dd className="text-gray-900">4032 x 3024</dd>
-                                    </div>
-                                    <div className="flex justify-between py-3 text-sm font-medium">
-                                        <dt className="text-gray-500">Resolution</dt>
-                                        <dd className="text-gray-900">72 x 72</dd>
-                                    </div>
+                                        <div className="flex justify-between py-3 text-sm font-medium">
+                                            <dt className="text-gray-500">Plant</dt>
+                                            <dd className="text-gray-900">{plotData?.name}</dd>
+                                        </div>
+                                        <div className="flex justify-between py-3 text-sm font-medium">
+                                            <dt className="text-gray-500">Status</dt>
+                                            <dd className="text-gray-900">{plotData?.status}</dd>
+                                        </div>
                                     </dl>
                                 </div>
                             </div>
