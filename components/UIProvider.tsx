@@ -58,14 +58,16 @@ const dummyPlotData: PlotData[] = [
 // Reducer
 function reducer(state: State, action: Action): State {
 
+    /** Fetch the initial plots */
     function get_plots(action: Action): State {
         return {data: action.payload!};
     }
-
+    /** Add a plot to the state **/
     function add_plot(state: State, action: Action): State {
         return {data: state.data.concat(action.payload!)};
     }
 
+    /** Sort the index of the plots */
     function sort_index(state: State): State {
         return {data: state.data.map((item, index) => ({...item, id: index}))}; // Sort by index
     }
@@ -89,10 +91,11 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         dispatch({ type: 'get_plots', payload: dummyPlotData });
+        setSortIndex(true);
     }, []);
 
     useEffect(() => {
-        if (sortIndex) {
+        if (sortIndex==true) {
             dispatch({ type: 'sort_index' });
             setSortIndex(false);
         }
@@ -113,7 +116,7 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
 export function useFocusPlot() {
     const context = useContext(FocusPlotContext);
     if (context === undefined) {
-        throw new Error('usePlotData must be used within a UIProvider');
+        throw new Error('useFocusPlot must be used within a UIProvider');
     }
     return context;
 }
@@ -122,7 +125,7 @@ export function useFocusPlot() {
 export function useSortIndex() {
     const context = useContext(SortIndexContext);
     if (context === undefined) {
-        throw new Error('usePlotData must be used within a UIProvider');
+        throw new Error('useSortIndex must be used within a UIProvider');
     }
     return context;
 }
