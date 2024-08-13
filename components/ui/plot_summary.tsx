@@ -1,8 +1,8 @@
 'use client'
 
 import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { useSearchParams } from 'next/navigation';
+import { MagnifyingGlassCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useRouter, useSearchParams } from 'next/navigation';
 import { usePlotDataContext } from '../UIProvider';
 import { useEffect, useState } from 'react';
 import { PlotData } from 'types';
@@ -12,6 +12,7 @@ export default function PlotSummary({isOpen, setIsOpen}:{isOpen: boolean, setIsO
     const params = useSearchParams();
     const plotDataContext = usePlotDataContext();
     const [plotData,setPlotData] = useState<PlotData | undefined>(undefined);
+    const router = useRouter();
 
     useEffect(() => {
         // make sure not to set any dependencies in the useEffect hook
@@ -19,7 +20,7 @@ export default function PlotSummary({isOpen, setIsOpen}:{isOpen: boolean, setIsO
         if (plotSummaryData) {
             setPlotData(plotSummaryData);
         }
-    });
+    },[plotDataContext.state.data, params]);
 
     return (
         <Dialog open={isOpen} onClose={()=>setIsOpen(false)} className="relative z-10">
@@ -54,13 +55,28 @@ export default function PlotSummary({isOpen, setIsOpen}:{isOpen: boolean, setIsO
                                     <dl className="mt-2 divide-y divide-gray-200 border-b border-t border-gray-200">
                                         <div className="flex justify-between py-3 text-sm font-medium">
                                             <dt className="text-gray-500">Plant</dt>
-                                            <dd className="text-gray-900">{plotData?.name}</dd>
+                                            <dd className="text-gray-900">{plotData?.type}</dd>
                                         </div>
                                         <div className="flex justify-between py-3 text-sm font-medium">
                                             <dt className="text-gray-500">Status</dt>
                                             <dd className="text-gray-900">{plotData?.status}</dd>
                                         </div>
                                     </dl>
+                                    <div className="flex justify-start pt-5">
+                                        <button
+                                            type="button"
+                                            className="rounded-full bg-indigo-600 p-1 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                            onClick={() => {
+                                                setIsOpen(false);
+                                                router.replace(`/stats/${plotData?.id}`);
+                                            }}
+                                        >
+                                            <div className="flex flex-row items-center gap-x-2 px-5">
+                                                <MagnifyingGlassCircleIcon aria-hidden="true" className="h-5 w-5" /> 
+                                                <span className="pr-3">Inspect Plot</span>
+                                            </div>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </DialogPanel>

@@ -3,9 +3,9 @@
 import PlotSummary from "@components/ui/plot_summary";
 import ResourceStats from "@/components/ui/resource_stats"
 import { usePlotDataContext, useSortIndex } from "@/components/UIProvider";
-import { PlotData } from "types";
-import { PlusIcon } from "@heroicons/react/24/outline";
-import { Suspense, useState } from "react";
+import { PlotData, StatsProp } from "types";
+import { ArrowRightCircleIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { Suspense, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const statuses: { [key: string]: string } = { Healthy: 'text-green-400 bg-green-400/10', Warning: 'text-rose-400 bg-rose-400/10' }
@@ -30,16 +30,23 @@ export default function StatsPage() {
     );
   }
 
+  const totalPlots = useMemo<number>(()=>plots.state.data.length, [plots.state.data]);
+
+  const stats: StatsProp[] = [
+    { name: 'Total Plots', value: totalPlots },
+    { name: 'Total Water', value: 50},
+    { name: 'Total Daylight', value: 100 },
+    { name: 'Total Fertalizer', value: 10 },
+  ];
+
   return (
     <div className="bg-primary-dark py-10 h-full pl-[20%]">
       
-      <h2 className="px-4 text-base font-semibold leading-7 text-white sm:px-6 lg:px-8 pb-5">Latest Update: ~timestamp~</h2>
+      <h2 className="px-4 text-base font-semibold leading-7 text-primary-dark sm:px-6 lg:px-8 pb-5">Latest Update: ~timestamp~</h2>
       
-      <ResourceStats />
+      <ResourceStats stats={stats} />
       
-      {focusSummaryToggle && plotSummary()
-        
-}
+      {focusSummaryToggle && plotSummary()}
 
       <table className="w-3/4 text-left">
         <colgroup>
@@ -70,13 +77,16 @@ export default function StatsPage() {
               <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                 <div className="flex items-center gap-x-4">
                   <div
-                    className="truncate text-sm font-medium leading-6 text-white"
+                    className="truncate text-sm font-medium leading-6 text-primary-dark"
                     onClick={() => {
                       setFocusSummaryToggle(true);
                       router.replace(`/stats?id=${item.id}`);
                     }}
                   >
-                    {item.name}
+                    <div className="flex flex-row items-center gap-x-2 py-auto">
+                      <span>{item.type}</span>
+                      ...
+                    </div>
                   </div>
                 </div>
               </td>
@@ -105,15 +115,27 @@ export default function StatsPage() {
       <div className="flex justify-start pt-5 pl-5">
         <button
           type="button"
-          className="rounded-full bg-indigo-600 p-1 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="rounded-md bg-indigo-600 p-1 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           onClick={() => {
             plots.dispatch({
               type: "add_plot",
-              payload: [{ id: -1, name: "Plot 4", status: "Healthy", duration: "2 days", water_duration: "1 day" }],
+              payload: {
+                id: -1,
+                size: 0,
+                type: "Empty",
+                data: {
+                  temperature: 0,
+                  fertility: 0,
+                  pH: 0,
+                  moisture: 0,
+                },
+                status: "No Signal",
+                duration: "0 hours",
+                water_duration: "0 hours"
+              },
             });
-            index.setSortIndex(true);
-          }
-          }
+            index.setSortIndex(true); // Sort the index
+          }}
         >
           <div className="flex flex-row items-center gap-x-2 px-2 ">
             <PlusIcon aria-hidden="true" className="h-5 w-5" /> 

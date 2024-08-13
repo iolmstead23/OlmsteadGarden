@@ -30,7 +30,7 @@ export default function Dashboard() {
     <>
       <div>
         {/* Static sidebar for desktop */}
-        <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+        <div className="lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           <div className="flex grow flex-col gap-y-5 overflow-y-auto sidebar-bg-primary-dark px-6">
             <nav className="flex flex-1 flex-col pt-10">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
