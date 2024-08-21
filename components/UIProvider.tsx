@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useReducer, useState } from "react";
 import { PlotData } from "types"; // Use the path alias
 
+// MARK: -Type Declarations
 interface State {
     data: Array<PlotData>;
 };
@@ -38,6 +39,7 @@ interface PlantList {
     setPlantList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
+// MARK: -Contexts
 // Context for plot data
 const PlotDataContext = createContext<PlotDataState | undefined>(undefined);
 
@@ -50,7 +52,7 @@ const SortIndexContext = createContext<SortIndex | undefined>(undefined);
 // List of plants
 const PlantListContext = createContext<PlantList | undefined>(undefined);
 
-// Dummy data
+// MARK: -Dummy data
 const dummyPlotData: State = {
     data: [
         {
@@ -64,8 +66,7 @@ const dummyPlotData: State = {
                 fertility: 5,
             },
             status: 'Healthy',
-            duration: '2 weeks',
-            water_duration: '1 hour',
+            duration: 2,
         },
         {
             id: -1,
@@ -78,13 +79,12 @@ const dummyPlotData: State = {
                 fertility: 6,
             },
             status: 'Warning',
-            duration: '1 week',
-            water_duration: '1 hour',
+            duration: 1,
         },
     ]
 }
 
-// Reducer
+// MARK: -Reducer
 function reducer(state: State, action: Action): State {
 
     /** Fetch the initial plots */
@@ -105,14 +105,15 @@ function reducer(state: State, action: Action): State {
         return {data: state.data.map((item, index) => ({...item, id: index}))}; // Sort by index
     }
 
+    /** Edit a plot in the state */
     function edit_plot(state: State, action: Action): State {
 
-        const editedPlot = (action.payload as EditPlotData).data;
+        const editedPlot = action.payload as EditPlotData;
         
         if (Array.isArray(action.payload)) {
             throw new Error("Payload should be of type PlotData, not PlotData[]");
         }
-        return { data: state.data.map((item) => item.id === editedPlot.id ? editedPlot: item) as PlotData[]};
+        return { data: state.data.map((item) => item.id === editedPlot.id ? editedPlot.data : item) as PlotData[]};
     }
 
     switch (action.type) {
@@ -129,6 +130,7 @@ function reducer(state: State, action: Action): State {
     }
 }
 
+// MARK: -UIProvider Component
 const UIProvider = ({ children }: { children: React.ReactNode }) => {
     const [state, dispatch] = useReducer(reducer, { data: [] });
     const [focusPlot, setFocusPlot] = useState<PlotData>(dummyPlotData.data[0]);
@@ -163,6 +165,7 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
     );
 }
 
+// MARK: -Custom Hooks
 /** This lets other child components edit and change focus state */
 export function useFocusPlot() {
     const context = useContext(FocusPlotContext);

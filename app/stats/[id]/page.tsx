@@ -8,6 +8,7 @@ import ResourceStats from '@components/ui/resource_stats';
 import LineChart from '@/components/ui/line_chart';
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/react/24/outline';
 
+// MARK: - Type Declarations
 interface EditTypeDropdownProps {
     type: string;
 }
@@ -16,6 +17,8 @@ interface EditPlotInputProps {
     editField: keyof PlotData;
 }
 
+//MARK: - PlotPage Function
+// This page displays the details of a specific plot. It allows the user to edit the plot's details and view the plot's statistics.
 export default function PlotPage() {
 
     const [focusPlotStats, setFocusPlotStats] = useState<string>('pH');
@@ -28,10 +31,10 @@ export default function PlotPage() {
     editedPlotData.current = plots.state.data[id];
 
     const [plotData,setPlotData] = useState<PlotData | undefined>(undefined);
-    const plotDataContext = usePlotDataContext();
     
+    // MARK: - handleEdit Function
     const handleEdit = () => {
-        plots.dispatch({type: 'edit_plot', payload: {id: id, data: editedPlotData.current!}})
+        plots.dispatch({type: 'edit_plot', payload: {id: id, data: editedPlotData.current!}});
         setEditMode(!editMode);
     };
 
@@ -41,30 +44,34 @@ export default function PlotPage() {
     return classes.filter(Boolean).join(' ')
     }
 
-    function EditTypeDropdown({type}: EditTypeDropdownProps) {
+    const EditTypeDropdown: React.FC<EditTypeDropdownProps> = ({ type }) => {
+        const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+            const selectedPlant = event.target.value;
+            editedPlotData.current!.type = selectedPlant;
+            console.log(editedPlotData.current?.type);
+        };
+    
         return (
             <div className="py-auto flex flex-row items-center w-1/2 h-5">
                 <select
                     id="plot_type"
                     name="plot_type"
-                    className="bg-transparent pb-2 text-primary-dark block w-full rounded-md border-b pl-5 pr-10 text-primary-dark sm:text-sm sm:leading-6"
+                    className="text-left w-fit block form-field-bg-primary-dark text-primary-dark sm:text-sm sm:leading-6 pl-5"
                     defaultValue={type}
+                    onChange={handleChange}
                 >
-                    {plantList.plantList.map((plant: string) => (
-                        <option
-                            key={plant}
-                            onClick={()=>(editedPlotData.current!.type = plant)}
-                        >
+                    {plantList.plantList.map((plant: string, index: number) => (
+                        <option key={index} value={plant}>
                             {plant}
-                        </option>)
-                    )}
-
-                    <option>Add Plant Type</option>
+                        </option>
+                    ))}
+                    <option value="Add Plant Type">Add Plant Type</option>
                 </select>
             </div>
         );
     };
 
+    // MARK: - ChangeStatDropdown Function
     function ChangeStatDropdown() {
         return (
             <div className="flex flex-row items-center my-auto">
@@ -75,7 +82,7 @@ export default function PlotPage() {
                     id="plot_type"
                     name="plot_type"
                     defaultValue={focusPlotStats}
-                    className="bg-transparent text-primary-dark pb-2 block w-full rounded-md border-b pl-5 pr-10 text-primary-dark sm:text-sm sm:leading-6"
+                    className="text-left w-fit block form-field-bg-primary-dark text-primary-dark sm:text-sm sm:leading-6 pl-5"
                 >
                     <option onClick={()=>setFocusPlotStats("pH")}>pH</option>
                     <option onClick={()=>setFocusPlotStats("Moisture")}>Moisture</option>
@@ -86,6 +93,7 @@ export default function PlotPage() {
         );
     };
 
+        // MARK: - EditPlotInput Function
     function EditPlotInput({editField}: EditPlotInputProps) {
     
         const value = plotData![editField] as string;
@@ -94,17 +102,18 @@ export default function PlotPage() {
             switch (String(editField)) {
                 case 'size':
                     editedPlotData.current!.size = Number(e);
+                    console.log(editedPlotData.current);
                     break;
             }
         }
     
         return (
-            <div className="py-auto flex pb-2 flex-row items-center rounded-md border-b w-1/2 h-5">
+            <div className="flex flex-row items-center">
                 <input
                     type="text"
                     name={editField as string}
                     id={editField as string}
-                    className="text-left block bg-transparent text-primary-dark sm:text-sm sm:leading-6 pl-5"
+                    className="text-left w-full block form-field-bg-primary-dark text-primary-dark sm:text-sm sm:leading-6 pl-5"
                     defaultValue={value}
                     onChange={(e) => {handleChange(e.target.value);
                     }}
@@ -120,16 +129,17 @@ export default function PlotPage() {
         { name: 'Fertility', value: String(plotData?.data.fertility) },
     ];
 
+    // MARK: - Update Plot Data
     useEffect(() => {
-        const plotData: PlotData = plotDataContext.state.data[Number(id)];
+        const plotData: PlotData = plots.state.data[Number(id)];
         if (plotData) {setPlotData(plotData);}
-    }, [plotDataContext.state.data, id]);
+    }, [plots.state.data, id]);
 
     return (
-        <div className="bg-primary-dark py-10 pl-[20%]">
+        <div className="bg-primary-dark py-10 pl-10 lg:pl-[20%]">
             <ResourceStats stats={stats} />
             <div className="py-20">
-                <table className="w-3/4 text-left border-b border-white/10 ">
+                <table className="w-3/4 text-left border-b border-white/10">
                     <colgroup>
                         <col className="w-1/2" />
                         <col className="w-1/2" />
@@ -178,10 +188,10 @@ export default function PlotPage() {
                     </tbody>
                 </table>
 
-                <div className='pt-3 pl-8 flex flex-col items-start'>
+                <div className='pt-3 pl-5 flex flex-col items-start'>
                     <button
                         type="button"
-                        className="mt-5 w-1/12 rounded-md bg-indigo-600 py-2 px-5 text-primary-dark shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="mt-5 p-5 w-1/3 rounded-md bg-indigo-600 py-2 lg:px-5 text-primary-dark shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={handleEdit}
                     >
                         {editMode ?
@@ -202,8 +212,8 @@ export default function PlotPage() {
                     </button>
                 </div>
             </div>
-
-            <div className='flex flex-col items-start m-8'>
+            {/** MARK: ChangeStateDropdown*/}
+            <div className='flex flex-col items-start w-fit pl-5'>
                 <div className='mb-10'>
                     <ChangeStatDropdown />
                 </div>

@@ -9,8 +9,7 @@ export interface PlotData {
         fertility: number;
     };
     status: string;
-    duration: string;
-    water_duration: string;
+    duration: number;
 }
 
 export interface StatsProp {

@@ -7,7 +7,8 @@ import { usePlotDataContext } from '../UIProvider';
 import { useEffect, useState } from 'react';
 import { PlotData } from 'types';
 
-export default function PlotSummary({isOpen, setIsOpen}:{isOpen: boolean, setIsOpen: (e:boolean)=>void}) {
+// MARK: -PlotDrawer
+export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOpen: (e:boolean)=>void}) {
 
     const params = useSearchParams();
     const plotDataContext = usePlotDataContext();

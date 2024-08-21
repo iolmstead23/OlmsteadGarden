@@ -17,3 +17,7 @@
 .header-primary-dark {
   @apply text-slate-400;
 }
+
+.form-field-bg-primary-dark {
+  @apply bg-slate-900;
+}

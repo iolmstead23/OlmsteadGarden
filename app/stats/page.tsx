@@ -1,10 +1,10 @@
 'use client'
 
-import PlotSummary from "@components/ui/plot_summary";
+import PlotDrawer from "@components/ui/plot_drawer";
 import ResourceStats from "@/components/ui/resource_stats"
 import { usePlotDataContext, useSortIndex } from "@/components/UIProvider";
 import { PlotData, StatsProp } from "types";
-import { ArrowRightCircleIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { PlusIcon } from "@heroicons/react/24/outline";
 import { Suspense, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -14,6 +14,7 @@ function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ')
 }
 
+/** MARK: -StatsPage */
 export default function StatsPage() {
 
   const plots = usePlotDataContext();
@@ -25,13 +26,14 @@ export default function StatsPage() {
   const plotSummary = () => {
     return ( 
       <Suspense>
-        <PlotSummary isOpen={focusSummaryToggle} setIsOpen={setFocusSummaryToggle} />
+        <PlotDrawer isOpen={focusSummaryToggle} setIsOpen={setFocusSummaryToggle} />
       </Suspense>
     );
   }
 
   const totalPlots = useMemo<number>(()=>plots.state.data.length, [plots.state.data]);
 
+  // MARK: -Stats List
   const stats: StatsProp[] = [
     { name: 'Total Plots', value: totalPlots },
     { name: 'Total Water', value: 50},
@@ -40,9 +42,9 @@ export default function StatsPage() {
   ];
 
   return (
-    <div className="bg-primary-dark py-10 h-full pl-[20%]">
+    <div className="bg-primary-dark py-10 pl-10 lg:pl-[30%] min-h-screen ">
       
-      <h2 className="px-4 text-base font-semibold leading-7 text-primary-dark sm:px-6 lg:px-8 pb-5">Latest Update: ~timestamp~</h2>
+      <h2 className="text-base font-semibold leading-7 text-primary-dark lg:px-8 pl-5 pb-5">Latest Update: ~timestamp~</h2>
       
       <ResourceStats stats={stats} />
       
@@ -56,22 +58,13 @@ export default function StatsPage() {
         </colgroup>
         <thead className="border-b border-white/10 text-2xl leading-6 text-white">
           <tr>
-            <th scope="col" className="pb-5 pl-4 pr-8 sm:pl-6 lg:pl-8">
-              Plot
-            </th>
-            <th scope="col" className="pb-5 pl-0 pr-4 text-right sm:pr-8 sm:text-left lg:pr-20">
-              Status
-            </th>
-            <th scope="col" className="pb-5 pl-0 pr-4 text-right sm:pr-8 sm:text-left lg:pr-20">
-              Duration
-            </th>
-            <th scope="col" className="pb-5 pl-0 pr-4 text-right sm:pr-8 sm:text-left lg:pr-20">
-              Watered
-            </th>
+            <th scope="col" className="pb-5 pl-4 pr-8 sm:pl-6 lg:pl-8">Plot</th>
+            <th scope="col" className="pb-5 pl-0 pr-4 text-right sm:pr-8 sm:text-left lg:pr-20">Status</th>
+            <th scope="col" className="pb-5 pl-0 pr-4 text-right sm:pr-8 sm:text-left lg:pr-20">Duration</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-white/5">
-          
+          {/** MARK: -Map Plots */}
           {plotData && plotData.map((item: any, index: number) => (
             <tr key={index}>
               <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
@@ -84,8 +77,7 @@ export default function StatsPage() {
                     }}
                   >
                     <div className="flex flex-row items-center gap-x-2 py-auto">
-                      <span>{item.type}</span>
-                      ...
+                      <span className="hover:text-purple-500 hover:font-extrabold">{item.type}</span>
                     </div>
                   </div>
                 </div>
@@ -100,18 +92,14 @@ export default function StatsPage() {
               </td>
               <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
                 <div className="flex items-center justify-end gap-x-2 sm:justify-start">
-                  <div className="truncate text-sm font-medium leading-6 text-white">{item.duration}</div>
-                </div>
-              </td>
-              <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
-                <div className="flex items-center justify-end gap-x-2 sm:justify-start">
-                  <div className="truncate text-sm font-medium leading-6 text-white">{item.water_duration} ago</div>
+                  <div className="truncate text-sm font-medium leading-6 text-white">{item.duration} weeks</div>
                 </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {/** MARK: -Add Plot Button */}
       <div className="flex justify-start pt-5 pl-5">
         <button
           type="button"
@@ -130,8 +118,7 @@ export default function StatsPage() {
                   moisture: 0,
                 },
                 status: "No Signal",
-                duration: "0 hours",
-                water_duration: "0 hours"
+                duration: 0,
               },
             });
             index.setSortIndex(true); // Sort the index

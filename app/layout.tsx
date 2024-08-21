@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Dashboard from "@components/ui/dashboard";
 import "./globals.css";
 import UIProvider from "@components/UIProvider";
+import Dashboard from "@/components/ui/dashboard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
-      <body className={`${inter.className} h-full`}>
+    <html lang="en" className="h-full overflow-y-auto">
+      <body className={inter.className}>
         <UIProvider>
           <div>
             <Dashboard />
