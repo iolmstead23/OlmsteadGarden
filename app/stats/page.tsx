@@ -42,7 +42,7 @@ export default function StatsPage() {
   ];
 
   return (
-    <div className="bg-primary-dark py-10 pl-10 lg:pl-[30%] min-h-screen ">
+    <div className="bg-primary-dark py-10 pl-[10%] md:pl-[15%] lg:pl-[30%] min-h-screen ">
       
       <h2 className="text-base font-semibold leading-7 text-primary-dark lg:px-8 pl-5 pb-5">Latest Update: ~timestamp~</h2>
       

@@ -52,11 +52,11 @@ export default function PlotPage() {
         };
     
         return (
-            <div className="py-auto flex flex-row items-center w-1/2 h-5">
+            <div className="py-auto flex flex-row items-center w-1/2">
                 <select
                     id="plot_type"
                     name="plot_type"
-                    className="text-left w-fit block form-field-bg-primary-dark text-primary-dark sm:text-sm sm:leading-6 pl-5"
+                    className="text-left py-1 block form-field-bg-primary-dark text-primary-dark sm:text-sm sm:leading-6 pl-5"
                     defaultValue={type}
                     onChange={handleChange}
                 >
@@ -82,7 +82,7 @@ export default function PlotPage() {
                     id="plot_type"
                     name="plot_type"
                     defaultValue={focusPlotStats}
-                    className="text-left w-fit block form-field-bg-primary-dark text-primary-dark sm:text-sm sm:leading-6 pl-5"
+                    className="text-left block py-1 form-field-bg-primary-dark text-primary-dark sm:text-sm sm:leading-6 pl-5"
                 >
                     <option onClick={()=>setFocusPlotStats("pH")}>pH</option>
                     <option onClick={()=>setFocusPlotStats("Moisture")}>Moisture</option>
@@ -113,7 +113,7 @@ export default function PlotPage() {
                     type="text"
                     name={editField as string}
                     id={editField as string}
-                    className="text-left w-full block form-field-bg-primary-dark text-primary-dark sm:text-sm sm:leading-6 pl-5"
+                    className="text-left block form-field-bg-primary-dark text-primary-dark sm:text-sm sm:leading-6 pl-5"
                     defaultValue={value}
                     onChange={(e) => {handleChange(e.target.value);
                     }}
@@ -136,14 +136,14 @@ export default function PlotPage() {
     }, [plots.state.data, id]);
 
     return (
-        <div className="bg-primary-dark py-10 pl-10 lg:pl-[20%]">
+        <div className="bg-primary-dark py-10 pl-[10%] md:pl-[15%] lg:pl-[30%] min-h-screen overflow-y-auto">
             <ResourceStats stats={stats} />
             <div className="py-20">
-                <table className="w-3/4 text-left border-b border-white/10">
+                <table className="relative text-left border-b border-white/10">
                     <colgroup>
-                        <col className="w-1/2" />
-                        <col className="w-1/2" />
-                        <col className="w-1/2" />
+                        <col className="w-[20%]" />
+                        <col className="w-[20%]" />
+                        <col className="w-[20%]" />
                     </colgroup>
                     <tbody>
                         <tr className="border-b border-white/10 text-2xl leading-6 text-primary-dark">
@@ -152,9 +152,7 @@ export default function PlotPage() {
                                 {editMode ? (
                                     <EditTypeDropdown type={plotData?.type!} />
                                 ) : (
-                                    <span className="text-left mt-2 blocksm:text-sm sm:leading-6">
-                                        {plotData?.type}
-                                    </span>
+                                    <span>{plotData?.type}</span>
                                 )}
                             </td>
                         </tr>
@@ -177,7 +175,7 @@ export default function PlotPage() {
                         <tr className="border-b border-white/10 text-2xl leading-6 text-white">
                             <th className="py-5 pl-5 pr-8 sm:pl-6 lg:pl-8">Status</th>
                             <td className="py-5 text-sm leading-6 sm:pr-8 lg:pr-20">
-                                <div className="flex items-center justify-end gap-x-2 sm:justify-start">
+                                <div className="flex items-center gap-x-2 justify-start">
                                     <div className={classNames(statuses[plotData?.status!], 'flex-none rounded-full p-1')}>
                                         <div className="h-3 w-3 rounded-full bg-current" />
                                     </div>
@@ -191,20 +189,18 @@ export default function PlotPage() {
                 <div className='pt-3 pl-5 flex flex-col items-start'>
                     <button
                         type="button"
-                        className="mt-5 p-5 w-1/3 rounded-md bg-indigo-600 py-2 lg:px-5 text-primary-dark shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="mt-5 p-5 w-1/3 md:w-28 rounded-md bg-indigo-600 py-2 lg:px-5 text-primary-dark shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={handleEdit}
                     >
                         {editMode ?
                             (
                                 <div className='flex flex-row items-center'>
-                                    <LockClosedIcon aria-hidden="true" className="h-5 w-5" />
                                     <span className="pl-5">Save</span>
                                 </div>
                             )
                         :
                             (
                                 <div className='flex flex-row items-center'>
-                                    <LockOpenIcon aria-hidden="true" className="h-5 w-5" />
                                     <span className="pl-5">Edit</span>
                                 </div>
                             )
@@ -213,7 +209,7 @@ export default function PlotPage() {
                 </div>
             </div>
             {/** MARK: ChangeStateDropdown*/}
-            <div className='flex flex-col items-start w-fit pl-5'>
+            <div className='flex flex-col items-start w-full pl-5'>
                 <div className='mb-10'>
                     <ChangeStatDropdown />
                 </div>
