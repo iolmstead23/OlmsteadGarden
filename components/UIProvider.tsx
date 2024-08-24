@@ -1,10 +1,11 @@
 'use client'
 
-import { createContext, useContext, useEffect, useReducer, useState } from "react";
-import { PlotData } from "types"; // Use the path alias
+import { createContext, use, useContext, useEffect, useReducer, useState } from "react";
+import { PlotData, SettingsData } from "types"; // Use the path alias
+import Dashboard from "./ui/dashboard";
 
 // MARK: -Type Declarations
-interface State {
+interface PlotState {
     data: Array<PlotData>;
 };
 
@@ -13,14 +14,18 @@ interface EditPlotData {
     data: PlotData;
 };
 
-interface Action {
+interface PlotAction {
     type: 'get_plots' | 'add_plot' | 'edit_plot' | 'sort_index';
-    payload?: State | PlotData | EditPlotData
+    payload?: PlotState | PlotData | EditPlotData;
 };
 
 interface PlotDataState {
-    state: State;
-    dispatch: React.Dispatch<Action>;
+    plotState: PlotState;
+    plotDispatch: React.Dispatch<PlotAction>;
+}
+interface SettingsDataState {
+    settingsState: SettingsData;
+    setSettingState: React.Dispatch<React.SetStateAction<SettingsData>>;
 }
 
 interface FocusPlot {
@@ -43,6 +48,9 @@ interface PlantList {
 // Context for plot data
 const PlotDataContext = createContext<PlotDataState | undefined>(undefined);
 
+// Context for Settings data
+const SettingsDataContext = createContext<SettingsDataState | undefined>(undefined);
+
 // Context for focused plot
 const FocusPlotContext = createContext<FocusPlot | undefined>(undefined);
 
@@ -53,7 +61,7 @@ const SortIndexContext = createContext<SortIndex | undefined>(undefined);
 const PlantListContext = createContext<PlantList | undefined>(undefined);
 
 // MARK: -Dummy data
-const dummyPlotData: State = {
+const dummyPlotData: PlotState = {
     data: [
         {
             id: -1,
@@ -84,16 +92,16 @@ const dummyPlotData: State = {
     ]
 }
 
-// MARK: -Reducer
-function reducer(state: State, action: Action): State {
+// MARK: -Plot Data Reducer
+function plotReducer(state: PlotState, action: PlotAction): PlotState {
 
     /** Fetch the initial plots */
-    function get_plots(action: Action): State {
-        return {data: action.payload!.data as PlotData[]};
+    function get_plots(action: PlotAction): PlotState {
+        return { data: action.payload?.data as PlotData[] };
     }
 
     //** Add a plot to the state **/
-    function add_plot(state: State, action: Action): State {
+    function add_plot(state: PlotState, action: PlotAction): PlotState {
         if (Array.isArray(action.payload)) {
             throw new Error("Payload should be of type PlotData, not PlotData[]");
         }
@@ -101,12 +109,12 @@ function reducer(state: State, action: Action): State {
     }
 
     /** Sort the index of the plots */
-    function sort_index(state: State): State {
-        return {data: state.data.map((item, index) => ({...item, id: index}))}; // Sort by index
+    function sort_index(state: PlotState): PlotState {
+        return { data: state.data.map((item, index) => ({...item, id: index}))}; // Sort by index
     }
 
     /** Edit a plot in the state */
-    function edit_plot(state: State, action: Action): State {
+    function edit_plot(state: PlotState, action: PlotAction): PlotState {
 
         const editedPlot = action.payload as EditPlotData;
         
@@ -132,8 +140,9 @@ function reducer(state: State, action: Action): State {
 
 // MARK: -UIProvider Component
 const UIProvider = ({ children }: { children: React.ReactNode }) => {
-    const [state, dispatch] = useReducer(reducer, { data: [] });
-    const [focusPlot, setFocusPlot] = useState<PlotData>(dummyPlotData.data[0]);
+    const [plotState, plotDispatch] = useReducer(plotReducer, { data: [] });
+    const [settingsState, setSettingState] = useState<SettingsData>({theme: 'bulbasaur', lang: 'en', tempFormat: 'F'});
+    const [focusPlot, setFocusPlot] = useState<PlotData>({id: -1, type: 'Empty', size: 0, data: {pH: 0, moisture: 0, temperature: 0, fertility: 0}, status: 'No Signal', duration: 0});
     const [sortIndex, setSortIndex] = useState<boolean>(false);
 
     const [plantList, setPlantList] = useState<string[]>(
@@ -141,26 +150,34 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
     ); // List of plants
 
     useEffect(() => {
-        dispatch({ type: 'get_plots', payload: dummyPlotData});
+        plotDispatch({ type: 'get_plots', payload: dummyPlotData});
         setSortIndex(true);
+        setFocusPlot(dummyPlotData.data[0]);
     }, []);
 
     useEffect(() => {
         if (sortIndex==true) {
-            dispatch({ type: 'sort_index' });
+            plotDispatch({ type: 'sort_index' });
             setSortIndex(false);
         }
     }, [sortIndex]);
 
     return (
-        <PlotDataContext.Provider value={{ state, dispatch }}>
-            <FocusPlotContext.Provider value={{focusPlot, setFocusPlot}}>
-                <SortIndexContext.Provider value={{sortIndex,setSortIndex}}>
-                    <PlantListContext.Provider value={{plantList,setPlantList}}>
-                        {children}
-                    </PlantListContext.Provider>
-                </SortIndexContext.Provider>
-            </FocusPlotContext.Provider>
+        <PlotDataContext.Provider value={{ plotState, plotDispatch }}>
+            <SettingsDataContext.Provider value={{ settingsState, setSettingState}}>
+                <FocusPlotContext.Provider value={{focusPlot, setFocusPlot }}>
+                    <SortIndexContext.Provider value={{sortIndex,setSortIndex }}>
+                        <PlantListContext.Provider value={{plantList,setPlantList }}>
+                            <main data-theme={String(settingsState.theme)}>
+                                <div>
+                                    <Dashboard />
+                                </div>
+                                {children}
+                            </main>
+                        </PlantListContext.Provider>
+                    </SortIndexContext.Provider>
+                </FocusPlotContext.Provider>
+            </SettingsDataContext.Provider>
         </PlotDataContext.Provider>
     );
 }
@@ -193,7 +210,16 @@ export function usePlotDataContext() {
     return context;
 }
 
-/** This lets other child components edit and change plotdata state */
+/** This lets other child components edit and change settings state */
+export function useSettingsDataContext() {
+    const context = useContext(SettingsDataContext);
+    if (context === undefined) {
+        throw new Error('useSettingsData must be used within a UIProvider');
+    }
+    return context;
+}
+
+/** This lets other child components edit and change plant list state */
 export function usePlantListContext() {
     const context = useContext(PlantListContext);
     if (context === undefined) {

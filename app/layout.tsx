@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import UIProvider from "@components/UIProvider";
+import UIProvider, { useSettingsDataContext } from "@components/UIProvider";
 import Dashboard from "@/components/ui/dashboard";
+import { HydrationOverlay } from '@builder.io/react-hydration-overlay';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +21,11 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <body className={inter.className}>
         <UIProvider>
-          <div>
-            <Dashboard />
-          </div>
-          {children}
+          {/** <HydrationOverlay> */}
+            {children}
+          {/** </HydrationOverlay> */}
         </UIProvider>
       </body>
     </html>
-  );
+);
 }
