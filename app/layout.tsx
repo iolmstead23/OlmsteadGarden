@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import UIProvider from "@components/UIProvider";
-import { HydrationOverlay } from '@builder.io/react-hydration-overlay';
+// import { HydrationOverlay } from '@builder.io/react-hydration-overlay';
 
 export const metadata: Metadata = {
   title: "Olmstead Garden Software",
