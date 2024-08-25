@@ -16,7 +16,7 @@ const config: Config = {
         header: '#CE8A8A',
         form_field: '#EFD8D8',
         mobile_nav: '#CE8A8A',
-        plotdrawer: '#000000',
+        plot_drawer: '#EFD8D8',
         button: '#CE8A8A',
       },
       bulbasaur: {
@@ -24,9 +24,9 @@ const config: Config = {
         sidebar: '#5AB45A',
         text: '#000000',
         header: '#5AB54A',
-        form_field: '#DFF0FE',
+        form_field: '#D1EFD1',
         mobile_nav: '#5AB45A',
-        plotdrawer: '#DFF0FE',
+        plot_drawer: '#D1EFD1',
         button: '#74CE74',
       }, 
       squirtle: {
@@ -34,12 +34,16 @@ const config: Config = {
         sidebar: '#74A1FB',
         text: '#000000',
         header: '#9CBCFC',
-        form_field: '#6B9BFA',
+        form_field: '#CEDEFD',
         mobile_nav: '#9CBCFC',
-        plotdrawer: '#CEDEFD',
+        plot_drawer: '#CEDEFD',
         button: '#3979FA',
       },
-    }),
+    },
+    {
+      strict: true
+    },
+    ),
   ],
 };
 

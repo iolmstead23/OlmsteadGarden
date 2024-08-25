@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    .custom-bg-button {
+        background-color: hsl(var(--twc-button));
+    }
+
+    .custom-bg-plotdrawer {
+        background-color: hsl(var(--twc-plot_drawer));
+    }
+
+    .custom-bg-background {
+        background-color: hsl(var(--twc-background));
+    }
+
+    .custom-bg-sidebar {
+        background-color: hsl(var(--twc-sidebar));
+    }
+
+    .custom-text {
+        color: hsl(var(--twc-text));
+        @apply drop-shadow-md
+    }
+
+    .custom-header {
+        color: hsl(var(--twc-header));
+    }
+
+    .custom-bg-mobilenav {
+        background-color: hsl(var(--twc-mobile_nav));
+    }
+
+    .custom-bg-formfield {
+        background-color: hsl(var(--twc-form_field));
+    }
+}

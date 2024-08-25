@@ -38,7 +38,7 @@ export default function Dashboard() {
         <Dialog open={sidebarOpen} onClose={setSidebarOpen} className="relative z-50 lg:hidden">
           <DialogBackdrop
             transition
-            className="fixed inset-0 bg-mobile_nav transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
+            className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
           />
 
           <div className="fixed inset-0 flex">
@@ -50,47 +50,48 @@ export default function Dashboard() {
                 <div className="absolute left-full top-0 flex w-16 justify-center pt-5 duration-300 ease-in-out data-[closed]:opacity-0">
                   <button type="button" onClick={() => setSidebarOpen(false)} className="-m-2.5 p-2.5">
                     <span className="sr-only">Close sidebar</span>
-                    <XMarkIcon aria-hidden="true" className="h-6 w-6 text-text drop-shadow-lg" />
+                    <XMarkIcon aria-hidden="true" className="h-6 w-6 custom-text " />
                   </button>
                 </div>
               </TransitionChild>
 
               {/* MARK: -Mobile Sidebar*/}
-              <div className="lg:hidden flex grow flex-col gap-y-5 sidebar-bg-background p-5 ring-1 ring-white/10">
-
-                <nav className="flex flex-1 flex-col">
-                  <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                    <li>
-                      <ul role="list" className="-mx-2 space-y-1">
-                        {navigation.map((item) => (
-                          <li key={item.name}>
-                            <Link
-                              href={item.href}
-                              className={classNames(
-                                item.id === isSelected
-                                  ? 'bg-background text-text drop-shadow-lg'
-                                  : 'text-text drop-shadow-lg',
-                                'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
-                              )}
-                              onClick={() => setIsSelected(item.id)}
-                            >
-                              <item.icon aria-hidden="true" className="h-5 w-5 shrink-0" />
-                              {item.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
+              {sidebarOpen &&
+                <div className="lg:hidden custom-bg-sidebar flex grow flex-col gap-y-5 p-5 ring-1 ring-white/10">
+                  <nav className="flex flex-1 flex-col">
+                    <ul role="list" className="flex flex-1 flex-col gap-y-7">
+                      <li>
+                        <ul role="list" className="-mx-2 space-y-1">
+                          {navigation.map((item) => (
+                            <li key={item.name}>
+                              <Link
+                                href={item.href}
+                                className={classNames(
+                                  item.id === isSelected
+                                    ? 'custom-bg-background custom-text '
+                                    : 'custom-text ',
+                                  'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
+                                )}
+                                onClick={() => setIsSelected(item.id)}
+                              >
+                                <item.icon aria-hidden="true" className="h-5 w-5 shrink-0" />
+                                {item.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              }
             </DialogPanel>
           </div>
         </Dialog>
 
         {/* MARK: -Desktop Sidebar*/}
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-sidebar p-5">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto custom-bg-sidebar p-5">
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
@@ -101,8 +102,8 @@ export default function Dashboard() {
                           href={item.href}
                           className={classNames(
                             item.id === isSelected
-                              ? 'bg-background text-text drop-shadow-lg'
-                              : 'text-text drop-shadow-lg',
+                              ? 'custom-bg-background custom-text '
+                              : 'custom-text ',
                             'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
                           )}
                           onClick={() => setIsSelected(item.id)}
@@ -120,8 +121,8 @@ export default function Dashboard() {
         </div>
         {/* MARK: -Navbar */}
         <div className="lg:pl-72">
-          <div className="sticky h-10 top-0 z-40 flex shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-5 shadow-sm sm:gap-x-6 lg:hidden">
-            <button type="button" onClick={() => setSidebarOpen(true)} className="-m-2.5 p-2.5 text-text drop-shadow-lg lg:hidden">
+          <div className="sticky h-10 top-0 z-40 flex shrink-0 items-center gap-x-4 border-b border-gray-200 custom-bg-mobilenav px-5 shadow-sm sm:gap-x-6 lg:hidden">
+            <button type="button" onClick={() => setSidebarOpen(true)} className="-m-2.5 p-2.5 custom-text  lg:hidden">
               <span className="sr-only">Open sidebar</span>
               <Bars3Icon aria-hidden="true" className="h-6 w-6" />
             </button>

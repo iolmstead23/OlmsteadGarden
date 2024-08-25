@@ -16,11 +16,11 @@ export default function SettingsPage() {
         };
     
         return (
-            <div className="py-auto flex flex-row items-center w-1/2">
+            <div className="py-auto flex flex-row items-start w-1/2">
                 <select
                     id="theme"
                     name="theme"
-                    className="text-left py-1 block bg-form_field text-text drop-shadow-lg sm:text-sm sm:leading-6 pl-5"
+                    className="text-left py-1 block w-[200px] custom-bg-formfield custom-text  sm:text-sm sm:leading-6 pl-5"
                     defaultValue={settingsState.theme}
                     onChange={handleChange}
                 >
@@ -40,10 +40,10 @@ export default function SettingsPage() {
     }, []);
 
     return (
-        <div className="bg-background py-20 pl-[10%] md:pl-[15%] lg:pl-[30%] min-h-screen">
-            <h2 className="drop-shadow-lg text-text font-semibold leading-7 pb-5">App Settings</h2>
+        <div className="custom-bg-background py-20 pl-[10%] md:pl-[15%] lg:pl-[30%] min-h-screen">
+            <h2 className=" custom-text font-semibold leading-7 pb-5">App Settings</h2>
             <div className="flex flex-col gap-y-20">
-                <div className="text-lg text-text drop-shadow-lg">
+                <div className="text-lg custom-text  flex flex-row items-center gap-x-10">
                     <span>Theme</span>
                     {hydrated && ChangeThemeDropdown()}
                 </div> 

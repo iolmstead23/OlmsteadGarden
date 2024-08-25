@@ -24,7 +24,7 @@ export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOp
     },[plotDataContext.plotState.data, params]);
 
     return (
-        <Dialog open={isOpen} onClose={()=>setIsOpen(false)} className="relative z-10">
+        <Dialog open={isOpen} onClose={()=>setIsOpen(false)} className="relative z-50">
             <DialogBackdrop
                 transition
                 className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
@@ -42,7 +42,7 @@ export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOp
                                     <button
                                         type="button"
                                         onClick={() => setIsOpen(false)}
-                                        className="relative rounded-md text-text drop-shadow-lg focus:outline-none focus:ring-2 focus:ring-white"
+                                        className="relative rounded-md custom-text  focus:outline-none focus:ring-2 focus:ring-white"
                                     >
                                         <span className="absolute -inset-2.5" />
                                         <span className="sr-only">Close panel</span>
@@ -51,23 +51,23 @@ export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOp
                                 </div>
                             </TransitionChild>
                             {/** The background should be bg-plotdrawer but it does not work */}
-                            <div className="h-full overflow-y-auto p-8 bg-white">
+                            <div className="h-full overflow-y-auto p-8 custom-bg-plotdrawer">
                                 <div>
-                                    <h3 className="font-medium text-text drop-shadow-lg">Summary</h3>
+                                    <h3 className="font-medium custom-text ">Summary</h3>
                                     <dl className="mt-2 divide-y divide-text border-b border-t border-black">
                                         <div className="flex justify-between py-3 text-sm font-medium">
-                                            <dt className="text-text drop-shadow-lg">Plant</dt>
-                                            <dd className="text-text drop-shadow-lg">{plotData?.type}</dd>
+                                            <dt className="custom-text ">Plant</dt>
+                                            <dd className="custom-text ">{plotData?.type}</dd>
                                         </div>
                                         <div className="flex justify-between py-3 text-sm font-medium">
-                                            <dt className="text-text drop-shadow-lg">Status</dt>
-                                            <dd className="text-text drop-shadow-lg">{plotData?.status}</dd>
+                                            <dt className="custom-text ">Status</dt>
+                                            <dd className="custom-text ">{plotData?.status}</dd>
                                         </div>
                                     </dl>
                                     <div className="flex justify-start pt-5">
                                         <button
                                             type="button"
-                                            className="rounded-full bg-button p-1 text-text drop-shadow-lg shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                            className="rounded-full custom-bg-button p-1 custom-text  shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                                             onClick={() => {
                                                 setIsOpen(false);
                                                 router.replace(`/stats/${plotData?.id}`);

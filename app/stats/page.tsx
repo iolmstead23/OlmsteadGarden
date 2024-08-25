@@ -5,7 +5,7 @@ import ResourceStats from "@/components/ui/resource_stats"
 import { usePlotDataContext, useSortIndex } from "@/components/UIProvider";
 import { PlotData, StatsProp } from "types";
 import { AdjustmentsHorizontalIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { Suspense, use, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const statuses: { [key: string]: string } = { Healthy: 'text-green-400 bg-green-400/10', Warning: 'text-rose-400 bg-rose-400/10' }
@@ -24,14 +24,6 @@ export default function StatsPage() {
   const [hydrated, setHydrated] = useState<boolean>(false);
   const router = useRouter();
 
-  const plotSummary = () => {
-    return ( 
-      <Suspense fallback={<div>Loading...</div>}>
-        <PlotDrawer isOpen={focusSummaryToggle} setIsOpen={setFocusSummaryToggle} />
-      </Suspense>
-    );
-  }
-
   const totalPlots = useMemo<number>(()=>plotData.length, [plotData]);
 
   // MARK: -Stats List
@@ -39,7 +31,7 @@ export default function StatsPage() {
     { name: 'Total Plots', value: totalPlots },
     { name: 'Total Water', value: 50},
     { name: 'Total Daylight', value: 100 },
-    { name: 'Total Fertalizer', value: 10 },
+    { name: 'Total Fertilizer', value: 10 },
   ];
 
   useEffect(() => {
@@ -51,13 +43,13 @@ export default function StatsPage() {
   },[]);
 
   return hydrated ? (
-    <div className="bg-background py-20 pl-[10%] md:pl-[15%] lg:pl-[30%] min-h-screen">
-      <h2 className="drop-shadow-lg text-text font-semibold leading-7 pb-5">Latest Update: ~timestamp~</h2>
+    <div className="custom-bg-background py-20 pl-[10%] md:pl-[15%] lg:pl-[30%] min-h-screen">
+      <h2 className=" text-text font-semibold leading-7 pb-5">Latest Update: ~timestamp~</h2>
       <div className="flex flex-col gap-y-20">
         
         <ResourceStats stats={stats} />
         
-        {focusSummaryToggle && plotSummary()}
+        {focusSummaryToggle && <PlotDrawer isOpen={focusSummaryToggle} setIsOpen={setFocusSummaryToggle} />}
 
         <div className="flex flex-col justify-start">
           <table className="w-3/4 text-left">
@@ -66,7 +58,7 @@ export default function StatsPage() {
               <col className="lg:w-4/12" />
               <col className="lg:w-4/12" />
             </colgroup>
-            <thead className="border-b border-white/10 text-2xl leading-6 text-text drop-shadow-lg">
+            <thead className="border-b border-white/10 text-2xl leading-6 text-text ">
               <tr>
                 <th scope="col" className="pb-5 pr-8">Plot</th>
                 <th scope="col" className="pb-5 pl-0 pr-4 text-right sm:pr-8 sm:text-left lg:pr-20">Status</th>
@@ -80,7 +72,7 @@ export default function StatsPage() {
                   <td className="flex py-2">
                     <div className="flex items-center">
                       <button
-                        className="rounded-md min-w-40 bg-button p-1 text-text drop-shadow-lg shadow-sm hover:bg-button/2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="rounded-md min-w-40 bg-button p-1 text-text  shadow-sm hover:bg-button/2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={() => {
                           setFocusSummaryToggle(true);
                           router.replace(`/stats?id=${item.id}`);
@@ -94,16 +86,16 @@ export default function StatsPage() {
                     </div>
                   </td>
                   <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
-                    <div className="flex items-center gap-x-2 justify-start">
+                    <div className="flex items-center gap-x-2 justify-center lg:justify-start">
                       <div className={classNames(statuses[item.status], 'flex-none rounded-full p-1')}>
                         <div className="h-3 w-3 rounded-full bg-current" />
                       </div>
-                      <div className="hidden text-text drop-shadow-lg sm:block">{item.status}</div>
+                      <div className="hidden text-text  sm:block">{item.status}</div>
                     </div>
                   </td>
                   <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
                     <div className="flex items-center gap-x-2 justify-start">
-                      <div className="truncate text-sm font-medium leading-6 text-text drop-shadow-lg">{item.duration} weeks</div>
+                      <div className="truncate text-sm font-medium leading-6 text-text ">{item.duration} weeks</div>
                     </div>
                   </td>
                 </tr>
@@ -114,7 +106,7 @@ export default function StatsPage() {
                   <div className="flex justify-start py-2">
                     <button
                       type="button"
-                      className="rounded-md min-w-40 bg-button p-1 text-text drop-shadow-lg shadow-sm hover:bg-button/2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="rounded-md min-w-40 bg-button p-1 text-text  shadow-sm hover:bg-button/2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       onClick={() => {
                         plots.plotDispatch({
                           type: "add_plot",

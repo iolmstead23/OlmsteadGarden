@@ -22,14 +22,14 @@ export default function ResourceStats({stats}:{stats: {name: string, value: stri
   }
 
   return (
-    <div className="bg-background">
+    <div className="custom-bg-background">
       <div className="max-w-7xl">
         <div className="grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.name} className="flex flex-col justify-start py-6">
               <p className="text-sm font-medium leading-6 header-header">{stat.name}</p>
               <p className="mt-2 flex gap-x-2 flex-col">
-                <span className="text-4xl font-semibold tracking-tight text-text drop-shadow-lg">
+                <span className="text-4xl font-semibold tracking-tight custom-text ">
                   {formatStat({name:stat.name,value:stat.value})}
                 </span>
               </p> 

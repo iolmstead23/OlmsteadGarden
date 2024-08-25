@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import UIProvider, { useSettingsDataContext } from "@components/UIProvider";
-import Dashboard from "@/components/ui/dashboard";
+import UIProvider from "@components/UIProvider";
 import { HydrationOverlay } from '@builder.io/react-hydration-overlay';
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Olmstead Garden Software",
@@ -19,13 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className={inter.className}>
-        <UIProvider>
-          {/** <HydrationOverlay> */}
-            {children}
-          {/** </HydrationOverlay> */}
-        </UIProvider>
-      </body>
+      <UIProvider>
+        {/** <HydrationOverlay> */}
+          {children}
+        {/** </HydrationOverlay> */}
+      </UIProvider>
     </html>
-);
+  );
 }

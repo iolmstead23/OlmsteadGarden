@@ -1,8 +1,9 @@
 'use client'
 
-import { createContext, use, useContext, useEffect, useReducer, useState } from "react";
+import { createContext, useContext, useEffect, useReducer, useState } from "react";
 import { PlotData, SettingsData } from "types"; // Use the path alias
 import Dashboard from "./ui/dashboard";
+import { Inter } from "next/font/google";
 
 // MARK: -Type Declarations
 interface PlotState {
@@ -92,6 +93,8 @@ const dummyPlotData: PlotState = {
     ]
 }
 
+const inter = Inter({ subsets: ["latin"] });
+
 // MARK: -Plot Data Reducer
 function plotReducer(state: PlotState, action: PlotAction): PlotState {
 
@@ -163,22 +166,20 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
     }, [sortIndex]);
 
     return (
-        <PlotDataContext.Provider value={{ plotState, plotDispatch }}>
-            <SettingsDataContext.Provider value={{ settingsState, setSettingState}}>
-                <FocusPlotContext.Provider value={{focusPlot, setFocusPlot }}>
-                    <SortIndexContext.Provider value={{sortIndex,setSortIndex }}>
-                        <PlantListContext.Provider value={{plantList,setPlantList }}>
-                            <main data-theme={String(settingsState.theme)}>
-                                <div>
-                                    <Dashboard />
-                                </div>
+        <body className={inter.className} data-theme={String(settingsState.theme)}>
+            <PlotDataContext.Provider value={{ plotState, plotDispatch }}>
+                <SettingsDataContext.Provider value={{ settingsState, setSettingState}}>
+                    <FocusPlotContext.Provider value={{focusPlot, setFocusPlot }}>
+                        <SortIndexContext.Provider value={{sortIndex,setSortIndex }}>
+                            <PlantListContext.Provider value={{plantList,setPlantList }}>
+                                <Dashboard />
                                 {children}
-                            </main>
-                        </PlantListContext.Provider>
-                    </SortIndexContext.Provider>
-                </FocusPlotContext.Provider>
-            </SettingsDataContext.Provider>
-        </PlotDataContext.Provider>
+                            </PlantListContext.Provider>
+                        </SortIndexContext.Provider>
+                    </FocusPlotContext.Provider>
+                </SettingsDataContext.Provider>
+            </PlotDataContext.Provider>
+        </body>
     );
 }
 

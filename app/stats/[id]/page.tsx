@@ -54,7 +54,7 @@ export default function PlotPage() {
                 <select
                     id="plot_type"
                     name="plot_type"
-                    className="text-left py-1 block bg-form_field text-text drop-shadow-lg sm:text-sm sm:leading-6 pl-5"
+                    className="text-left py-1 block bg-form_field custom-text  sm:text-sm sm:leading-6 pl-5"
                     defaultValue={type}
                     onChange={handleChange}
                 >
@@ -63,7 +63,7 @@ export default function PlotPage() {
                             {plant}
                         </option>
                     ))}
-                    <option value="Add Plant Type">Add Plant Type</option>
+                    <option value="Add Plant Type">Add Plant Type*</option>
                 </select>
             </div>
         );
@@ -73,14 +73,14 @@ export default function PlotPage() {
     function ChangeStatDropdown() {
         return (
             <div className="flex flex-row items-center my-auto">
-                <label htmlFor="plot_type" className="block text-sm font-medium leading-6 text-text drop-shadow-lg">
+                <label htmlFor="plot_type" className="block text-sm font-medium leading-6 custom-text ">
                     <div className='w-36 text-2xl font-semibold'>Plot Stats</div>
                 </label>
                 <select
                     id="plot_type"
                     name="plot_type"
                     defaultValue={focusPlotStats}
-                    className="text-left block py-1 bg-form_field text-text drop-shadow-lg sm:text-sm sm:leading-6 pl-5"
+                    className="text-left block py-1 bg-form_field custom-text  sm:text-sm sm:leading-6 pl-5"
                 >
                     <option onClick={()=>setFocusPlotStats("pH")}>pH</option>
                     <option onClick={()=>setFocusPlotStats("Moisture")}>Moisture</option>
@@ -110,7 +110,7 @@ export default function PlotPage() {
                     type="text"
                     name={editField as string}
                     id={editField as string}
-                    className="text-left block bg-form_field text-text drop-shadow-lg sm:text-sm sm:leading-6 pl-5"
+                    className="text-left block bg-form_field custom-text  sm:text-sm sm:leading-6 pl-5"
                     defaultValue={value}
                     onChange={(e) => {handleChange(e.target.value);
                     }}
@@ -133,7 +133,7 @@ export default function PlotPage() {
     }, [plots.plotState.data, id]);
 
     return (
-        <div className="flex flex-col gap-y-20 bg-background py-20 pl-[10%] md:pl-[15%] lg:pl-[30%] min-h-screen">
+        <div className="flex flex-col gap-y-20 custom-bg-background py-20 pl-[10%] md:pl-[15%] lg:pl-[30%] min-h-screen">
             <ResourceStats stats={stats} />
             <table className="relative text-left">
                 <colgroup>
@@ -142,7 +142,7 @@ export default function PlotPage() {
                     <col className="w-[20%]" />
                 </colgroup>
                 <tbody>
-                    <tr className="text-2xl leading-6 text-text drop-shadow-lg">
+                    <tr className="text-2xl leading-6 custom-text ">
                         <th className="py-5 pr-8">Type</th>
                         <td className="text-sm leading-6 sm:pr-8 lg:pr-20">
                             {editMode ? (
@@ -152,7 +152,7 @@ export default function PlotPage() {
                             )}
                         </td>
                     </tr>
-                    <tr className="text-2xl leading-6 text-text drop-shadow-lg">
+                    <tr className="text-2xl leading-6 custom-text ">
                         <th className="py-5 pr-8">Size</th>
                         <td className="text-sm leading-6 sm:pr-8 lg:pr-20">
                             {editMode ? (
@@ -162,13 +162,13 @@ export default function PlotPage() {
                             )}
                         </td>
                     </tr>
-                    <tr className="text-2xl leading-6 text-text drop-shadow-lg">
+                    <tr className="text-2xl leading-6 custom-text ">
                         <th className="py-5 pr-8">Days until harvest</th>
                         <td className="ext-sm leading-6 sm:pr-8 lg:pr-20">
                             <span>10 days</span>
                         </td>
                     </tr>
-                    <tr className="text-2xl leading-6 text-text drop-shadow-lg">
+                    <tr className="text-2xl leading-6 custom-text ">
                         <th className="py-5 pr-8">Status</th>
                         <td className="text-sm leading-6 sm:pr-8 lg:pr-20">
                             <div className="flex items-center gap-x-2 justify-start">
@@ -185,7 +185,7 @@ export default function PlotPage() {
             <div className='flex flex-col items-start'>
                 <button
                     type="button"
-                    className="mt-5 p-5 w-1/3 md:w-28 rounded-md bg-button py-2 lg:px-5 text-text drop-shadow-lg shadow-sm hover:bg-button/2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    className="mt-5 p-5 w-1/3 md:w-28 rounded-md bg-button py-2 lg:px-5 custom-text  shadow-sm hover:bg-button/2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                     onClick={handleEdit}
                 >
                     {editMode ?
