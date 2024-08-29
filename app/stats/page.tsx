@@ -28,10 +28,10 @@ export default function StatsPage() {
 
   // MARK: -Stats List
   const stats: StatsProp[] = [
-    { name: 'Total Plots', value: totalPlots },
-    { name: 'Total Water', value: 50},
-    { name: 'Total Daylight', value: 100 },
-    { name: 'Total Fertilizer', value: 10 },
+    { name: 'Plots', value: totalPlots },
+    { name: 'Water (gallons)', value: 50},
+    { name: 'Daylight (hours)', value: 100 },
+    { name: 'Fertilizer (ppm)', value: 10 },
   ];
 
   useEffect(() => {
@@ -43,8 +43,8 @@ export default function StatsPage() {
   },[]);
 
   return hydrated ? (
-    <div className="custom-bg-background py-20 pl-[10%] md:pl-[15%] lg:pl-[30%] min-h-screen">
-      <h2 className=" text-text font-semibold leading-7 pb-5">Latest Update: ~timestamp~</h2>
+    <div className="custom-bg-background min-h-screen">
+      <h2 className="custom-text font-semibold leading-7 pb-5">Latest Update: ~timestamp~</h2>
       <div className="flex flex-col gap-y-20">
         
         <ResourceStats stats={stats} />
@@ -58,11 +58,11 @@ export default function StatsPage() {
               <col className="lg:w-4/12" />
               <col className="lg:w-4/12" />
             </colgroup>
-            <thead className="border-b border-white/10 text-2xl leading-6 text-text ">
+            <thead className="text-2xl leading-6 custom-text">
               <tr>
                 <th scope="col" className="pb-5 pr-8">Plot</th>
-                <th scope="col" className="pb-5 pl-0 pr-4 text-right sm:pr-8 sm:text-left lg:pr-20">Status</th>
-                <th scope="col" className="pb-5 pl-0 pr-4 text-right sm:pr-8 sm:text-left lg:pr-20">Duration</th>
+                <th scope="col" className="pb-5 pl-0 pr-5 sm:pr-8 text-center md:text-left lg:pr-20 ">Status</th>
+                <th scope="col" className="hidden md:block pb-5 pl-0 pr-4 text-right sm:pr-8 sm:text-left lg:pr-20">Duration</th>
               </tr>
             </thead>
             <tbody className="divide-y">
@@ -72,7 +72,7 @@ export default function StatsPage() {
                   <td className="flex py-2">
                     <div className="flex items-center">
                       <button
-                        className="rounded-md min-w-40 bg-button p-1 text-text  shadow-sm hover:bg-button/2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="min-w-40 custom-bg-button p-1 custom-text-button focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={() => {
                           setFocusSummaryToggle(true);
                           router.replace(`/stats?id=${item.id}`);
@@ -85,28 +85,28 @@ export default function StatsPage() {
                       </button>
                     </div>
                   </td>
-                  <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
+                  <td className="text-sm leading-6 pr-8 lg:pr-20">
                     <div className="flex items-center gap-x-2 justify-center lg:justify-start">
-                      <div className={classNames(statuses[item.status], 'flex-none rounded-full p-1')}>
-                        <div className="h-3 w-3 rounded-full bg-current" />
-                      </div>
-                      <div className="hidden text-text  sm:block">{item.status}</div>
+                        <div className={classNames(statuses[item.status], 'flex-none rounded-full p-1')}>
+                            <div className="h-3 w-3 rounded-full bg-current" />
+                        </div>
+                        <span className="hidden lg:block">{item.status}</span>
                     </div>
-                  </td>
-                  <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
+                </td>
+                  <td className="hidden md:block py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
                     <div className="flex items-center gap-x-2 justify-start">
-                      <div className="truncate text-sm font-medium leading-6 text-text ">{item.duration} weeks</div>
+                      <div className="truncate text-sm font-medium leading-6 custom-text">{item.duration} weeks</div>
                     </div>
                   </td>
                 </tr>
               ))}
               {/** MARK: -Add Plot Button */}
-              <tr>
+              <tr id="plot_button">
                 <td>
                   <div className="flex justify-start py-2">
                     <button
                       type="button"
-                      className="rounded-md min-w-40 bg-button p-1 text-text  shadow-sm hover:bg-button/2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className=" min-w-40 custom-bg-button custom-text-button p-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       onClick={() => {
                         plots.plotDispatch({
                           type: "add_plot",

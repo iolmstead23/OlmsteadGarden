@@ -5,6 +5,7 @@
 @layer base {
     .custom-bg-button {
         background-color: hsl(var(--twc-button));
+        @apply rounded-md;
     }
 
     .custom-bg-plotdrawer {
@@ -13,6 +14,7 @@
 
     .custom-bg-background {
         background-color: hsl(var(--twc-background));
+        @apply py-20 pl-[15%] md:pl-[20%] lg:pl-[30%];
     }
 
     .custom-bg-sidebar {
@@ -21,7 +23,11 @@
 
     .custom-text {
         color: hsl(var(--twc-text));
-        @apply drop-shadow-md
+    }
+
+    .custom-text-button {
+        color: hsl(var(--twc-button_text));
+        @apply font-bold drop-shadow-sm hover:font-extrabold;
     }
 
     .custom-header {
@@ -34,5 +40,9 @@
 
     .custom-bg-formfield {
         background-color: hsl(var(--twc-form_field));
+    }
+
+    .slide-component-width {
+        @apply w-[70%] lg:w-[20%];
     }
 }

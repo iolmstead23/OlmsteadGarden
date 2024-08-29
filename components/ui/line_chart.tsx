@@ -69,7 +69,7 @@ export default function LineChart({statPlotData}:{statPlotData: string}) {
 
   return (
     <div className='flex flex-col items-left w-4/5'>
-      <Line options={options} data={data} height={100}/>;
+      <Line options={options} data={data} height={100}/>
     </div>
   );
 }

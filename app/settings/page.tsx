@@ -40,7 +40,7 @@ export default function SettingsPage() {
     }, []);
 
     return (
-        <div className="custom-bg-background py-20 pl-[10%] md:pl-[15%] lg:pl-[30%] min-h-screen">
+        <div className="custom-bg-background min-h-screen">
             <h2 className=" custom-text font-semibold leading-7 pb-5">App Settings</h2>
             <div className="flex flex-col gap-y-20">
                 <div className="text-lg custom-text  flex flex-row items-center gap-x-10">

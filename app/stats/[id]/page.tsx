@@ -37,10 +37,10 @@ export default function PlotPage() {
         setEditMode(!editMode);
     };
 
-    const statuses: { [key: string]: string } = { Healthy: 'text-green-400 bg-green-400/10', Warning: 'text-rose-400 bg-rose-400/10' }
+    const statuses: { [key: string]: string } = { Healthy: 'text-green-400 bg-green-400/10', Warning: 'text-rose-400 bg-rose-400/10' };
 
     function classNames(...classes: any[]) {
-    return classes.filter(Boolean).join(' ')
+    return classes.filter(Boolean).join(' ');
     }
 
     const EditTypeDropdown: React.FC<EditTypeDropdownProps> = ({ type }) => {
@@ -50,11 +50,11 @@ export default function PlotPage() {
         };
     
         return (
-            <div className="py-auto flex flex-row items-center w-1/2">
+            <div className="py-auto flex flex-row items-center">
                 <select
                     id="plot_type"
                     name="plot_type"
-                    className="text-left py-1 block bg-form_field custom-text  sm:text-sm sm:leading-6 pl-5"
+                    className="text-left w-[60%] xl:w-fit py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
                     defaultValue={type}
                     onChange={handleChange}
                 >
@@ -110,7 +110,7 @@ export default function PlotPage() {
                     type="text"
                     name={editField as string}
                     id={editField as string}
-                    className="text-left block bg-form_field custom-text  sm:text-sm sm:leading-6 pl-5"
+                    className="text-left block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5 w-[50%]"
                     defaultValue={value}
                     onChange={(e) => {handleChange(e.target.value);
                     }}
@@ -133,59 +133,68 @@ export default function PlotPage() {
     }, [plots.plotState.data, id]);
 
     return (
-        <div className="flex flex-col gap-y-20 custom-bg-background py-20 pl-[10%] md:pl-[15%] lg:pl-[30%] min-h-screen">
+        <div className="flex flex-col gap-y-20 custom-bg-background min-h-screen">
             <ResourceStats stats={stats} />
-            <table className="relative text-left">
-                <colgroup>
-                    <col className="w-[20%]" />
-                    <col className="w-[20%]" />
-                    <col className="w-[20%]" />
-                </colgroup>
-                <tbody>
-                    <tr className="text-2xl leading-6 custom-text ">
-                        <th className="py-5 pr-8">Type</th>
-                        <td className="text-sm leading-6 sm:pr-8 lg:pr-20">
-                            {editMode ? (
-                                <EditTypeDropdown type={plotData?.type!} />
-                            ) : (
-                                <span>{plotData?.type}</span>
-                            )}
-                        </td>
-                    </tr>
-                    <tr className="text-2xl leading-6 custom-text ">
-                        <th className="py-5 pr-8">Size</th>
-                        <td className="text-sm leading-6 sm:pr-8 lg:pr-20">
-                            {editMode ? (
-                                <EditPlotInput editField='size'/>
-                            ) : (
-                                <span>{plotData?.size} Square Feet</span>
-                            )}
-                        </td>
-                    </tr>
-                    <tr className="text-2xl leading-6 custom-text ">
-                        <th className="py-5 pr-8">Days until harvest</th>
-                        <td className="ext-sm leading-6 sm:pr-8 lg:pr-20">
-                            <span>10 days</span>
-                        </td>
-                    </tr>
-                    <tr className="text-2xl leading-6 custom-text ">
-                        <th className="py-5 pr-8">Status</th>
-                        <td className="text-sm leading-6 sm:pr-8 lg:pr-20">
-                            <div className="flex items-center gap-x-2 justify-start">
-                                <div className={classNames(statuses[plotData?.status!], 'flex-none rounded-full p-1')}>
-                                    <div className="h-3 w-3 rounded-full bg-current" />
+            <div className='flex flex-row flex-wrap text-left w-full'>
+                <div className="w-full xl:w-[55%]">
+                <table>
+                    <colgroup>
+                        <col className="w-1/2 xl:w-[35%]" />
+                        <col className="w-1/2" />
+                        <col className="w-1/2" />
+                    </colgroup>
+                    <tbody>
+                        <tr className="text-2xl leading-6 custom-text">
+                            <th className="py-5 pr-8">Type</th>
+                            <td className="text-sm font-extrabold leading-6 lg:pr-20">
+                                {editMode ? (
+                                    <EditTypeDropdown type={plotData?.type!} />
+                                ) : (
+                                    <span>{plotData?.type}</span>
+                                )}
+                            </td>
+                        </tr>
+                        <tr className="text-2xl leading-6 custom-text">
+                            <th className="py-5 pr-8">Size</th>
+                            <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
+                                {editMode ? (
+                                    <EditPlotInput editField='size'/>
+                                ) : (
+                                    <span>{plotData?.size} Square Feet</span>
+                                )}
+                            </td>
+                        </tr>
+                        <tr className="text-2xl leading-6 custom-text">
+                            <th className="py-5 pr-8">Days until harvest</th>
+                            <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
+                                <span>10 days</span>
+                            </td>
+                        </tr>
+                        <tr className="text-2xl leading-6 custom-text">
+                            <th className="py-5 pr-8">Status</th>
+                            <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
+                                <div className="flex items-center gap-x-2 justify-start">
+                                    <span>{plotData?.status}</span>
+                                    <div className={classNames(statuses[plotData?.status!], 'flex-none rounded-full p-1')}>
+                                        <div className="h-3 w-3 rounded-full bg-current" />
+                                    </div>
                                 </div>
-                                <span>{plotData?.status}</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div className="hidden xl:block">
+                    <div className='flex flex-col items-start w-1/2'>
+                        <p>Placeholder Image*</p>
+                    </div>
+                </div>
+            </div>
 
             <div className='flex flex-col items-start'>
                 <button
                     type="button"
-                    className="mt-5 p-5 w-1/3 md:w-28 rounded-md bg-button py-2 lg:px-5 custom-text  shadow-sm hover:bg-button/2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    className="mt-5 p-5 w-1/3 md:w-28 custom-bg-button py-2 lg:px-5 custom-text-button focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                     onClick={handleEdit}
                 >
                     {editMode ?

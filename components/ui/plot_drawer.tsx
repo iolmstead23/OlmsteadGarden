@@ -32,17 +32,17 @@ export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOp
 
             <div className="fixed inset-0 overflow-hidden">
                 <div className="absolute inset-0 overflow-hidden">
-                    <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+                    <div className="pointer-events-none fixed inset-y-0 right-0 flex slide-component-width">
                         <DialogPanel
                         transition
-                        className="pointer-events-auto relative w-96 transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700"
+                        className="pointer-events-auto relative w-full transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700"
                         >
                             <TransitionChild>
                                 <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 duration-500 ease-in-out data-[closed]:opacity-0 sm:-ml-10 sm:pr-4">
                                     <button
                                         type="button"
                                         onClick={() => setIsOpen(false)}
-                                        className="relative rounded-md custom-text  focus:outline-none focus:ring-2 focus:ring-white"
+                                        className="relative custom-text  focus:outline-none focus:ring-2 focus:ring-white"
                                     >
                                         <span className="absolute -inset-2.5" />
                                         <span className="sr-only">Close panel</span>
@@ -50,11 +50,10 @@ export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOp
                                    </button>
                                 </div>
                             </TransitionChild>
-                            {/** The background should be bg-plotdrawer but it does not work */}
                             <div className="h-full overflow-y-auto p-8 custom-bg-plotdrawer">
                                 <div>
                                     <h3 className="font-medium custom-text ">Summary</h3>
-                                    <dl className="mt-2 divide-y divide-text border-b border-t border-black">
+                                    <dl className="mt-2 divide-y divide-text">
                                         <div className="flex justify-between py-3 text-sm font-medium">
                                             <dt className="custom-text ">Plant</dt>
                                             <dd className="custom-text ">{plotData?.type}</dd>
@@ -67,7 +66,7 @@ export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOp
                                     <div className="flex justify-start pt-5">
                                         <button
                                             type="button"
-                                            className="rounded-full custom-bg-button p-1 custom-text  shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                            className=" custom-bg-button p-1 custom-text-button focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                                             onClick={() => {
                                                 setIsOpen(false);
                                                 router.replace(`/stats/${plotData?.id}`);
