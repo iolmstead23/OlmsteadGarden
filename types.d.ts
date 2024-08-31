@@ -26,3 +26,26 @@ export interface StatsProp {
     name: string;
     value: string | number;
 }
+
+interface PlantData {
+    optimal_ph: number;
+    sunlight: string;
+    moisture: string;
+    temperature: string;
+    soil_type: string;
+}
+  
+interface PlantMetadata {
+    species: string;
+    genus: string;
+    average_height: string;
+    location: string;
+}
+  
+export interface PlantNote {
+    name: string;
+    description: string;
+    image: string;
+    data: PlantData;
+    metadata: PlantMetadata;
+}

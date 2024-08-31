@@ -1,11 +1,12 @@
 'use client'
 
 import { PlotData, StatsProp } from 'types';
-import { usePlantListContext, usePlotDataContext } from '@components/UIProvider';
+import { useFocusPlotContext, useNotifyContentContext, useNotifyToggleContext, usePlantListContext, usePlotDataContext } from '@components/UIProvider';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import ResourceStats from '@components/ui/resource_stats';
-import LineChart from '@/components/ui/line_chart';
+import LineChart from '@components/ui/line_chart';
+import PlantInfoCard from '@components/ui/plant_infocard';
 
 // MARK: - Type Declarations
 interface EditTypeDropdownProps {
@@ -30,10 +31,16 @@ export default function PlotPage() {
     editedPlotData.current = plots.plotState.data[id];
 
     const [plotData,setPlotData] = useState<PlotData | undefined>(undefined);
+    const { setNotifyToggle } = useNotifyToggleContext();
+    const { setNotifyContent } = useNotifyContentContext();
+    const { setFocusPlot } = useFocusPlotContext();
     
     // MARK: - handleEdit Function
     const handleEdit = () => {
         plots.plotDispatch({type: 'edit_plot', payload: {id: id, data: editedPlotData.current!}});
+        editMode && setNotifyContent(['success', 'Plot data has been updated']);
+        editMode && setNotifyToggle(true);
+        setFocusPlot(editedPlotData.current!);
         setEditMode(!editMode);
     };
 
@@ -133,60 +140,60 @@ export default function PlotPage() {
     }, [plots.plotState.data, id]);
 
     return (
-        <div className="flex flex-col gap-y-20 custom-bg-background min-h-screen">
+        <div className="flex flex-col gap-y-20 custom-bg-background min-h-screen h-full">
             <ResourceStats stats={stats} />
-            <div className='flex flex-row flex-wrap text-left w-full'>
+            <div className='flex flex-row text-left w-full'>
                 <div className="w-full xl:w-[55%]">
-                <table>
-                    <colgroup>
-                        <col className="w-1/2 xl:w-[35%]" />
-                        <col className="w-1/2" />
-                        <col className="w-1/2" />
-                    </colgroup>
-                    <tbody>
-                        <tr className="text-2xl leading-6 custom-text">
-                            <th className="py-5 pr-8">Type</th>
-                            <td className="text-sm font-extrabold leading-6 lg:pr-20">
-                                {editMode ? (
-                                    <EditTypeDropdown type={plotData?.type!} />
-                                ) : (
-                                    <span>{plotData?.type}</span>
-                                )}
-                            </td>
-                        </tr>
-                        <tr className="text-2xl leading-6 custom-text">
-                            <th className="py-5 pr-8">Size</th>
-                            <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
-                                {editMode ? (
-                                    <EditPlotInput editField='size'/>
-                                ) : (
-                                    <span>{plotData?.size} Square Feet</span>
-                                )}
-                            </td>
-                        </tr>
-                        <tr className="text-2xl leading-6 custom-text">
-                            <th className="py-5 pr-8">Days until harvest</th>
-                            <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
-                                <span>10 days</span>
-                            </td>
-                        </tr>
-                        <tr className="text-2xl leading-6 custom-text">
-                            <th className="py-5 pr-8">Status</th>
-                            <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
-                                <div className="flex items-center gap-x-2 justify-start">
-                                    <span>{plotData?.status}</span>
-                                    <div className={classNames(statuses[plotData?.status!], 'flex-none rounded-full p-1')}>
-                                        <div className="h-3 w-3 rounded-full bg-current" />
+                    <table cellPadding={0} cellSpacing={0}>
+                        <colgroup>
+                            <col className="w-1/2 xl:w-[35%]" />
+                            <col className="w-1/2" />
+                            <col className="w-1/2" />
+                        </colgroup>
+                        <tbody>
+                            <tr className="text-2xl leading-6 custom-text">
+                                <th className="py-5 pr-8">Type</th>
+                                <td className="text-sm font-extrabold leading-6 lg:pr-20">
+                                    {editMode ? (
+                                        <EditTypeDropdown type={plotData?.type!} />
+                                    ) : (
+                                        <span>{plotData?.type}</span>
+                                    )}
+                                </td>
+                            </tr>
+                            <tr className="text-2xl leading-6 custom-text">
+                                <th className="py-5 pr-8">Size</th>
+                                <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
+                                    {editMode ? (
+                                        <EditPlotInput editField='size'/>
+                                    ) : (
+                                        <span>{plotData?.size} Square Feet</span>
+                                    )}
+                                </td>
+                            </tr>
+                            <tr className="text-2xl leading-6 custom-text">
+                                <th className="py-5 pr-8">Days until harvest</th>
+                                <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
+                                    <span>10 days</span>
+                                </td>
+                            </tr>
+                            <tr className="text-2xl leading-6 custom-text">
+                                <th className="py-5 pr-8">Status</th>
+                                <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
+                                    <div className="flex items-center gap-x-2 justify-start">
+                                        <span>{plotData?.status}</span>
+                                        <div className={classNames(statuses[plotData?.status!], 'flex-none rounded-full p-1')}>
+                                            <div className="h-3 w-3 rounded-full bg-current" />
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div className="hidden xl:block">
-                    <div className='flex flex-col items-start w-1/2'>
-                        <p>Placeholder Image*</p>
+                <div className="hidden xl:block -ml-[15%]">
+                    <div className='flex flex-col items-start'>
+                        <PlantInfoCard />
                     </div>
                 </div>
             </div>
@@ -194,24 +201,17 @@ export default function PlotPage() {
             <div className='flex flex-col items-start'>
                 <button
                     type="button"
-                    className="mt-5 p-5 w-1/3 md:w-28 custom-bg-button py-2 lg:px-5 custom-text-button focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    className="py-2 custom-bg-button custom-text-button rounded-md mb-6 min-w-20"
                     onClick={handleEdit}
                 >
                     {editMode ?
-                        (
-                            <div className='flex flex-row items-center'>
-                                <span className="pl-5">Save</span>
-                            </div>
-                        )
+                        ( <span>Save</span> )
                     :
-                        (
-                            <div className='flex flex-row items-center'>
-                                <span className="pl-5">Edit</span>
-                            </div>
-                        )
+                        ( <span>Edit</span> )
                     }
                 </button>
             </div>
+
             {/** MARK: ChangeStateDropdown*/}
             <div className='flex flex-col items-start w-full'>
                 <div className='mb-10'>

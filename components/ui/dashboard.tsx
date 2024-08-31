@@ -17,6 +17,9 @@ import {
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 
+import Notification from '@components/ui/notification'
+import { useNotifyToggleContext } from '@components/UIProvider'
+
 const navigation = [
     { id: 0, name: 'Dashboard', href: '/', icon: HomeIcon },
     { id: 1, name: 'Reports', href: '/stats', icon: ChartPieIcon },
@@ -31,10 +34,18 @@ const navigation = [
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [isSelected, setIsSelected] = useState<number>(0);
+  const { notifyToggle } = useNotifyToggleContext();
 
   return (
     <>
       <div>
+
+        {(notifyToggle==true) && (
+          <div>
+            <Notification />
+          </div>
+        )}
+
         <Dialog open={sidebarOpen} onClose={setSidebarOpen} className="relative z-50 lg:hidden">
           <DialogBackdrop
             transition
@@ -54,6 +65,7 @@ export default function Dashboard() {
                   </button>
                 </div>
               </TransitionChild>
+
               {/* MARK: -Mobile Sidebar*/}
               {sidebarOpen &&
                 <div className="lg:hidden custom-bg-sidebar flex slide-component-width flex-col gap-y-5 p-5 ring-1 ring-white/10">
@@ -67,8 +79,8 @@ export default function Dashboard() {
                                 href={item.href}
                                 className={classNames(
                                   item.id === isSelected
-                                    ? 'custom-bg-background custom-text '
-                                    : 'custom-text ',
+                                    ? 'custom-bg-background custom-text'
+                                    : 'custom-text',
                                   'group flex gap-x-3 p-2 text-sm font-semibold leading-6',
                                 )}
                                 onClick={() => setIsSelected(item.id)}
@@ -120,8 +132,8 @@ export default function Dashboard() {
         </div>
         {/* MARK: -Navbar */}
         <div className="lg:pl-72">
-          <div className="sticky h-10 top-0 z-40 flex shrink-0 items-center gap-x-4 custom-bg-mobilenav px-5  sm:gap-x-6 lg:hidden">
-            <button type="button" onClick={() => setSidebarOpen(true)} className="-m-2.5 p-2.5 custom-text  lg:hidden">
+          <div className="sticky h-10 top-0 z-40 flex shrink-0 items-center gap-x-4 custom-bg-mobilenav px-5 sm:gap-x-6 lg:hidden">
+            <button type="button" onClick={() => setSidebarOpen(true)} className="-m-2.5 p-2.5 custom-text lg:hidden">
               <span className="sr-only">Open sidebar</span>
               <Bars3Icon aria-hidden="true" className="h-6 w-6" />
             </button>

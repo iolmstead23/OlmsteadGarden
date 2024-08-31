@@ -66,7 +66,7 @@ export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOp
                                     <div className="flex justify-start pt-5">
                                         <button
                                             type="button"
-                                            className=" custom-bg-button p-1 custom-text-button focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                                            className=" custom-bg-button p-1 custom-text-button"
                                             onClick={() => {
                                                 setIsOpen(false);
                                                 router.replace(`/stats/${plotData?.id}`);

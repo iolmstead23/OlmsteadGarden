@@ -1,0 +1,184 @@
+{
+    "plants": [
+      {
+        "name": "Tomato",
+        "description": "Tomatoes are the fruit of the Solanum lycopersicum plant, commonly used in cooking.",
+        "image": "tomato.jpg",
+        "data": {
+          "optimal_ph": 6.0,
+          "sunlight": "Full Sun",
+          "moisture": "Moderate",
+          "temperature": "70-85°F",
+          "soil_type": "Well-drained"
+        },
+        "metadata": {
+          "species": "Solanum lycopersicum",
+          "genus": "Solanum",
+          "average_height": "1.5 meters",
+          "location": "Warm regions"
+        }
+      },
+      {
+        "name": "Cucumber",
+        "description": "Cucumbers are a widely cultivated plant in the gourd family, Cucurbitaceae.",
+        "image": "cucumber.jpg",
+        "data": {
+          "optimal_ph": 6.5,
+          "sunlight": "Full Sun",
+          "moisture": "High",
+          "temperature": "70-85°F",
+          "soil_type": "Well-drained"
+        },
+        "metadata": {
+          "species": "Cucumis sativus",
+          "genus": "Cucumis",
+          "average_height": "1.2 meters",
+          "location": "Warm regions"
+        }
+      },
+      {
+        "name": "Pumpkin",
+        "description": "Pumpkins are a type of squash plant, typically round with smooth, slightly ribbed skin.",
+        "image": "pumpkin.jpg",
+        "data": {
+          "optimal_ph": 6.0,
+          "sunlight": "Full Sun",
+          "moisture": "Moderate",
+          "temperature": "65-75°F",
+          "soil_type": "Well-drained"
+        },
+        "metadata": {
+          "species": "Cucurbita pepo",
+          "genus": "Cucurbita",
+          "average_height": "0.5 meters",
+          "location": "Temperate regions"
+        }
+      },
+      {
+        "name": "Carrot",
+        "description": "Carrots are root vegetables, usually orange in color, though purple, black, red, white, and yellow cultivars exist.",
+        "image": "carrot.jpg",
+        "data": {
+          "optimal_ph": 6.0,
+          "sunlight": "Full Sun",
+          "moisture": "Moderate",
+          "temperature": "60-70°F",
+          "soil_type": "Loamy"
+        },
+        "metadata": {
+          "species": "Daucus carota",
+          "genus": "Daucus",
+          "average_height": "0.3 meters",
+          "location": "Temperate regions"
+        }
+      },
+      {
+        "name": "Pepper",
+        "description": "Peppers are the fruit of the Capsicum plant, used in a variety of culinary dishes.",
+        "image": "pepper.jpg",
+        "data": {
+          "optimal_ph": 6.5,
+          "sunlight": "Full Sun",
+          "moisture": "Moderate",
+          "temperature": "70-85°F",
+          "soil_type": "Well-drained"
+        },
+        "metadata": {
+          "species": "Capsicum annuum",
+          "genus": "Capsicum",
+          "average_height": "0.6 meters",
+          "location": "Warm regions"
+        }
+      },
+      {
+        "name": "Onion",
+        "description": "Onions are a bulb vegetable, known for their pungent flavor and aroma.",
+        "image": "onion.jpg",
+        "data": {
+          "optimal_ph": 6.0,
+          "sunlight": "Full Sun",
+          "moisture": "Moderate",
+          "temperature": "55-75°F",
+          "soil_type": "Well-drained"
+        },
+        "metadata": {
+          "species": "Allium cepa",
+          "genus": "Allium",
+          "average_height": "0.5 meters",
+          "location": "Temperate regions"
+        }
+      },
+      {
+        "name": "Garlic",
+        "description": "Garlic is a species in the onion genus, known for its strong flavor and aroma.",
+        "image": "garlic.jpg",
+        "data": {
+          "optimal_ph": 6.0,
+          "sunlight": "Full Sun",
+          "moisture": "Moderate",
+          "temperature": "55-75°F",
+          "soil_type": "Well-drained"
+        },
+        "metadata": {
+          "species": "Allium sativum",
+          "genus": "Allium",
+          "average_height": "0.6 meters",
+          "location": "Temperate regions"
+        }
+      },
+      {
+        "name": "Potato",
+        "description": "Potatoes are a starchy tuber of the plant Solanum tuberosum, widely used in cooking.",
+        "image": "potato.jpg",
+        "data": {
+          "optimal_ph": 5.5,
+          "sunlight": "Full Sun",
+          "moisture": "Moderate",
+          "temperature": "60-70°F",
+          "soil_type": "Well-drained"
+        },
+        "metadata": {
+          "species": "Solanum tuberosum",
+          "genus": "Solanum",
+          "average_height": "0.6 meters",
+          "location": "Temperate regions"
+        }
+      },
+      {
+        "name": "Spinach",
+        "description": "Spinach is a leafy green flowering plant, known for its nutritional value.",
+        "image": "spinach.jpg",
+        "data": {
+          "optimal_ph": 6.5,
+          "sunlight": "Partial Shade",
+          "moisture": "High",
+          "temperature": "50-60°F",
+          "soil_type": "Well-drained"
+        },
+        "metadata": {
+          "species": "Spinacia oleracea",
+          "genus": "Spinacia",
+          "average_height": "0.3 meters",
+          "location": "Temperate regions"
+        }
+      },
+      {
+        "name": "Lettuce",
+        "description": "Lettuce is a leafy green vegetable, commonly used in salads.",
+        "image": "lettuce.jpg",
+        "data": {
+          "optimal_ph": 6.0,
+          "sunlight": "Full Sun",
+          "moisture": "Moderate",
+          "temperature": "60-70°F",
+          "soil_type": "Well-drained"
+        },
+        "metadata": {
+          "species": "Lactuca sativa",
+          "genus": "Lactuca",
+          "average_height": "0.3 meters",
+          "location": "Temperate regions"
+        }
+      }
+    ]
+  }

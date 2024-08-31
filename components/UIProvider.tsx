@@ -1,9 +1,10 @@
 'use client'
 
 import { createContext, useContext, useEffect, useReducer, useState } from "react";
-import { PlotData, SettingsData } from "types"; // Use the path alias
-import Dashboard from "./ui/dashboard";
+import { PlotData, SettingsData } from "types";
+import Dashboard from "@components/ui/dashboard";
 import { Inter } from "next/font/google";
+import data from "json/plot_data_dummy.json";
 
 // MARK: -Type Declarations
 interface PlotState {
@@ -45,6 +46,16 @@ interface PlantList {
     setPlantList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
+interface NotificationToggleState {
+    notifyToggle: boolean;
+    setNotifyToggle: (e: boolean) => void;
+}
+
+interface NotificationContentState {
+    notifyContent: [string, string];
+    setNotifyContent: (e: [string, string]) => void;
+}
+
 // MARK: -Contexts
 // Context for plot data
 const PlotDataContext = createContext<PlotDataState | undefined>(undefined);
@@ -61,37 +72,11 @@ const SortIndexContext = createContext<SortIndex | undefined>(undefined);
 // List of plants
 const PlantListContext = createContext<PlantList | undefined>(undefined);
 
-// MARK: -Dummy data
-const dummyPlotData: PlotState = {
-    data: [
-        {
-            id: -1,
-            type: 'Carrot',
-            size: 100,
-            data: {
-                pH: 7,
-                moisture: 50,
-                temperature: 70,
-                fertility: 5,
-            },
-            status: 'Healthy',
-            duration: 2,
-        },
-        {
-            id: -1,
-            type: 'Cucumber',
-            size: 50,
-            data: {
-                pH: 6,
-                moisture: 40,
-                temperature: 75,
-                fertility: 6,
-            },
-            status: 'Warning',
-            duration: 1,
-        },
-    ]
-}
+const NotificationToggleContext = createContext<NotificationToggleState | undefined>(undefined);
+
+const NotificationContentContext = createContext<NotificationContentState | undefined>(undefined)
+
+const dummyPlotData = data;
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -146,7 +131,12 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
     const [plotState, plotDispatch] = useReducer(plotReducer, { data: [] });
     const [settingsState, setSettingState] = useState<SettingsData>({theme: 'bulbasaur', lang: 'en', tempFormat: 'F'});
     const [focusPlot, setFocusPlot] = useState<PlotData>({id: -1, type: 'Empty', size: 0, data: {pH: 0, moisture: 0, temperature: 0, fertility: 0}, status: 'No Signal', duration: 0});
+    /**This stores the state of the index sort trigger */
     const [sortIndex, setSortIndex] = useState<boolean>(false);
+    /** This stores the toggle state of the Notification Box */
+    const [notifyToggle, setNotifyToggle] = useState<boolean>(false);
+    /** This stores the content state of the Notification Box */
+    const [notifyContent, setNotifyContent] = useState<[string, string]>(['', '']);
 
     const [plantList, setPlantList] = useState<string[]>(
         ['Tomato', 'Cucumber', 'Pumpkin', 'Carrot', 'Pepper', 'Onion', 'Garlic', 'Potato', 'Spinach', 'Lettuce']
@@ -171,10 +161,14 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
                 <SettingsDataContext.Provider value={{ settingsState, setSettingState}}>
                     <FocusPlotContext.Provider value={{focusPlot, setFocusPlot }}>
                         <SortIndexContext.Provider value={{sortIndex,setSortIndex }}>
-                            <PlantListContext.Provider value={{plantList,setPlantList }}>
-                                <Dashboard />
-                                {children}
-                            </PlantListContext.Provider>
+                            <NotificationToggleContext.Provider value={{notifyToggle,setNotifyToggle}}>
+                                <NotificationContentContext.Provider value={{notifyContent,setNotifyContent}}>
+                                    <PlantListContext.Provider value={{plantList,setPlantList }}>
+                                        <Dashboard />
+                                        {children}
+                                    </PlantListContext.Provider>
+                                </NotificationContentContext.Provider>
+                            </NotificationToggleContext.Provider>
                         </SortIndexContext.Provider>
                     </FocusPlotContext.Provider>
                 </SettingsDataContext.Provider>
@@ -185,19 +179,19 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
 
 // MARK: -Custom Hooks
 /** This lets other child components edit and change focus state */
-export function useFocusPlot() {
+export function useFocusPlotContext() {
     const context = useContext(FocusPlotContext);
     if (context === undefined) {
-        throw new Error('useFocusPlot must be used within a UIProvider');
+        throw new Error('useFocusPlotContext must be used within a UIProvider');
     }
     return context;
 }
 
 /** This lets other child components edit and change sort index state */
-export function useSortIndex() {
+export function useSortIndexContext() {
     const context = useContext(SortIndexContext);
     if (context === undefined) {
-        throw new Error('useSortIndex must be used within a UIProvider');
+        throw new Error('useSortIndexContext must be used within a UIProvider');
     }
     return context;
 }
@@ -225,6 +219,24 @@ export function usePlantListContext() {
     const context = useContext(PlantListContext);
     if (context === undefined) {
         throw new Error('usePlantList must be used within a UIProvider');
+    }
+    return context;
+}
+
+/** This lets other child components toggle notification box on and off */
+export function useNotifyToggleContext() {
+    const context = useContext(NotificationToggleContext);
+    if (context === undefined) {
+        throw new Error('useNotifyToggleContext must be used within a NotificationToggleContextProvider');
+    }
+    return context;
+}
+
+/** This lets other child components provide the notification box content */
+export function useNotifyContentContext() {
+    const context = useContext(NotificationContentContext);
+    if (context === undefined) {
+        throw new Error('useNotifyContentContext must be used within a NotificationContentContextProvider');
     }
     return context;
 }
