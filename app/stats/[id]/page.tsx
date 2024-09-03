@@ -7,10 +7,12 @@ import { useParams } from 'next/navigation';
 import ResourceStats from '@components/ui/resource_stats';
 import LineChart from '@components/ui/line_chart';
 import PlantInfoCard from '@components/ui/plant_infocard';
+import plants from "json/plant_data_species.json";
 
 // MARK: - Type Declarations
 interface EditTypeDropdownProps {
-    type: string;
+    type?: string;
+    subtype?: string;
 }
 
 interface EditPlotInputProps {
@@ -22,6 +24,7 @@ interface EditPlotInputProps {
 export default function PlotPage() {
 
     const [focusPlotStats, setFocusPlotStats] = useState<string>('pH');
+    const [render, setRender] = useState<boolean>(false);
     const [editMode, setEditMode] = useState<boolean>(false);
     const plots = usePlotDataContext();
     const plantList = usePlantListContext();
@@ -44,6 +47,7 @@ export default function PlotPage() {
         setEditMode(!editMode);
     };
 
+    // This object shows the status of the plot as a colored dot
     const statuses: { [key: string]: string } = { Healthy: 'text-green-400 bg-green-400/10', Warning: 'text-rose-400 bg-rose-400/10' };
 
     function classNames(...classes: any[]) {
@@ -54,6 +58,8 @@ export default function PlotPage() {
         const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
             const selectedPlant = event.target.value;
             editedPlotData.current!.type = selectedPlant;
+            editedPlotData.current!.subtype = plants.plants.find((plant) => plant.name === selectedPlant)?.variation[0].name!;
+            setRender(!render);
         };
     
         return (
@@ -75,24 +81,62 @@ export default function PlotPage() {
             </div>
         );
     };
+    
+    const EditSubtypeDropdown: React.FC<EditTypeDropdownProps> = ({subtype}) => {
+        const [variations, setVariations] = useState<string[]>([]);
+        const [selectedSubtype, setSelectedSubtype] = useState<string>(subtype!);
+    
+        useEffect(() => {
+            const plantVariations = plants.plants.find((plant) => plant.name === editedPlotData.current?.type);
+            setVariations(plantVariations?.variation.map((variation) => variation.name) || []);
+        }, [editedPlotData.current?.type]);
+    
+        useEffect(() => {
+            setSelectedSubtype(editedPlotData.current?.subtype!);
+        }, [subtype]);
+    
+        const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+            const selectedPlant = event.target.value;
+            setSelectedSubtype(selectedPlant);
+            editedPlotData.current!.subtype = selectedPlant;
+        };
+    
+        return (
+            <div className="py-auto flex flex-row items-center">
+            <select
+                id="plot_subtype"
+                name="plot_subtype"
+                className="text-left w-[60%] xl:w-fit py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
+                value={selectedSubtype}
+                onChange={handleChange}
+            >
+                {variations?.map((variation: string, index: number) => (
+                <option key={index} value={variation}>
+                    {variation}
+                </option>
+                ))}
+            </select>
+            </div>
+        );
+    };
 
     // MARK: - ChangeStatDropdown Function
     function ChangeStatDropdown() {
         return (
             <div className="flex flex-row items-center my-auto">
-                <label htmlFor="plot_type" className="block text-sm font-medium leading-6 custom-text ">
+                <label htmlFor="chart_type" className="block text-sm font-medium leading-6 custom-text">
                     <div className='w-36 text-2xl font-semibold'>Plot Stats</div>
                 </label>
                 <select
-                    id="plot_type"
-                    name="plot_type"
+                    id="chart_type"
+                    name="chart_type"
                     defaultValue={focusPlotStats}
-                    className="text-left block py-1 bg-form_field custom-text  sm:text-sm sm:leading-6 pl-5"
+                    className="text-left block py-1 custom-bg-formfield custom-text sm:text-sm sm:leading-6 pl-5"
                 >
-                    <option onClick={()=>setFocusPlotStats("pH")}>pH</option>
-                    <option onClick={()=>setFocusPlotStats("Moisture")}>Moisture</option>
-                    <option onClick={()=>setFocusPlotStats("Temperature")}>Temperature</option>
-                    <option onClick={()=>setFocusPlotStats("Fertility")}>Fertility</option>
+                    <option onClick={()=>setFocusPlotStats("pH")} id='ph'>pH</option>
+                    <option onClick={()=>setFocusPlotStats("Moisture")} id="moisture">Moisture</option>
+                    <option onClick={()=>setFocusPlotStats("Temperature")} id="temperature">Temperature</option>
+                    <option onClick={()=>setFocusPlotStats("Fertility")} id="fertility">Fertility</option>
                 </select>
             </div>
         );
@@ -117,10 +161,9 @@ export default function PlotPage() {
                     type="text"
                     name={editField as string}
                     id={editField as string}
-                    className="text-left block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5 w-[50%]"
+                    className="text-left block custom-bg-formfield custom-text sm:text-sm sm:leading-6 pl-5 w-[50%]"
                     defaultValue={value}
-                    onChange={(e) => {handleChange(e.target.value);
-                    }}
+                    onChange={(e) => {handleChange(e.target.value)}}
                 />
             </div>
         );
@@ -146,7 +189,7 @@ export default function PlotPage() {
                 <div className="w-full xl:w-[55%]">
                     <table cellPadding={0} cellSpacing={0}>
                         <colgroup>
-                            <col className="w-1/2 xl:w-[35%]" />
+                            <col className="w-1/2 xl:w-[55%]" />
                             <col className="w-1/2" />
                             <col className="w-1/2" />
                         </colgroup>
@@ -155,9 +198,27 @@ export default function PlotPage() {
                                 <th className="py-5 pr-8">Type</th>
                                 <td className="text-sm font-extrabold leading-6 lg:pr-20">
                                     {editMode ? (
-                                        <EditTypeDropdown type={plotData?.type!} />
+                                        <div className='flex flex-col'>
+                                            <EditTypeDropdown type={plotData?.type!} />
+                                        </div>
                                     ) : (
-                                        <span>{plotData?.type}</span>
+                                        <div className='flex flex-col'>
+                                            <span>{plotData?.type}</span>
+                                        </div>
+                                    )}
+                                </td>
+                            </tr>
+                            <tr className="text-2xl leading-6 custom-text">
+                                <th className="py-5 pr-8">Subype</th>
+                                <td className="text-sm font-extrabold leading-6 lg:pr-20">
+                                    {editMode ? (
+                                        <div className='flex flex-col'>
+                                            <EditSubtypeDropdown subtype={plotData?.subtype!} />
+                                        </div>
+                                    ) : (
+                                        <div className='flex flex-col'>
+                                            <span>{plotData?.subtype}</span>
+                                        </div>
                                     )}
                                 </td>
                             </tr>
@@ -167,14 +228,14 @@ export default function PlotPage() {
                                     {editMode ? (
                                         <EditPlotInput editField='size'/>
                                     ) : (
-                                        <span>{plotData?.size} Square Feet</span>
+                                        <span>{plotData?.size} Sqr. Feet</span>
                                     )}
                                 </td>
                             </tr>
                             <tr className="text-2xl leading-6 custom-text">
-                                <th className="py-5 pr-8">Days until harvest</th>
+                                <th className="py-5 pr-8">Date Planted</th>
                                 <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
-                                    <span>10 days</span>
+                                    <span>{String(plotData?.planted_date)}</span>
                                 </td>
                             </tr>
                             <tr className="text-2xl leading-6 custom-text">
@@ -201,7 +262,7 @@ export default function PlotPage() {
             <div className='flex flex-col items-start'>
                 <button
                     type="button"
-                    className="py-2 custom-bg-button custom-text-button rounded-md mb-6 min-w-20"
+                    className="custom-bg-button custom-text-button rounded-md mb-6 min-w-20 py-2"
                     onClick={handleEdit}
                 >
                     {editMode ?

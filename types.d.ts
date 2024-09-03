@@ -2,6 +2,7 @@ export interface PlotData {
     id: number;
     size: number;
     type: string;
+    subtype: string;
     data: {
         pH: number;
         moisture: number;
@@ -10,6 +11,7 @@ export interface PlotData {
     };
     status: string;
     duration: number;
+    planted_date: sting;
 }
 
 export interface SettingsData {

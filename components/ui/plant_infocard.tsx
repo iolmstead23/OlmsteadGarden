@@ -10,7 +10,7 @@ export default function PlantInfoCard() {
     const plantFocus = useFocusPlotContext().focusPlot;
     const [focusPlantData, setFocusPlantData] = useState<PlantNote | undefined>(undefined);
     const [focusInfo, setFocusInfo] = useState<string>("Description");
-    const plantsData = plants.plants;
+    const plantsData: PlantNote[] = plants.plants;
 
     useEffect(() => {
         if (plantFocus) {
@@ -57,8 +57,8 @@ export default function PlantInfoCard() {
                             </div>
                         </div>
                         <div>
-                        <h3 className="text-lg font-semibold mb-2">Metadata</h3>
-                            <div className="w-60">
+                            <h3 className="text-lg font-semibold mb-2">Metadata</h3>
+                            <div className="flex flex-col gap-y-2 w-60">
                                 <div className="flex flex-row items-center justify-between">
                                     <span>Species: </span>
                                     <span>{focusPlantData?.metadata.species}</span>

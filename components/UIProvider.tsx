@@ -5,6 +5,7 @@ import { PlotData, SettingsData } from "types";
 import Dashboard from "@components/ui/dashboard";
 import { Inter } from "next/font/google";
 import data from "json/plot_data_dummy.json";
+import plants from "json/plant_data_notes.json";
 
 // MARK: -Type Declarations
 interface PlotState {
@@ -130,7 +131,7 @@ function plotReducer(state: PlotState, action: PlotAction): PlotState {
 const UIProvider = ({ children }: { children: React.ReactNode }) => {
     const [plotState, plotDispatch] = useReducer(plotReducer, { data: [] });
     const [settingsState, setSettingState] = useState<SettingsData>({theme: 'bulbasaur', lang: 'en', tempFormat: 'F'});
-    const [focusPlot, setFocusPlot] = useState<PlotData>({id: -1, type: 'Empty', size: 0, data: {pH: 0, moisture: 0, temperature: 0, fertility: 0}, status: 'No Signal', duration: 0});
+    const [focusPlot, setFocusPlot] = useState<PlotData>({id: -1, type: '', subtype: '', size: 0, data: {pH: 0, moisture: 0, temperature: 0, fertility: 0}, status: '', duration: 0, planted_date: ""});
     /**This stores the state of the index sort trigger */
     const [sortIndex, setSortIndex] = useState<boolean>(false);
     /** This stores the toggle state of the Notification Box */
@@ -139,7 +140,7 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
     const [notifyContent, setNotifyContent] = useState<[string, string]>(['', '']);
 
     const [plantList, setPlantList] = useState<string[]>(
-        ['Tomato', 'Cucumber', 'Pumpkin', 'Carrot', 'Pepper', 'Onion', 'Garlic', 'Potato', 'Spinach', 'Lettuce']
+        plants.plants.map((item) => item.name) as string[]
     ); // List of plants
 
     useEffect(() => {

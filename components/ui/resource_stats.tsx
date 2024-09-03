@@ -16,7 +16,7 @@ export default function ResourceStats({stats}:{stats: {name: string, value: stri
         return `${value}`;
       case ('Total Daylight'):
         return `${value}`;
-      case ('Total Fertalizer'):
+      case ('Total Fertilizer'):
         return `${value}`;
     }
   }

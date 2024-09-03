@@ -94,7 +94,7 @@ export default function StatsPage() {
                         </div>
                         <span className="hidden lg:block">{item.status}</span>
                     </div>
-                </td>
+                  </td>
                   <td className="hidden md:block py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
                     <div className="flex items-center gap-x-2 justify-start">
                       <div className="truncate text-sm font-medium leading-6 custom-text">{item.duration} weeks</div>
@@ -116,6 +116,7 @@ export default function StatsPage() {
                             id: -1,
                             size: 0,
                             type: "Empty",
+                            subtype: "Empty",
                             data: {
                               temperature: 0,
                               fertility: 0,
@@ -124,6 +125,7 @@ export default function StatsPage() {
                             },
                             status: "No Signal",
                             duration: 0,
+                            planted_date: new Date().getMonth() + '-' + new Date().getDate() + '-' + new Date().getFullYear(),
                           },
                         });
                         sortIndex.setSortIndex(true); // Sort the index

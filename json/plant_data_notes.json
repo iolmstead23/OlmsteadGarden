@@ -179,6 +179,78 @@
           "average_height": "0.3 meters",
           "location": "Temperate regions"
         }
+      },
+      {
+        "name": "Radish",
+        "description": "Radishes are root vegetables, known for their crisp, peppery flavor.",
+        "image": "radish.jpg",
+        "data": {
+          "optimal_ph": 6.0,
+          "sunlight": "Full Sun",
+          "moisture": "Moderate",
+          "temperature": "60-65°F",
+          "soil_type": "Loamy"
+        },
+        "metadata": {
+          "species": "Raphanus sativus",
+          "genus": "Raphanus",
+          "average_height": "0.2 meters",
+          "location": "Temperate regions"
+        }
+      },
+      {
+        "name": "Cabbage",
+        "description": "Cabbage is a leafy green or purple biennial plant, grown as an annual vegetable crop.",
+        "image": "cabbage.jpg",
+        "data": {
+          "optimal_ph": 6.5,
+          "sunlight": "Full Sun",
+          "moisture": "Moderate",
+          "temperature": "60-70°F",
+          "soil_type": "Well-drained"
+        },
+        "metadata": {
+          "species": "Brassica oleracea",
+          "genus": "Brassica",
+          "average_height": "0.3 meters",
+          "location": "Temperate regions"
+        }
+      },
+      {
+        "name": "Broccoli",
+        "description": "Broccoli is a cool-weather crop, known for its green flowering head.",
+        "image": "broccoli.jpg",
+        "data": {
+          "optimal_ph": 6.0,
+          "sunlight": "Full Sun",
+          "moisture": "Moderate",
+          "temperature": "60-70°F",
+          "soil_type": "Well-drained"
+        },
+        "metadata": {
+          "species": "Brassica oleracea",
+          "genus": "Brassica",
+          "average_height": "0.6 meters",
+          "location": "Temperate regions"
+        }
+      },
+      {
+        "name": "Kale",
+        "description": "Kale is a leafy green vegetable, related to cabbage, broccoli, and Brussels sprouts.",
+        "image": "kale.jpg",
+        "data": {
+          "optimal_ph": 6.0,
+          "sunlight": "Full Sun",
+          "moisture": "High",
+          "temperature": "60-70°F",
+          "soil_type": "Well-drained"
+        },
+        "metadata": {
+          "species": "Brassica oleracea",
+          "genus": "Brassica",
+          "average_height": "0.6 meters",
+          "location": "Temperate regions"
+        }
       }
     ]
   }

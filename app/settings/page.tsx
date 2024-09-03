@@ -1,6 +1,6 @@
 'use client'
 
-import { useSettingsDataContext } from "@/components/UIProvider";
+import { useSettingsDataContext } from "@components/UIProvider";
 import { useEffect, useState } from "react";
 
 export default function SettingsPage() {
@@ -20,7 +20,7 @@ export default function SettingsPage() {
                 <select
                     id="theme"
                     name="theme"
-                    className="text-left py-1 block w-[200px] custom-bg-formfield custom-text  sm:text-sm sm:leading-6 pl-5"
+                    className="text-left py-1 block w-[200px] custom-bg-formfield custom-text sm:text-sm sm:leading-6 pl-5"
                     defaultValue={settingsState.theme}
                     onChange={handleChange}
                 >
@@ -41,11 +41,14 @@ export default function SettingsPage() {
 
     return (
         <div className="custom-bg-background min-h-screen">
-            <h2 className=" custom-text font-semibold leading-7 pb-5">App Settings</h2>
-            <div className="flex flex-col gap-y-20">
-                <div className="text-lg custom-text  flex flex-row items-center gap-x-10">
+            <h2 className="custom-text font-semibold leading-7 pb-5">App Settings</h2>
+            <div className="flex flex-col gap-y-10">
+                <div className="text-lg custom-text flex flex-row items-center gap-x-10">
                     <span>Theme</span>
                     {hydrated && ChangeThemeDropdown()}
+                </div> 
+                <div className="text-lg custom-text flex flex-row items-center gap-x-10">
+                    <span>Download Notification Logs*</span>
                 </div> 
             </div>
         </div>

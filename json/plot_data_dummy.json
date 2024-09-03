@@ -3,6 +3,7 @@
       {
         "id": -1,
         "type": "Carrot",
+        "subtype": "Nantes",
         "size": 100,
         "data": {
           "pH": 7,
@@ -11,11 +12,13 @@
           "fertility": 5
         },
         "status": "Healthy",
-        "duration": 2
+        "duration": 2,
+        "planted_date": "1-20-2024"
       },
       {
         "id": -1,
         "type": "Cucumber",
+        "subtype": "Pickling",
         "size": 50,
         "data": {
           "pH": 6,
@@ -24,11 +27,13 @@
           "fertility": 6
         },
         "status": "Warning",
-        "duration": 1
+        "duration": 1,
+        "planted_date": "2-24-2024"
       },
       {
         "id": -1,
         "type": "Tomato",
+        "subtype": "Roma",
         "size": 20,
         "data": {
           "pH": 6,
@@ -37,7 +42,8 @@
           "fertility": 5
         },
         "status": "Healthy",
-        "duration": 1
+        "duration": 1,
+        "planted_date": "5-15-2024"
       }
     ]
 }

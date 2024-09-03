@@ -21,15 +21,15 @@ import Notification from '@components/ui/notification'
 import { useNotifyToggleContext } from '@components/UIProvider'
 
 const navigation = [
-    { id: 0, name: 'Dashboard', href: '/', icon: HomeIcon },
-    { id: 1, name: 'Reports', href: '/stats', icon: ChartPieIcon },
-    { id: 2, name: 'Files*', href: '#', icon: FolderIcon },
-    { id: 3, name: 'Settings', href: '/settings', icon: Cog6ToothIcon }, 
-  ]
+  { id: 0, name: 'Dashboard', href: '/', icon: HomeIcon },
+  { id: 1, name: 'Reports', href: '/stats', icon: ChartPieIcon },
+  { id: 2, name: 'Files*', href: '#', icon: FolderIcon },
+  { id: 3, name: 'Settings', href: '/settings', icon: Cog6ToothIcon }, 
+]
   
-  function classNames(...classes: any[]) {
-    return classes.filter(Boolean).join(' ')
-  }
+function classNames(...classes: any[]) {
+  return classes.filter(Boolean).join(' ')
+}
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);

@@ -1,0 +1,156 @@
+{
+    "plants": [
+        {
+            "name": "Carrot",
+            "variation": [
+                {"name":"Nantes"},
+                {"name":"Danvers"},
+                {"name":"Imperator"}
+            ]
+        },
+        {
+            "name": "Potato",
+            "variation": [
+                {"name":"Russet"},
+                {"name":"Red"},
+                {"name":"Yukon Gold"}
+            ]
+        },
+        {
+            "name": "Garlic",
+            "variation": [
+                {"name":"Softneck"},
+                {"name":"Hardneck"},
+                {"name":"Elephant"}
+            ]
+        },
+        {
+            "name":"Pumpkin",
+            "variation": [
+                {"name":"Jack-O-Lantern"},
+                {"name":"Sugar Pie"},
+                {"name":"Cinderella"}
+            ]
+        },
+        {
+            "name": "Tomato",
+            "variation": [
+                {"name":"Roma"},
+                {"name":"Beefsteak"},
+                {"name":"Cherry"}
+            ]
+        },
+        {
+            "name": "Pepper",
+            "variation": [
+                {"name":"Bell"},
+                {"name":"Jalapeno"},
+                {"name":"Poblano"}
+            ]
+        },
+        {
+            "name": "Lettuce",
+            "variation": [
+                {"name":"Romaine"},
+                {"name":"Iceberg"},
+                {"name":"Butterhead"}
+            ]
+        },
+        {
+            "name": "Cucumber",
+            "variation": [
+                {"name":"Pickling"},
+                {"name":"Slicing"},
+                {"name":"Burpless"}
+            ]
+        },
+        {
+            "name": "Squash",
+            "variation": [
+                {"name":"Zucchini"},
+                {"name":"Yellow"},
+                {"name":"Acorn"}
+            ]
+        },
+        {
+            "name": "Bean",
+            "variation": [
+                {"name":"Green"},
+                {"name":"Pole"},
+                {"name":"Bush"}
+            ]
+        },
+        {
+            "name": "Corn",
+            "variation": [
+                {"name":"Sweet"},
+                {"name":"Popcorn"},
+                {"name":"Flint"}
+            ]
+        },
+        {
+            "name": "Broccoli",
+            "variation": [
+                {"name":"Calabrese"},
+                {"name":"Romanesco"},
+                {"name":"Sprouting"}
+            ]
+        },
+        {
+            "name": "Cabbage",
+            "variation": [
+                {"name":"Green"},
+                {"name":"Red"},
+                {"name":"Savoy"}
+            ]
+        },
+        {
+            "name": "Kale",
+            "variation": [
+                {"name":"Curly"},
+                {"name":"Lacinato"},
+                {"name":"Red Russian"}
+            ]
+        },
+        {
+            "name": "Spinach",
+            "variation": [
+                {"name":"Bloomsdale"},
+                {"name":"Savoy"},
+                {"name":"Baby"}
+            ]
+        },
+        {
+            "name": "Radish",
+            "variation": [
+                {"name":"Cherry Belle"},
+                {"name":"French Breakfast"},
+                {"name":"Watermelon"}
+            ]
+        },
+        {
+            "name": "Beet",
+            "variation": [
+                {"name":"Red"},
+                {"name":"Golden"},
+                {"name":"Chioggia"}
+            ]
+        },
+        {
+            "name": "Carrot",
+            "variation": [
+                {"name":"Nantes"},
+                {"name":"Danvers"},
+                {"name":"Imperator"}
+            ]
+        },
+        {
+            "name": "Onion",
+            "variation": [
+                {"name":"Yellow"},
+                {"name":"Red"},
+                {"name":"White"}
+            ]
+        }
+    ]
+}

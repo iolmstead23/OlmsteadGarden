@@ -3,7 +3,7 @@
 import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
 import { MagnifyingGlassCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useRouter, useSearchParams } from 'next/navigation';
-import { usePlotDataContext } from '@/components/UIProvider';
+import { usePlotDataContext } from '@components/UIProvider';
 import { useEffect, useState } from 'react';
 import { PlotData } from 'types';
 
@@ -52,15 +52,23 @@ export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOp
                             </TransitionChild>
                             <div className="h-full overflow-y-auto p-8 custom-bg-plotdrawer">
                                 <div>
-                                    <h3 className="font-medium custom-text ">Summary</h3>
+                                    <h3 className="font-medium custom-text">Summary</h3>
                                     <dl className="mt-2 divide-y divide-text">
                                         <div className="flex justify-between py-3 text-sm font-medium">
-                                            <dt className="custom-text ">Plant</dt>
-                                            <dd className="custom-text ">{plotData?.type}</dd>
+                                            <dt className="custom-text">Plant</dt>
+                                            <dd className="custom-text">{plotData?.type}</dd>
                                         </div>
                                         <div className="flex justify-between py-3 text-sm font-medium">
-                                            <dt className="custom-text ">Status</dt>
-                                            <dd className="custom-text ">{plotData?.status}</dd>
+                                            <dt className="custom-text">Variation</dt>
+                                            <dd className="custom-text">{plotData?.subtype}</dd>
+                                        </div>
+                                        <div className="flex justify-between py-3 text-sm font-medium">
+                                            <dt className="custom-text">Status</dt>
+                                            <dd className="custom-text">{plotData?.status}</dd>
+                                        </div>
+                                        <div className="flex justify-between py-3 text-sm font-medium">
+                                            <dt className="custom-text">Date Created</dt>
+                                            <dd className="custom-text">N/A</dd>
                                         </div>
                                     </dl>
                                     <div className="flex justify-start pt-5">
