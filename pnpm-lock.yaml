@@ -7,6 +7,7 @@ specifiers:
   '@types/node': ^20
   '@types/react': ^18
   '@types/react-dom': ^18
+  '@uidotdev/usehooks': ^2.4.1
   chart.js: ^4.4.3
   clsx: ^2.1.1
   eslint: ^8
@@ -27,6 +28,7 @@ specifiers:
 dependencies:
   '@headlessui/react': 2.1.3_nnrd3gsncyragczmpvfhocinkq
   '@heroicons/react': 2.1.5_react@18.3.1
+  '@uidotdev/usehooks': 2.4.1_nnrd3gsncyragczmpvfhocinkq
   chart.js: 4.4.4
   clsx: 2.1.1
   faker: 6.6.6
@@ -712,6 +714,17 @@ packages:
       '@typescript-eslint/types': 7.2.0
       eslint-visitor-keys: 3.4.3
     dev: true
+
+  /@uidotdev/usehooks/2.4.1_nnrd3gsncyragczmpvfhocinkq:
+    resolution: {integrity: sha512-1I+RwWyS+kdv3Mv0Vmc+p0dPYH0DTRAo04HLyXReYBL9AeseDWUJyi4THuksBJcu9F0Pih69Ak150VDnqbVnXg==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1_react@18.3.1
+    dev: false
 
   /@ungap/structured-clone/1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}

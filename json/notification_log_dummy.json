@@ -1,0 +1,14 @@
+{
+    "notifications": [
+        {
+            "status": "success",
+            "notification": "Plot added successfully",
+            "timestamp": "2021-07-01T12:00:00"
+        },
+        {
+            "status": "warning",
+            "notification": "Cucumber plant is wilting",
+            "timestamp": "2021-07-01T12:00:00"
+        }
+    ]
+}

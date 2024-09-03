@@ -17,7 +17,7 @@ export default function Notification() {
       setNotifyToggle(false);
     }, 3000);
     return () => clearTimeout(timer);
-  },[notifyContent]);
+  },[notifyContent, setNotifyToggle]);
 
   /** This sets the appropriate icon */
   const symbol: any = (type: string) => {
@@ -45,16 +45,16 @@ export default function Notification() {
                 <div className="p-4">
                     <div className="flex items-start">
                         <div className="flex-shrink-0">
-                            {symbol(notifyContent[0])}
+                            {symbol(notifyContent?.status!)}
                         </div>
                         <div className="ml-3 w-0 flex-1 pt-0.5">
-                            <p className="text-sm font-medium text-gray-900">{notifyContent[1]}</p>
+                            <p className="text-sm font-medium text-gray-900">{notifyContent!.notification}</p>
                         </div>
                         <div className="ml-4 flex flex-shrink-0">
                             <button
                                 type="button"
                                 onClick={() => {
-                                    setNotifyContent(['','']);
+                                    setNotifyContent({status:'', notification:'', timestamp: new Date()});
                                     setNotifyToggle(false);
                                 }}
                                 className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"

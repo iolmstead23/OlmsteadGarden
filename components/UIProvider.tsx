@@ -1,11 +1,12 @@
 'use client'
 
-import { createContext, useContext, useEffect, useReducer, useState } from "react";
-import { PlotData, SettingsData } from "types";
+import { createContext, use, useContext, useEffect, useReducer, useRef, useState } from "react";
+import { PlotData, SettingsData, NotificationToggleState, NotificationContentState, NotificationLogState, NotificationLogEntry } from "types";
 import Dashboard from "@components/ui/dashboard";
 import { Inter } from "next/font/google";
 import data from "json/plot_data_dummy.json";
 import plants from "json/plant_data_notes.json";
+import notifications from "json/notification_log_dummy.json";
 
 // MARK: -Type Declarations
 interface PlotState {
@@ -47,16 +48,6 @@ interface PlantList {
     setPlantList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-interface NotificationToggleState {
-    notifyToggle: boolean;
-    setNotifyToggle: (e: boolean) => void;
-}
-
-interface NotificationContentState {
-    notifyContent: [string, string];
-    setNotifyContent: (e: [string, string]) => void;
-}
-
 // MARK: -Contexts
 // Context for plot data
 const PlotDataContext = createContext<PlotDataState | undefined>(undefined);
@@ -75,7 +66,9 @@ const PlantListContext = createContext<PlantList | undefined>(undefined);
 
 const NotificationToggleContext = createContext<NotificationToggleState | undefined>(undefined);
 
-const NotificationContentContext = createContext<NotificationContentState | undefined>(undefined)
+const NotificationContentContext = createContext<NotificationContentState | undefined>(undefined);
+
+const NotificationLogContext = createContext<NotificationLogState | undefined>(undefined);
 
 const dummyPlotData = data;
 
@@ -87,7 +80,7 @@ function plotReducer(state: PlotState, action: PlotAction): PlotState {
     /** Fetch the initial plots */
     function get_plots(action: PlotAction): PlotState {
         return { data: action.payload?.data as PlotData[] };
-    }
+    };
 
     //** Add a plot to the state **/
     function add_plot(state: PlotState, action: PlotAction): PlotState {
@@ -95,12 +88,12 @@ function plotReducer(state: PlotState, action: PlotAction): PlotState {
             throw new Error("Payload should be of type PlotData, not PlotData[]");
         }
         return { data: state.data.concat(action.payload! as PlotData) };
-    }
+    };
 
     /** Sort the index of the plots */
     function sort_index(state: PlotState): PlotState {
         return { data: state.data.map((item, index) => ({...item, id: index}))}; // Sort by index
-    }
+    };
 
     /** Edit a plot in the state */
     function edit_plot(state: PlotState, action: PlotAction): PlotState {
@@ -111,7 +104,7 @@ function plotReducer(state: PlotState, action: PlotAction): PlotState {
             throw new Error("Payload should be of type PlotData, not PlotData[]");
         }
         return { data: state.data.map((item) => item.id === editedPlot.id ? editedPlot.data : item) as PlotData[]};
-    }
+    };
 
     switch (action.type) {
         default:
@@ -124,8 +117,8 @@ function plotReducer(state: PlotState, action: PlotAction): PlotState {
             return sort_index(state);
         case 'edit_plot':
             return edit_plot(state, action);
-    }
-}
+    };
+};
 
 // MARK: -UIProvider Component
 const UIProvider = ({ children }: { children: React.ReactNode }) => {
@@ -137,17 +130,29 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
     /** This stores the toggle state of the Notification Box */
     const [notifyToggle, setNotifyToggle] = useState<boolean>(false);
     /** This stores the content state of the Notification Box */
-    const [notifyContent, setNotifyContent] = useState<[string, string]>(['', '']);
+    const [notifyContent, setNotifyContent] = useState<NotificationLogEntry | undefined>(undefined);
+
+    const [didMount, setDidMount] = useState(false);
+
+    const notificationsLog: NotificationLogEntry[] = notifications.notifications.map((notification: { status: string; notification: string; timestamp: string }) => {
+        return {
+          status: notification.status,
+          notification: notification.notification,
+          timestamp: new Date(notification.timestamp)
+        };
+    });
+
+    const [notifyLogContent, setNotifyLogContent] = useState<NotificationLogEntry[]>(notificationsLog);
 
     const [plantList, setPlantList] = useState<string[]>(
         plants.plants.map((item) => item.name) as string[]
     ); // List of plants
 
     useEffect(() => {
-        plotDispatch({ type: 'get_plots', payload: dummyPlotData});
+        plotDispatch({ type: 'get_plots', payload: dummyPlotData });
         setSortIndex(true);
         setFocusPlot(dummyPlotData.data[0]);
-    }, []);
+      }, []);
 
     useEffect(() => {
         if (sortIndex==true) {
@@ -156,18 +161,26 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, [sortIndex]);
 
+    useEffect(() => { setDidMount(true) }, [])
+
+    useEffect(() => {
+        if (didMount == true) { setNotifyLogContent([...notifyLogContent!, notifyContent!]); };
+    }, [notifyContent]);
+
     return (
         <body className={inter.className} data-theme={String(settingsState.theme)}>
-            <PlotDataContext.Provider value={{ plotState, plotDispatch }}>
-                <SettingsDataContext.Provider value={{ settingsState, setSettingState}}>
-                    <FocusPlotContext.Provider value={{focusPlot, setFocusPlot }}>
-                        <SortIndexContext.Provider value={{sortIndex,setSortIndex }}>
+            <PlotDataContext.Provider value={{plotState,plotDispatch}}>
+                <SettingsDataContext.Provider value={{settingsState,setSettingState}}>
+                    <FocusPlotContext.Provider value={{focusPlot,setFocusPlot}}>
+                        <SortIndexContext.Provider value={{sortIndex,setSortIndex}}>
                             <NotificationToggleContext.Provider value={{notifyToggle,setNotifyToggle}}>
                                 <NotificationContentContext.Provider value={{notifyContent,setNotifyContent}}>
-                                    <PlantListContext.Provider value={{plantList,setPlantList }}>
-                                        <Dashboard />
-                                        {children}
-                                    </PlantListContext.Provider>
+                                    <NotificationLogContext.Provider value={{notifyLogContent,setNotifyLogContent}}>
+                                        <PlantListContext.Provider value={{plantList,setPlantList}}>
+                                            <Dashboard />
+                                            {children}
+                                        </PlantListContext.Provider>
+                                    </NotificationLogContext.Provider>
                                 </NotificationContentContext.Provider>
                             </NotificationToggleContext.Provider>
                         </SortIndexContext.Provider>
@@ -238,6 +251,15 @@ export function useNotifyContentContext() {
     const context = useContext(NotificationContentContext);
     if (context === undefined) {
         throw new Error('useNotifyContentContext must be used within a NotificationContentContextProvider');
+    }
+    return context;
+}
+
+/** This lets other child components provide the notification log content */
+export function useNotifyLogContext() {
+    const context = useContext(NotificationLogContext);
+    if (context === undefined) {
+        throw new Error('useNotifyLogContext must be used within a NotificationLogContextProvider');
     }
     return context;
 }

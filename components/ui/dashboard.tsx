@@ -1,34 +1,36 @@
 'use client'
 
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
   TransitionChild,
-} from '@headlessui/react'
+} from '@headlessui/react';
 import {
   Bars3Icon,
+  BellAlertIcon,
   ChartPieIcon,
   Cog6ToothIcon,
   FolderIcon,
   HomeIcon,
   XMarkIcon,
-} from '@heroicons/react/24/outline'
-import Link from 'next/link'
+} from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
-import Notification from '@components/ui/notification'
-import { useNotifyToggleContext } from '@components/UIProvider'
+import Notification from '@components/ui/notification';
+import { useNotifyToggleContext } from '@components/UIProvider';
 
 const navigation = [
   { id: 0, name: 'Dashboard', href: '/', icon: HomeIcon },
   { id: 1, name: 'Reports', href: '/stats', icon: ChartPieIcon },
   { id: 2, name: 'Files*', href: '#', icon: FolderIcon },
-  { id: 3, name: 'Settings', href: '/settings', icon: Cog6ToothIcon }, 
+  { id: 3, name: 'Settings', href: '/settings', icon: Cog6ToothIcon },
+  { id: 4, name: 'Notifications', href: '/notifications', icon: BellAlertIcon },
 ]
   
 function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Dashboard() {

@@ -33,7 +33,7 @@ export default function PlotPage() {
     const editedPlotData = useRef<PlotData | undefined>(undefined);
     editedPlotData.current = plots.plotState.data[id];
 
-    const [plotData,setPlotData] = useState<PlotData | undefined>(undefined);
+    const [plotData, setPlotData] = useState<PlotData | undefined>(undefined);
     const { setNotifyToggle } = useNotifyToggleContext();
     const { setNotifyContent } = useNotifyContentContext();
     const { setFocusPlot } = useFocusPlotContext();
@@ -41,7 +41,7 @@ export default function PlotPage() {
     // MARK: - handleEdit Function
     const handleEdit = () => {
         plots.plotDispatch({type: 'edit_plot', payload: {id: id, data: editedPlotData.current!}});
-        editMode && setNotifyContent(['success', 'Plot data has been updated']);
+        editMode && setNotifyContent({status: 'success', notification: 'Applied Changes to ' + editedPlotData.current?.type, timestamp: new Date()});
         editMode && setNotifyToggle(true);
         setFocusPlot(editedPlotData.current!);
         setEditMode(!editMode);
@@ -51,7 +51,7 @@ export default function PlotPage() {
     const statuses: { [key: string]: string } = { Healthy: 'text-green-400 bg-green-400/10', Warning: 'text-rose-400 bg-rose-400/10' };
 
     function classNames(...classes: any[]) {
-    return classes.filter(Boolean).join(' ');
+        return classes.filter(Boolean).join(' ');
     }
 
     const EditTypeDropdown: React.FC<EditTypeDropdownProps> = ({ type }) => {
@@ -59,6 +59,7 @@ export default function PlotPage() {
             const selectedPlant = event.target.value;
             editedPlotData.current!.type = selectedPlant;
             editedPlotData.current!.subtype = plants.plants.find((plant) => plant.name === selectedPlant)?.variation[0].name!;
+            // This needs to render the subtype dropdown so its in sync with the type dropdown
             setRender(!render);
         };
     
@@ -85,11 +86,11 @@ export default function PlotPage() {
     const EditSubtypeDropdown: React.FC<EditTypeDropdownProps> = ({subtype}) => {
         const [variations, setVariations] = useState<string[]>([]);
         const [selectedSubtype, setSelectedSubtype] = useState<string>(subtype!);
-    
+        
         useEffect(() => {
             const plantVariations = plants.plants.find((plant) => plant.name === editedPlotData.current?.type);
             setVariations(plantVariations?.variation.map((variation) => variation.name) || []);
-        }, [editedPlotData.current?.type]);
+        }, [render]);
     
         useEffect(() => {
             setSelectedSubtype(editedPlotData.current?.subtype!);
@@ -103,19 +104,19 @@ export default function PlotPage() {
     
         return (
             <div className="py-auto flex flex-row items-center">
-            <select
-                id="plot_subtype"
-                name="plot_subtype"
-                className="text-left w-[60%] xl:w-fit py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
-                value={selectedSubtype}
-                onChange={handleChange}
-            >
-                {variations?.map((variation: string, index: number) => (
-                <option key={index} value={variation}>
-                    {variation}
-                </option>
-                ))}
-            </select>
+                <select
+                    id="plot_subtype"
+                    name="plot_subtype"
+                    className="text-left w-[60%] xl:w-fit py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
+                    value={selectedSubtype}
+                    onChange={handleChange}
+                >
+                    {variations?.map((variation: string, index: number) => (
+                    <option key={index} value={variation}>
+                        {variation}
+                    </option>
+                    ))}
+                </select>
             </div>
         );
     };
@@ -152,8 +153,8 @@ export default function PlotPage() {
                 case 'size':
                     editedPlotData.current!.size = Number(e);
                     break;
-            }
-        }
+            };
+        };
     
         return (
             <div className="flex flex-row items-center">
@@ -167,7 +168,7 @@ export default function PlotPage() {
                 />
             </div>
         );
-    }
+    };
 
     const stats: StatsProp[] = [
         { name: 'Ph', value: String(plotData?.data.pH) },
@@ -189,7 +190,7 @@ export default function PlotPage() {
                 <div className="w-full xl:w-[55%]">
                     <table cellPadding={0} cellSpacing={0}>
                         <colgroup>
-                            <col className="w-1/2 xl:w-[55%]" />
+                            <col className="w-1/2 xl:w-[35%]" />
                             <col className="w-1/2" />
                             <col className="w-1/2" />
                         </colgroup>

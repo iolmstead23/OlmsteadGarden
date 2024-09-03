@@ -5,7 +5,7 @@ import UIProvider from "@components/UIProvider";
 
 export const metadata: Metadata = {
   title: "Olmstead Garden Software",
-  description: "A garden management software for tracking and managing your garden.",
+  description: "A garden management software for all things gardening.",
 };
 
 export default function RootLayout({

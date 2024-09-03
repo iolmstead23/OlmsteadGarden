@@ -1,8 +1,8 @@
 'use client'
 
 import PlotDrawer from "@components/ui/plot_drawer";
-import ResourceStats from "@components/ui/resource_stats"
-import { useNotifyContentContext, useNotifyToggleContext, usePlotDataContext, useSortIndexContext } from "@components/UIProvider";
+import ResourceStats from "@components/ui/resource_stats";
+import { useNotifyContentContext, useNotifyLogContext, useNotifyToggleContext, usePlotDataContext, useSortIndexContext } from "@components/UIProvider";
 import { PlotData, StatsProp } from "types";
 import { AdjustmentsHorizontalIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { useEffect, useMemo, useState } from "react";
@@ -25,6 +25,7 @@ export default function StatsPage() {
   const router = useRouter();
   const { setNotifyToggle } = useNotifyToggleContext();
   const { setNotifyContent } = useNotifyContentContext();
+  const { notifyLogContent, setNotifyLogContent } = useNotifyLogContext();
 
   const totalPlots = useMemo<number>(()=>plotData.length, [plotData]);
 
@@ -130,7 +131,7 @@ export default function StatsPage() {
                         });
                         sortIndex.setSortIndex(true); // Sort the index
                         setNotifyToggle(true);
-                        setNotifyContent(['success', 'Plot added successfully']);
+                        setNotifyContent({status: 'success', notification: 'Empty plot added successfully', timestamp: new Date()});
                       }}
                     >
                       <div className="flex pl-5 justify-left items-center gap-x-2">

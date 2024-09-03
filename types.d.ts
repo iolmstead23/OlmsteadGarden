@@ -51,3 +51,24 @@ export interface PlantNote {
     data: PlantData;
     metadata: PlantMetadata;
 }
+
+export interface NotificationToggleState {
+    notifyToggle: boolean;
+    setNotifyToggle: (e: boolean) => void;
+}
+
+export interface NotificationLogEntry {
+    status: string;
+    notification: string;
+    timestamp: Date;
+}
+
+export interface NotificationContentState {
+    notifyContent: NotificationLogEntry | undefined;
+    setNotifyContent: (e: NotificationLogEntry) => void;
+}
+
+export interface NotificationLogState {
+    notifyLogContent: NotificationLogEntry[];
+    setNotifyLogContent: (e: NotificationLogEntry[]) => void;
+}
