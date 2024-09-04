@@ -3,7 +3,7 @@
       {
         "id": -1,
         "type": "Carrot",
-        "subtype": "Nantes",
+        "variety": "Nantes",
         "size": 100,
         "data": {
           "pH": 7,
@@ -18,7 +18,7 @@
       {
         "id": -1,
         "type": "Cucumber",
-        "subtype": "Pickling",
+        "variety": "Pickling",
         "size": 50,
         "data": {
           "pH": 6,
@@ -33,7 +33,7 @@
       {
         "id": -1,
         "type": "Tomato",
-        "subtype": "Roma",
+        "variety": "Roma",
         "size": 20,
         "data": {
           "pH": 6,

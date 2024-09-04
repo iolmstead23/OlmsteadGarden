@@ -13,12 +13,12 @@ import plantNotes from "json/plant_data_notes.json";
 // MARK: - Type Declarations
 interface EditTypeDropdownProps {
     type?: string;
-    subtype?: string;
-}
+    variety?: string;
+};
 
 interface EditPlotInputProps {
     editField: keyof PlotData;
-}
+};
 
 //MARK: - PlotPage Function
 // This page displays the details of a specific plot. It allows the user to edit the plot's details and view the plot's statistics.
@@ -27,24 +27,25 @@ export default function PlotPage() {
     const [focusPlotStats, setFocusPlotStats] = useState<string>('pH');
     const [render, setRender] = useState<boolean>(false);
     const [editMode, setEditMode] = useState<boolean>(false);
-    const plots = usePlotDataContext();
-    const plantList = usePlantListContext();
-    const id = Number(useParams().id);
-    const plantNoteData = plantNotes.plantNotes;
+    const [plotData, setPlotData] = useState<PlotData | undefined>(undefined);
+    const [harvestDate, setHarvestDate] = useState<string | undefined>(undefined);
 
     const editedPlotData = useRef<PlotData | undefined>(undefined);
-    editedPlotData.current = plots.plotState.data[id];
 
-    const [plotData, setPlotData] = useState<PlotData | undefined>(undefined);
+    const plots = usePlotDataContext();
+    const plantList = usePlantListContext();
     const { setNotifyToggle } = useNotifyToggleContext();
     const { setNotifyContent } = useNotifyContentContext();
     const { setFocusPlot } = useFocusPlotContext();
-    const [harvestDate, setHarvestDate] = useState<string | undefined>(undefined);
-    
+
+    const id = Number(useParams().id);
+    const plantNoteData = plantNotes.plantNotes;
+    editedPlotData.current = plots.plotState.data[id];
+
     // MARK: - handleEdit Function
     const handleEdit = () => {
         plots.plotDispatch({type: 'edit_plot', payload: {id: id, data: editedPlotData.current!}});
-        editMode && setNotifyContent({status: 'success', notification: 'Applied Changes to ' + editedPlotData.current?.type, timestamp: new Date()});
+        editMode && setNotifyContent({status: 'success', notification: 'Applied changes to ' + editedPlotData.current?.type, timestamp: new Date()});
         editMode && setNotifyToggle(true);
         setFocusPlot(editedPlotData.current!);
         setEditMode(!editMode);
@@ -61,8 +62,8 @@ export default function PlotPage() {
         const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
             const selectedPlant = event.target.value;
             editedPlotData.current!.type = selectedPlant;
-            editedPlotData.current!.subtype = plants.plants.find((plant) => plant.name === selectedPlant)?.variation[0].name!;
-            // This needs to render the subtype dropdown so its in sync with the type dropdown
+            editedPlotData.current!.variety = plants.plants.find((plant) => plant.name === selectedPlant)?.variation[0].name!;
+            // This needs to render the variety dropdown so its in sync with the type dropdown
             setRender(!render);
         };
     
@@ -71,7 +72,7 @@ export default function PlotPage() {
                 <select
                     id="plot_type"
                     name="plot_type"
-                    className="text-center w-[60%] xl:w-fit py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
+                    className="text-center w-40 xl:w-fit py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
                     defaultValue={type}
                     onChange={handleChange}
                 >
@@ -86,32 +87,34 @@ export default function PlotPage() {
         );
     };
     
-    const EditSubtypeDropdown: React.FC<EditTypeDropdownProps> = ({subtype}) => {
+    const EditVarietyDropdown: React.FC<EditTypeDropdownProps> = ({variety}) => {
         const [variations, setVariations] = useState<string[]>([]);
-        const [selectedSubtype, setSelectedSubtype] = useState<string>(subtype!);
+        const [selectedVariety, setSelectedVariety] = useState<string>(variety!);
         
+        // This updates the variety dropdown when the type dropdown is changed
         useEffect(() => {
             const plantVariations = plants.plants.find((plant) => plant.name === editedPlotData.current?.type);
             setVariations(plantVariations?.variation.map((variation) => variation.name) || []);
         }, [render]);
-    
+        
+        // This sets the variety to the current selection if the plot is being edited
         useEffect(() => {
-            setSelectedSubtype(editedPlotData.current?.subtype!);
-        }, [subtype]);
+            setSelectedVariety(editedPlotData.current?.variety!);
+        }, [variety]);
     
         const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
             const selectedPlant = event.target.value;
-            setSelectedSubtype(selectedPlant);
-            editedPlotData.current!.subtype = selectedPlant;
+            setSelectedVariety(selectedPlant);
+            editedPlotData.current!.variety = selectedPlant;
         };
     
         return (
             <div className="flex flex-row items-center">
                 <select
-                    id="plot_subtype"
-                    name="plot_subtype"
-                    className="text-center w-[60%] xl:w-40 py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
-                    value={selectedSubtype}
+                    id="plot_variety"
+                    name="plot_variety"
+                    className="text-center w-40 py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
+                    value={selectedVariety}
                     onChange={handleChange}
                 >
                     {variations?.map((variation: string, index: number) => (
@@ -148,10 +151,12 @@ export default function PlotPage() {
 
         // MARK: - EditPlotInput Function
     function EditPlotInput({editField}: EditPlotInputProps) {
-    
+        
+        // This gets the current value of the field being edited
         const value = plotData![editField] as string;
 
         function handleChange(e: any) {
+            // This sets the value of the field being edited
             switch (String(editField)) {
                 case 'size':
                     editedPlotData.current!.size = Number(e);
@@ -165,7 +170,7 @@ export default function PlotPage() {
                     type="text"
                     name={editField as string}
                     id={editField as string}
-                    className="text-center block py-1 custom-bg-formfield custom-text sm:text-sm sm:leading-6 pl-5 max-w-40"
+                    className="text-center block custom-bg-formfield custom-text sm:text-sm sm:leading-6 pl-5 w-40"
                     defaultValue={value}
                     onChange={(e) => {handleChange(e.target.value)}}
                 />
@@ -183,14 +188,14 @@ export default function PlotPage() {
     // MARK: - Update Plot Data
     useEffect(() => {
         const plotData: PlotData = plots.plotState.data[Number(id)];
-        if (plotData) {setPlotData(plotData);}
+        plotData && setPlotData(plotData);
     }, [plots.plotState.data, id]);
 
     useEffect(() => {
         const harvestData = new Date();
         // This calculates the harvest date based on the plant's harvest length * 7 days
         harvestData.setDate(harvestData.getDate() + (Number(plantNoteData.map((plant)=>{return plant.name===plotData?.type ? plant.metadata.harvest_length : false}).filter(Boolean)) * 7));
-        setHarvestDate(harvestData.getMonth() + 1 + "-" + harvestData.getDate() + "-" + harvestData.getFullYear());
+        setHarvestDate(harvestData.toDateString());
     }, [plotData?.type]);
 
     return (
@@ -224,16 +229,16 @@ export default function PlotPage() {
                                 </td>
                             </tr>
                             <tr className="text-2xl leading-6 custom-text">
-                                <th className="py-5 pr-8">Subype</th>
+                                <th className="py-5 pr-8">Variety</th>
                                 <td className="text-sm font-extrabold leading-6 lg:pr-20">
                                     <div className='flex flex-row w-40 justify-end'>
                                         {editMode ? (
                                             <div className='flex flex-col'>
-                                                <EditSubtypeDropdown subtype={plotData?.subtype!} />
+                                                <EditVarietyDropdown variety={plotData?.variety!} />
                                             </div>
                                         ) : (
                                             <div className='flex flex-col'>
-                                                <span>{plotData?.subtype}</span>
+                                                <span>{plotData?.variety}</span>
                                             </div>
                                         )}
                                     </div>

@@ -2,7 +2,7 @@ export interface PlotData {
     id: number;
     size: number;
     type: string;
-    subtype: string;
+    variety: string;
     data: {
         pH: number;
         moisture: number;

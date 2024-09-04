@@ -63,12 +63,16 @@ const SortIndexContext = createContext<SortIndex | undefined>(undefined);
 // List of plants
 const PlantListContext = createContext<PlantList | undefined>(undefined);
 
+// This stores the toggle state of the Notification Box to turn it on and off
 const NotificationToggleContext = createContext<NotificationToggleState | undefined>(undefined);
 
+// This stores the content state of the Notification contents
 const NotificationContentContext = createContext<NotificationContentState | undefined>(undefined);
 
+// This stores the content state of the Notification log
 const NotificationLogContext = createContext<NotificationLogState | undefined>(undefined);
 
+// This stores the JSON data for the plots
 const dummyPlotData = data;
 
 const inter = Inter({ subsets: ["latin"] });
@@ -123,28 +127,31 @@ function plotReducer(state: PlotState, action: PlotAction): PlotState {
 const UIProvider = ({ children }: { children: React.ReactNode }) => {
     const [plotState, plotDispatch] = useReducer(plotReducer, { data: [] });
     const [settingsState, setSettingState] = useState<SettingsData>({theme: 'bulbasaur', lang: 'en', tempFormat: 'F'});
-    const [focusPlot, setFocusPlot] = useState<PlotData>({id: -1, type: '', subtype: '', size: 0, data: {pH: 0, moisture: 0, temperature: 0, fertility: 0}, status: '', duration: 0, planted_date: ""});
+    const [focusPlot, setFocusPlot] = useState<PlotData>({id: -1, type: '', variety: '', size: 0, data: {pH: 0, moisture: 0, temperature: 0, fertility: 0}, status: '', duration: 0, planted_date: ""});
     /**This stores the state of the index sort trigger */
     const [sortIndex, setSortIndex] = useState<boolean>(false);
     /** This stores the toggle state of the Notification Box */
     const [notifyToggle, setNotifyToggle] = useState<boolean>(false);
     /** This stores the content state of the Notification Box */
     const [notifyContent, setNotifyContent] = useState<NotificationLogEntry | undefined>(undefined);
-
+    /** This checks to see if the component has mounted */
     const [didMount, setDidMount] = useState(false);
-
+    /** This stores the content state of the Notification log */
     const [notifyLogContent, setNotifyLogContent] = useState<NotificationLogEntry[]>([]);
 
+    // This stores the list of plants
     const [plantList, setPlantList] = useState<string[]>(
         plants.plantNotes.map((item) => item.name) as string[]
-    ); // List of plants
+    );
 
+    // This fetches the initial plot data
     useEffect(() => {
         plotDispatch({ type: 'get_plots', payload: dummyPlotData });
         setSortIndex(true);
         setFocusPlot(dummyPlotData.data[0]);
-      }, []);
+    }, []);
 
+    // This sorts the index every time sortIndex is set to true
     useEffect(() => {
         if (sortIndex==true) {
             plotDispatch({ type: 'sort_index' });
@@ -152,8 +159,10 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, [sortIndex]);
 
+    // This mounts the component after first render
     useEffect(() => { setDidMount(true) }, [])
 
+    // This adds the notification content to the log every time a new notification is created
     useEffect(() => {
         if (didMount == true) { setNotifyLogContent([notifyContent!, ...notifyLogContent!]); };
     }, [notifyContent]);

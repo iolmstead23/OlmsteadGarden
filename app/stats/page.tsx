@@ -2,17 +2,18 @@
 
 import PlotDrawer from "@components/ui/plot_drawer";
 import ResourceStats from "@components/ui/resource_stats";
-import { useNotifyContentContext, useNotifyLogContext, useNotifyToggleContext, usePlotDataContext, useSortIndexContext } from "@components/UIProvider";
+import { useNotifyContentContext, useNotifyToggleContext, usePlotDataContext, useSortIndexContext } from "@components/UIProvider";
 import { PlantNote, PlotData, StatsProp } from "types";
 import { AdjustmentsHorizontalIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import plantNotes from "json/plant_data_notes.json"
+import plantNotes from "json/plant_data_notes.json";
 
+// This changes the color of the status radio based on the status of the plot
 const statuses: { [key: string]: string } = { Healthy: 'text-green-400 bg-green-400/10', Warning: 'text-rose-400 bg-rose-400/10' }
 
 function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 /** MARK: -StatsPage */
@@ -20,13 +21,14 @@ export default function StatsPage() {
 
   const plots = usePlotDataContext();
   const sortIndex = useSortIndexContext();
+  const { setNotifyToggle } = useNotifyToggleContext();
+  const { setNotifyContent } = useNotifyContentContext();
+
   const [focusSummaryToggle, setFocusSummaryToggle] = useState<boolean>(false);
   const [plotData, setPlotData] = useState<PlotData[]>([]);
   const [hydrated, setHydrated] = useState<boolean>(false);
+
   const router = useRouter();
-  const { setNotifyToggle } = useNotifyToggleContext();
-  const { setNotifyContent } = useNotifyContentContext();
-  const { notifyLogContent, setNotifyLogContent } = useNotifyLogContext();
   const plantNotesData: PlantNote[] = plantNotes.plantNotes;
 
   function getPlantNoteData(type: string): PlantNote {
@@ -44,10 +46,12 @@ export default function StatsPage() {
     { name: 'Fertilizer (ppm)', value: 10 },
   ];
 
+  // This updates the plot data when the data is changed
   useEffect(() => {
     setPlotData(plots.plotState.data);
   },[plots.plotState.data]);
 
+  // This lets the page know that the data has been hydrated after first render
   useEffect(() => {
     setHydrated(true);
   },[]);
@@ -82,7 +86,7 @@ export default function StatsPage() {
                   <td className="flex py-2">
                     <div className="flex items-center">
                       <button
-                        className="min-w-40 custom-bg-button p-1 custom-text-button focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="min-w-40 custom-bg-button p-1 custom-text-button"
                         onClick={() => {
                           setFocusSummaryToggle(true);
                           router.replace(`/stats?id=${item.id}`);
@@ -116,7 +120,7 @@ export default function StatsPage() {
                   <div className="flex justify-start py-2">
                     <button
                       type="button"
-                      className=" min-w-40 custom-bg-button custom-text-button p-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="min-w-40 custom-bg-button custom-text-button p-1"
                       onClick={() => {
                         plots.plotDispatch({
                           type: "add_plot",
@@ -124,7 +128,7 @@ export default function StatsPage() {
                             id: -1,
                             size: 0,
                             type: "Empty",
-                            subtype: "Empty",
+                            variety: "Empty",
                             data: {
                               temperature: 0,
                               fertility: 0,
@@ -136,8 +140,11 @@ export default function StatsPage() {
                             planted_date: new Date().getMonth() + 1 + '-' + new Date().getDate() + '-' + new Date().getFullYear(),
                           },
                         });
-                        sortIndex.setSortIndex(true); // Sort the index
+                        // Sort the index
+                        sortIndex.setSortIndex(true);
+                        // Opens the notification Box
                         setNotifyToggle(true);
+                        // Sets the notification content
                         setNotifyContent({status: 'success', notification: 'Empty plot added successfully', timestamp: new Date()});
                       }}
                     >

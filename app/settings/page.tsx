@@ -35,7 +35,7 @@ export default function SettingsPage() {
     }
 
     useEffect(() => {
-        // this forces a rerender
+        // This lets other components know the page has been hydrated
         setHydrated(true);
     }, []);
 
@@ -56,5 +56,5 @@ export default function SettingsPage() {
                 </div> 
             </div>
         </div>
-    )
-}
+    );
+};

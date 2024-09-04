@@ -38,5 +38,5 @@ export default function ResourceStats({stats}:{stats: {name: string, value: stri
         </div>
       </div>
     </div>
-  )
-}  
+  );
+};

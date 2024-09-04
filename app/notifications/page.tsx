@@ -1,6 +1,6 @@
 'use client'
 
-import { NotificationLogEntry } from '@/types';
+import { NotificationLogEntry } from 'types';
 import { useNotifyLogContext } from '@components/UIProvider';
 import { CheckCircleIcon, ExclamationCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
@@ -29,18 +29,20 @@ export default function NotificationsPage() {
                     {notifications.length > 0 ?
                         <>
                             {notifications.map((notification: NotificationLogEntry, index: number) => (
-                                (index < 10) &&
-                                    <li key={`notification_${String(index)}`}>
-                                        <div className="pb-8">
-                                            <div className="relative flex flex-row gap-x-5 xl:gap-x-16 justify-between mr-10 xl:mr-20 items-center">
-                                                {symbol(notification.status)}
-                                                <div  className='w-60 xl:max-w-[20vw]'>
-                                                    <span>{notification.notification}</span>
-                                                </div>
-                                                <span className='text-sm hidden xl:block'>{String(notification.timestamp)}</span>
+                                (index < 10) && <li key={`notification_${String(index)}`}>
+                                    <div className="pb-8">
+                                        <div className="relative flex flex-row gap-x-5 xl:gap-x-16 justify-between mr-10 xl:mr-20 items-center">
+                                            {symbol(notification.status)}
+                                            <div  className='w-60 xl:max-w-[20vw]'>
+                                                <span>{notification.notification}</span>
+                                            </div>
+                                            <div className='text-sm hidden xl:block'>
+                                                <span>{String(notification.timestamp.toLocaleTimeString())}</span>
+                                                <span className='px-5'>{String(notification.timestamp.toDateString())}</span>
                                             </div>
                                         </div>
-                                    </li>
+                                    </div>
+                                </li>
                             ))}
                             {notifications.length > 10 &&
                                 <div className='text-center font-extrabold'>

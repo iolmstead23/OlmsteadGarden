@@ -60,7 +60,7 @@ export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOp
                                         </div>
                                         <div className="flex justify-between py-3 text-sm font-medium">
                                             <dt className="custom-text">Variation</dt>
-                                            <dd className="custom-text">{plotData?.subtype}</dd>
+                                            <dd className="custom-text">{plotData?.variety}</dd>
                                         </div>
                                         <div className="flex justify-between py-3 text-sm font-medium">
                                             <dt className="custom-text">Status</dt>

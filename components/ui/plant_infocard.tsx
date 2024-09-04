@@ -1,7 +1,7 @@
 'use client'
 
 import { PlantNote } from "types";
-import plants from "@/json/plant_data_notes.json";
+import plants from "json/plant_data_notes.json";
 import { useFocusPlotContext } from "@components/UIProvider";
 import { useEffect, useState } from "react";
 

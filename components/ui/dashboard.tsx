@@ -21,6 +21,7 @@ import Link from 'next/link';
 import Notification from '@components/ui/notification';
 import { useNotifyToggleContext } from '@components/UIProvider';
 
+{/* MARK: -Navigation Items */}
 const navigation = [
   { id: 0, name: 'Dashboard', href: '/', icon: HomeIcon },
   { id: 1, name: 'Reports', href: '/stats', icon: ChartPieIcon },
