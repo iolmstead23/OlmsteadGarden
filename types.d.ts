@@ -42,6 +42,7 @@ interface PlantMetadata {
     genus: string;
     average_height: string;
     location: string;
+    harvest_length: number;
 }
   
 export interface PlantNote {

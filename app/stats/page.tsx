@@ -3,10 +3,11 @@
 import PlotDrawer from "@components/ui/plot_drawer";
 import ResourceStats from "@components/ui/resource_stats";
 import { useNotifyContentContext, useNotifyLogContext, useNotifyToggleContext, usePlotDataContext, useSortIndexContext } from "@components/UIProvider";
-import { PlotData, StatsProp } from "types";
+import { PlantNote, PlotData, StatsProp } from "types";
 import { AdjustmentsHorizontalIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import plantNotes from "json/plant_data_notes.json"
 
 const statuses: { [key: string]: string } = { Healthy: 'text-green-400 bg-green-400/10', Warning: 'text-rose-400 bg-rose-400/10' }
 
@@ -26,6 +27,12 @@ export default function StatsPage() {
   const { setNotifyToggle } = useNotifyToggleContext();
   const { setNotifyContent } = useNotifyContentContext();
   const { notifyLogContent, setNotifyLogContent } = useNotifyLogContext();
+  const plantNotesData: PlantNote[] = plantNotes.plantNotes;
+
+  function getPlantNoteData(type: string): PlantNote {
+    const plantNote: PlantNote  = plantNotesData.find((plant)=>{return (plant.name===type) && plant.metadata.harvest_length})!;
+    return plantNote;
+  }
 
   const totalPlots = useMemo<number>(()=>plotData.length, [plotData]);
 
@@ -70,7 +77,7 @@ export default function StatsPage() {
             </thead>
             <tbody className="divide-y">
               {/** MARK: -Map Plots */}
-              {plotData && plotData.map((item: any, index: number) => (
+              {plotData && plotData.map((item: PlotData, index: number) => (
                 <tr key={index}>
                   <td className="flex py-2">
                     <div className="flex items-center">
@@ -98,7 +105,7 @@ export default function StatsPage() {
                   </td>
                   <td className="hidden md:block py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
                     <div className="flex items-center gap-x-2 justify-start">
-                      <div className="truncate text-sm font-medium leading-6 custom-text">{item.duration} weeks</div>
+                      <div className="truncate text-sm font-medium leading-6 custom-text">{getPlantNoteData(item.type)?.metadata.harvest_length} weeks</div>
                     </div>
                   </td>
                 </tr>
@@ -126,7 +133,7 @@ export default function StatsPage() {
                             },
                             status: "No Signal",
                             duration: 0,
-                            planted_date: new Date().getMonth() + '-' + new Date().getDate() + '-' + new Date().getFullYear(),
+                            planted_date: new Date().getMonth() + 1 + '-' + new Date().getDate() + '-' + new Date().getFullYear(),
                           },
                         });
                         sortIndex.setSortIndex(true); // Sort the index

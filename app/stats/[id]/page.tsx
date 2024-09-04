@@ -189,8 +189,8 @@ export default function PlotPage() {
     useEffect(() => {
         const harvestData = new Date();
         // This calculates the harvest date based on the plant's harvest length * 7 days
-        harvestData.setDate(harvestData.getDate() + Number(plantNoteData.map((plant)=>{return plant.name===plotData?.type ? plant.metadata.harvest_length : false}).filter(Boolean)) * 7);
-        setHarvestDate(harvestData.getMonth() + "-" + harvestData.getDate() + "-" + harvestData.getFullYear());
+        harvestData.setDate(harvestData.getDate() + (Number(plantNoteData.map((plant)=>{return plant.name===plotData?.type ? plant.metadata.harvest_length : false}).filter(Boolean)) * 7));
+        setHarvestDate(harvestData.getMonth() + 1 + "-" + harvestData.getDate() + "-" + harvestData.getFullYear());
     }, [plotData?.type]);
 
     return (
