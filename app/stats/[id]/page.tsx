@@ -8,6 +8,7 @@ import ResourceStats from '@components/ui/resource_stats';
 import LineChart from '@components/ui/line_chart';
 import PlantInfoCard from '@components/ui/plant_infocard';
 import plants from "json/plant_data_species.json";
+import plantNotes from "json/plant_data_notes.json";
 
 // MARK: - Type Declarations
 interface EditTypeDropdownProps {
@@ -29,6 +30,7 @@ export default function PlotPage() {
     const plots = usePlotDataContext();
     const plantList = usePlantListContext();
     const id = Number(useParams().id);
+    const plantNoteData = plantNotes.plantNotes;
 
     const editedPlotData = useRef<PlotData | undefined>(undefined);
     editedPlotData.current = plots.plotState.data[id];
@@ -37,6 +39,7 @@ export default function PlotPage() {
     const { setNotifyToggle } = useNotifyToggleContext();
     const { setNotifyContent } = useNotifyContentContext();
     const { setFocusPlot } = useFocusPlotContext();
+    const [harvestDate, setHarvestDate] = useState<string | undefined>(undefined);
     
     // MARK: - handleEdit Function
     const handleEdit = () => {
@@ -64,11 +67,11 @@ export default function PlotPage() {
         };
     
         return (
-            <div className="py-auto flex flex-row items-center">
+            <div className="flex flex-row items-center">
                 <select
                     id="plot_type"
                     name="plot_type"
-                    className="text-left w-[60%] xl:w-fit py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
+                    className="text-center w-[60%] xl:w-fit py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
                     defaultValue={type}
                     onChange={handleChange}
                 >
@@ -103,11 +106,11 @@ export default function PlotPage() {
         };
     
         return (
-            <div className="py-auto flex flex-row items-center">
+            <div className="flex flex-row items-center">
                 <select
                     id="plot_subtype"
                     name="plot_subtype"
-                    className="text-left w-[60%] xl:w-fit py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
+                    className="text-center w-[60%] xl:w-40 py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
                     value={selectedSubtype}
                     onChange={handleChange}
                 >
@@ -124,7 +127,7 @@ export default function PlotPage() {
     // MARK: - ChangeStatDropdown Function
     function ChangeStatDropdown() {
         return (
-            <div className="flex flex-row items-center my-auto">
+            <div className="flex flex-row items-center">
                 <label htmlFor="chart_type" className="block text-sm font-medium leading-6 custom-text">
                     <div className='w-36 text-2xl font-semibold'>Plot Stats</div>
                 </label>
@@ -132,7 +135,7 @@ export default function PlotPage() {
                     id="chart_type"
                     name="chart_type"
                     defaultValue={focusPlotStats}
-                    className="text-left block py-1 custom-bg-formfield custom-text sm:text-sm sm:leading-6 pl-5"
+                    className="text-center block py-1 custom-bg-formfield custom-text sm:text-sm sm:leading-6 pl-5"
                 >
                     <option onClick={()=>setFocusPlotStats("pH")} id='ph'>pH</option>
                     <option onClick={()=>setFocusPlotStats("Moisture")} id="moisture">Moisture</option>
@@ -162,7 +165,7 @@ export default function PlotPage() {
                     type="text"
                     name={editField as string}
                     id={editField as string}
-                    className="text-left block custom-bg-formfield custom-text sm:text-sm sm:leading-6 pl-5 w-[50%]"
+                    className="text-center block py-1 custom-bg-formfield custom-text sm:text-sm sm:leading-6 pl-5 max-w-40"
                     defaultValue={value}
                     onChange={(e) => {handleChange(e.target.value)}}
                 />
@@ -183,14 +186,23 @@ export default function PlotPage() {
         if (plotData) {setPlotData(plotData);}
     }, [plots.plotState.data, id]);
 
+    useEffect(() => {
+        const harvestData = new Date();
+        // This calculates the harvest date based on the plant's harvest length * 7 days
+        harvestData.setDate(harvestData.getDate() + Number(plantNoteData.map((plant)=>{return plant.name===plotData?.type ? plant.metadata.harvest_length : false}).filter(Boolean)) * 7);
+        setHarvestDate(harvestData.getMonth() + "-" + harvestData.getDate() + "-" + harvestData.getFullYear());
+    }, [plotData?.type]);
+
     return (
         <div className="flex flex-col gap-y-20 custom-bg-background min-h-screen h-full">
-            <ResourceStats stats={stats} />
+            <div className="w-4/5 xl:w-full">
+                <ResourceStats stats={stats} />
+            </div>
             <div className='flex flex-row text-left w-full'>
-                <div className="w-full xl:w-[55%]">
+                <div className='w-4/5 xl:w-[40%]'>
                     <table cellPadding={0} cellSpacing={0}>
                         <colgroup>
-                            <col className="w-1/2 xl:w-[35%]" />
+                            <col className="w-full" />
                             <col className="w-1/2" />
                             <col className="w-1/2" />
                         </colgroup>
@@ -198,51 +210,71 @@ export default function PlotPage() {
                             <tr className="text-2xl leading-6 custom-text">
                                 <th className="py-5 pr-8">Type</th>
                                 <td className="text-sm font-extrabold leading-6 lg:pr-20">
-                                    {editMode ? (
-                                        <div className='flex flex-col'>
-                                            <EditTypeDropdown type={plotData?.type!} />
-                                        </div>
-                                    ) : (
-                                        <div className='flex flex-col'>
-                                            <span>{plotData?.type}</span>
-                                        </div>
-                                    )}
+                                    <div className='flex flex-row w-40 justify-end'>
+                                        {editMode ? (
+                                            <div className='flex flex-col'>
+                                                <EditTypeDropdown type={plotData?.type!} />
+                                            </div>
+                                        ) : (
+                                            <div className='flex flex-col'>
+                                                <span>{plotData?.type}</span>
+                                            </div>
+                                        )}
+                                    </div>
                                 </td>
                             </tr>
                             <tr className="text-2xl leading-6 custom-text">
                                 <th className="py-5 pr-8">Subype</th>
                                 <td className="text-sm font-extrabold leading-6 lg:pr-20">
-                                    {editMode ? (
-                                        <div className='flex flex-col'>
-                                            <EditSubtypeDropdown subtype={plotData?.subtype!} />
-                                        </div>
-                                    ) : (
-                                        <div className='flex flex-col'>
-                                            <span>{plotData?.subtype}</span>
-                                        </div>
-                                    )}
+                                    <div className='flex flex-row w-40 justify-end'>
+                                        {editMode ? (
+                                            <div className='flex flex-col'>
+                                                <EditSubtypeDropdown subtype={plotData?.subtype!} />
+                                            </div>
+                                        ) : (
+                                            <div className='flex flex-col'>
+                                                <span>{plotData?.subtype}</span>
+                                            </div>
+                                        )}
+                                    </div>
                                 </td>
                             </tr>
                             <tr className="text-2xl leading-6 custom-text">
                                 <th className="py-5 pr-8">Size</th>
                                 <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
-                                    {editMode ? (
-                                        <EditPlotInput editField='size'/>
-                                    ) : (
-                                        <span>{plotData?.size} Sqr. Feet</span>
-                                    )}
+                                    <div className='flex flex-row w-40 justify-end'>
+                                        {editMode ? (
+                                            <div className='flex flex-col'>
+                                                <EditPlotInput editField='size'/>
+                                            </div>
+                                        ) : (
+                                            <div className='flex flex-col'>
+                                                <span>{plotData?.size} Sqr. Feet</span>
+                                            </div>
+                                        )}
+                                    </div>
                                 </td>
                             </tr>
                             <tr className="text-2xl leading-6 custom-text">
                                 <th className="py-5 pr-8">Date Planted</th>
                                 <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
-                                    <span>{String(plotData?.planted_date)}</span>
+                                    <div className='flex flex-row w-40 justify-end'>
+                                        <span>{String(plotData?.planted_date)}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr className="text-2xl leading-6 custom-text">
+                                <th className="py-5 pr-8">Harvest Date</th>
+                                <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
+                                    <div className='flex flex-row w-40 justify-end'>
+                                        <span>{String(harvestDate)}</span>
+                                    </div>
                                 </td>
                             </tr>
                             <tr className="text-2xl leading-6 custom-text">
                                 <th className="py-5 pr-8">Status</th>
                                 <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
-                                    <div className="flex items-center gap-x-2 justify-start">
+                                    <div className="flex items-center w-40 gap-x-2 justify-end">
                                         <span>{plotData?.status}</span>
                                         <div className={classNames(statuses[plotData?.status!], 'flex-none rounded-full p-1')}>
                                             <div className="h-3 w-3 rounded-full bg-current" />
@@ -253,7 +285,7 @@ export default function PlotPage() {
                         </tbody>
                     </table>
                 </div>
-                <div className="hidden xl:block -ml-[15%]">
+                <div className="hidden xl:block">
                     <div className='flex flex-col items-start'>
                         <PlantInfoCard />
                     </div>

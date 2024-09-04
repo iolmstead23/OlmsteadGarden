@@ -68,7 +68,7 @@ export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOp
                                         </div>
                                         <div className="flex justify-between py-3 text-sm font-medium">
                                             <dt className="custom-text">Date Created</dt>
-                                            <dd className="custom-text">N/A</dd>
+                                            <dd className="custom-text">{plotData?.planted_date}</dd>
                                         </div>
                                     </dl>
                                     <div className="flex justify-start pt-5">

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 export default function SettingsPage() {
 
     const { settingsState, setSettingState } = useSettingsDataContext();
-    const themesList = ["bulbasaur","squirtle","charmander"];
+    const themesList: string[] = ["bulbasaur","squirtle","charmander"];
     const [hydrated, setHydrated] = useState<boolean>(false);
 
     const ChangeThemeDropdown = () => {
@@ -48,7 +48,11 @@ export default function SettingsPage() {
                     {hydrated && ChangeThemeDropdown()}
                 </div> 
                 <div className="text-lg custom-text flex flex-row items-center gap-x-10">
-                    <span>Download Notification Logs*</span>
+                    <button
+                        className="custom-bg-button custom-text-button py-2 px-4"
+                    >
+                        Download Notification Logs*
+                    </button>
                 </div> 
             </div>
         </div>

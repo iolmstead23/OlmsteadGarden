@@ -1,5 +1,5 @@
 {
-    "plants": [
+    "plantNotes": [
       {
         "name": "Tomato",
         "description": "Tomatoes are the fruit of the Solanum lycopersicum plant, commonly used in cooking.",
@@ -15,7 +15,8 @@
           "species": "Solanum lycopersicum",
           "genus": "Solanum",
           "average_height": "1.5 meters",
-          "location": "Warm regions"
+          "location": "Warm regions",
+          "harvest_length": 12
         }
       },
       {
@@ -33,7 +34,8 @@
           "species": "Cucumis sativus",
           "genus": "Cucumis",
           "average_height": "1.2 meters",
-          "location": "Warm regions"
+          "location": "Warm regions",
+          "harvest_length": 8
         }
       },
       {
@@ -51,7 +53,8 @@
           "species": "Cucurbita pepo",
           "genus": "Cucurbita",
           "average_height": "0.5 meters",
-          "location": "Temperate regions"
+          "location": "Temperate regions",
+          "harvest_length": 16
         }
       },
       {
@@ -69,7 +72,8 @@
           "species": "Daucus carota",
           "genus": "Daucus",
           "average_height": "0.3 meters",
-          "location": "Temperate regions"
+          "location": "Temperate regions",
+          "harvest_length": 12
         }
       },
       {
@@ -87,7 +91,8 @@
           "species": "Capsicum annuum",
           "genus": "Capsicum",
           "average_height": "0.6 meters",
-          "location": "Warm regions"
+          "location": "Warm regions",
+          "harvest_length": 8
         }
       },
       {
@@ -105,7 +110,8 @@
           "species": "Allium cepa",
           "genus": "Allium",
           "average_height": "0.5 meters",
-          "location": "Temperate regions"
+          "location": "Temperate regions",
+          "harvest_length": 20
         }
       },
       {
@@ -123,7 +129,8 @@
           "species": "Allium sativum",
           "genus": "Allium",
           "average_height": "0.6 meters",
-          "location": "Temperate regions"
+          "location": "Temperate regions",
+          "harvest_length": 9
         }
       },
       {
@@ -141,7 +148,8 @@
           "species": "Solanum tuberosum",
           "genus": "Solanum",
           "average_height": "0.6 meters",
-          "location": "Temperate regions"
+          "location": "Temperate regions",
+          "harvest_length": 20
         }
       },
       {
@@ -159,7 +167,8 @@
           "species": "Spinacia oleracea",
           "genus": "Spinacia",
           "average_height": "0.3 meters",
-          "location": "Temperate regions"
+          "location": "Temperate regions",
+          "harvest_length": 6
         }
       },
       {
@@ -177,7 +186,8 @@
           "species": "Lactuca sativa",
           "genus": "Lactuca",
           "average_height": "0.3 meters",
-          "location": "Temperate regions"
+          "location": "Temperate regions",
+          "harvest_length": 6
         }
       },
       {
@@ -195,7 +205,8 @@
           "species": "Raphanus sativus",
           "genus": "Raphanus",
           "average_height": "0.2 meters",
-          "location": "Temperate regions"
+          "location": "Temperate regions",
+          "harvest_length": 4
         }
       },
       {
@@ -213,7 +224,8 @@
           "species": "Brassica oleracea",
           "genus": "Brassica",
           "average_height": "0.3 meters",
-          "location": "Temperate regions"
+          "location": "Temperate regions",
+          "harvest_length": 12
         }
       },
       {
@@ -231,7 +243,8 @@
           "species": "Brassica oleracea",
           "genus": "Brassica",
           "average_height": "0.6 meters",
-          "location": "Temperate regions"
+          "location": "Temperate regions",
+          "harvest_length": 12
         }
       },
       {
@@ -249,7 +262,8 @@
           "species": "Brassica oleracea",
           "genus": "Brassica",
           "average_height": "0.6 meters",
-          "location": "Temperate regions"
+          "location": "Temperate regions",
+          "harvest_length": 8
         }
       }
     ]

@@ -1,12 +1,11 @@
 'use client'
 
-import { createContext, use, useContext, useEffect, useReducer, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useReducer, useState } from "react";
 import { PlotData, SettingsData, NotificationToggleState, NotificationContentState, NotificationLogState, NotificationLogEntry } from "types";
 import Dashboard from "@components/ui/dashboard";
 import { Inter } from "next/font/google";
 import data from "json/plot_data_dummy.json";
 import plants from "json/plant_data_notes.json";
-import notifications from "json/notification_log_dummy.json";
 
 // MARK: -Type Declarations
 interface PlotState {
@@ -134,18 +133,10 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [didMount, setDidMount] = useState(false);
 
-    const notificationsLog: NotificationLogEntry[] = notifications.notifications.map((notification: { status: string; notification: string; timestamp: string }) => {
-        return {
-          status: notification.status,
-          notification: notification.notification,
-          timestamp: new Date(notification.timestamp)
-        };
-    });
-
-    const [notifyLogContent, setNotifyLogContent] = useState<NotificationLogEntry[]>(notificationsLog);
+    const [notifyLogContent, setNotifyLogContent] = useState<NotificationLogEntry[]>([]);
 
     const [plantList, setPlantList] = useState<string[]>(
-        plants.plants.map((item) => item.name) as string[]
+        plants.plantNotes.map((item) => item.name) as string[]
     ); // List of plants
 
     useEffect(() => {
@@ -164,7 +155,7 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => { setDidMount(true) }, [])
 
     useEffect(() => {
-        if (didMount == true) { setNotifyLogContent([...notifyLogContent!, notifyContent!]); };
+        if (didMount == true) { setNotifyLogContent([notifyContent!, ...notifyLogContent!]); };
     }, [notifyContent]);
 
     return (

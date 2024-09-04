@@ -10,7 +10,7 @@ export default function PlantInfoCard() {
     const plantFocus = useFocusPlotContext().focusPlot;
     const [focusPlantData, setFocusPlantData] = useState<PlantNote | undefined>(undefined);
     const [focusInfo, setFocusInfo] = useState<string>("Description");
-    const plantsData: PlantNote[] = plants.plants;
+    const plantsData: PlantNote[] = plants.plantNotes;
 
     useEffect(() => {
         if (plantFocus) {
