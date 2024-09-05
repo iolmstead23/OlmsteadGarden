@@ -2,12 +2,12 @@
 
 import PlotDrawer from "@components/ui/plot_drawer";
 import ResourceStats from "@components/ui/resource_stats";
-import { useNotifyContentContext, useNotifyToggleContext, usePlotDataContext, useSortIndexContext } from "@components/UIProvider";
+import { useDebugLogContext, useNotifyContentContext, useNotifyToggleContext, usePlotDataContext, useSortIndexContext } from "@components/UIProvider";
 import { PlantNote, PlotData, StatsProp } from "types";
 import { AdjustmentsHorizontalIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import plantNotes from "json/plant_data_notes.json";
+import plantNotes from "@json/plant_data_notes.json";
 
 // This changes the color of the status radio based on the status of the plot
 const statuses: { [key: string]: string } = { Healthy: 'text-green-400 bg-green-400/10', Warning: 'text-rose-400 bg-rose-400/10' }
@@ -23,6 +23,7 @@ export default function StatsPage() {
   const sortIndex = useSortIndexContext();
   const { setNotifyToggle } = useNotifyToggleContext();
   const { setNotifyContent } = useNotifyContentContext();
+  const { debugLogContent, setDebugLogContent } = useDebugLogContext();
 
   const [focusSummaryToggle, setFocusSummaryToggle] = useState<boolean>(false);
   const [plotData, setPlotData] = useState<PlotData[]>([]);
@@ -136,10 +137,10 @@ export default function StatsPage() {
                               moisture: 0,
                             },
                             status: "No Signal",
-                            duration: 0,
                             planted_date: new Date().getMonth() + 1 + '-' + new Date().getDate() + '-' + new Date().getFullYear(),
                           },
                         });
+                        setDebugLogContent([{status: 'create', message: 'Empty plot added successfully'}, ...debugLogContent]);
                         // Sort the index
                         sortIndex.setSortIndex(true);
                         // Opens the notification Box

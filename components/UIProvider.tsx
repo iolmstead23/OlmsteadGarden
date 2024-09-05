@@ -1,11 +1,11 @@
 'use client'
 
 import { createContext, useContext, useEffect, useReducer, useState } from "react";
-import { PlotData, SettingsData, NotificationToggleState, NotificationContentState, NotificationLogState, NotificationLogEntry } from "types";
+import { PlotData, SettingsData, NotificationToggleState, NotificationContentState, NotificationLogState, NotificationLogEntry, DebugLogState, DebugLog } from "types";
 import Dashboard from "@components/ui/dashboard";
 import { Inter } from "next/font/google";
-import data from "json/plot_data_dummy.json";
-import plants from "json/plant_data_notes.json";
+import data from "@json/plot_data_dummy.json";
+import plants from "@json/plant_data_notes.json";
 
 // MARK: -Type Declarations
 interface PlotState {
@@ -72,8 +72,10 @@ const NotificationContentContext = createContext<NotificationContentState | unde
 // This stores the content state of the Notification log
 const NotificationLogContext = createContext<NotificationLogState | undefined>(undefined);
 
+const EventDebugContext = createContext<DebugLogState | undefined>(undefined);
+
 // This stores the JSON data for the plots
-const dummyPlotData = data;
+const dummyPlotData= data;
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -127,7 +129,7 @@ function plotReducer(state: PlotState, action: PlotAction): PlotState {
 const UIProvider = ({ children }: { children: React.ReactNode }) => {
     const [plotState, plotDispatch] = useReducer(plotReducer, { data: [] });
     const [settingsState, setSettingState] = useState<SettingsData>({theme: 'bulbasaur', lang: 'en', tempFormat: 'F'});
-    const [focusPlot, setFocusPlot] = useState<PlotData>({id: -1, type: '', variety: '', size: 0, data: {pH: 0, moisture: 0, temperature: 0, fertility: 0}, status: '', duration: 0, planted_date: ""});
+    const [focusPlot, setFocusPlot] = useState<PlotData>({id: -1, type: '', variety: '', size: 0, data: {pH: 0, moisture: 0, temperature: 0, fertility: 0}, status: '', planted_date: ""});
     /**This stores the state of the index sort trigger */
     const [sortIndex, setSortIndex] = useState<boolean>(false);
     /** This stores the toggle state of the Notification Box */
@@ -138,6 +140,8 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
     const [didMount, setDidMount] = useState(false);
     /** This stores the content state of the Notification log */
     const [notifyLogContent, setNotifyLogContent] = useState<NotificationLogEntry[]>([]);
+    /** This stores the debug log of user events */
+    const [debugLogContent, setDebugLogContent] = useState<DebugLog[]>([]);
 
     // This stores the list of plants
     const [plantList, setPlantList] = useState<string[]>(
@@ -160,11 +164,11 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
     }, [sortIndex]);
 
     // This mounts the component after first render
-    useEffect(() => { setDidMount(true) }, [])
+    useEffect(() => { setDidMount(true) }, []);
 
     // This adds the notification content to the log every time a new notification is created
     useEffect(() => {
-        if (didMount == true) { setNotifyLogContent([notifyContent!, ...notifyLogContent!]); };
+        if (didMount == true) { return setNotifyLogContent([notifyContent!, ...notifyLogContent!]); };
     }, [notifyContent]);
 
     return (
@@ -176,10 +180,12 @@ const UIProvider = ({ children }: { children: React.ReactNode }) => {
                             <NotificationToggleContext.Provider value={{notifyToggle,setNotifyToggle}}>
                                 <NotificationContentContext.Provider value={{notifyContent,setNotifyContent}}>
                                     <NotificationLogContext.Provider value={{notifyLogContent,setNotifyLogContent}}>
-                                        <PlantListContext.Provider value={{plantList,setPlantList}}>
-                                            <Dashboard />
-                                            {children}
-                                        </PlantListContext.Provider>
+                                        <EventDebugContext.Provider value={{debugLogContent,setDebugLogContent}}>
+                                            <PlantListContext.Provider value={{plantList,setPlantList}}>
+                                                <Dashboard />
+                                                {children}
+                                            </PlantListContext.Provider>
+                                        </EventDebugContext.Provider>
                                     </NotificationLogContext.Provider>
                                 </NotificationContentContext.Provider>
                             </NotificationToggleContext.Provider>
@@ -258,6 +264,15 @@ export function useNotifyContentContext() {
 /** This lets other child components provide the notification log content */
 export function useNotifyLogContext() {
     const context = useContext(NotificationLogContext);
+    if (context === undefined) {
+        throw new Error('useNotifyLogContext must be used within a NotificationLogContextProvider');
+    }
+    return context;
+}
+
+/** This lets other child components add events to the debug log */
+export function useDebugLogContext() {
+    const context = useContext(EventDebugContext);
     if (context === undefined) {
         throw new Error('useNotifyLogContext must be used within a NotificationLogContextProvider');
     }

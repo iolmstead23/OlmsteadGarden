@@ -13,7 +13,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
+    "plugins": [ 
       {
         "name": "next",
       },
@@ -22,6 +22,7 @@
       "@/*": ["./*"],
       "@components/*": ["./components/*"],
       "@types/*": ["./types/*"],
+      "@json/*": ["./json/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

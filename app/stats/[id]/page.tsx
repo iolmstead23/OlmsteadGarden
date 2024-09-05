@@ -1,14 +1,14 @@
 'use client'
 
 import { PlotData, StatsProp } from 'types';
-import { useFocusPlotContext, useNotifyContentContext, useNotifyToggleContext, usePlantListContext, usePlotDataContext } from '@components/UIProvider';
+import { useDebugLogContext, useFocusPlotContext, useNotifyContentContext, useNotifyToggleContext, usePlantListContext, usePlotDataContext } from '@components/UIProvider';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import ResourceStats from '@components/ui/resource_stats';
 import LineChart from '@components/ui/line_chart';
 import PlantInfoCard from '@components/ui/plant_infocard';
-import plants from "json/plant_data_species.json";
-import plantNotes from "json/plant_data_notes.json";
+import plants from "@json/plant_data_species.json";
+import plantNotes from "@json/plant_data_notes.json";
 
 // MARK: - Type Declarations
 interface EditTypeDropdownProps {
@@ -37,6 +37,7 @@ export default function PlotPage() {
     const { setNotifyToggle } = useNotifyToggleContext();
     const { setNotifyContent } = useNotifyContentContext();
     const { setFocusPlot } = useFocusPlotContext();
+    const { debugLogContent, setDebugLogContent } = useDebugLogContext();
 
     const id = Number(useParams().id);
     const plantNoteData = plantNotes.plantNotes;
@@ -47,6 +48,7 @@ export default function PlotPage() {
         plots.plotDispatch({type: 'edit_plot', payload: {id: id, data: editedPlotData.current!}});
         editMode && setNotifyContent({status: 'success', notification: 'Applied changes to ' + editedPlotData.current?.type, timestamp: new Date()});
         editMode && setNotifyToggle(true);
+        setDebugLogContent([{status: "action", message: `Edit mode ${editMode ? "disabled" : "enabled"}`}, ...debugLogContent]);
         setFocusPlot(editedPlotData.current!);
         setEditMode(!editMode);
     };
@@ -56,7 +58,7 @@ export default function PlotPage() {
 
     function classNames(...classes: any[]) {
         return classes.filter(Boolean).join(' ');
-    }
+    };
 
     const EditTypeDropdown: React.FC<EditTypeDropdownProps> = ({ type }) => {
         const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -72,7 +74,7 @@ export default function PlotPage() {
                 <select
                     id="plot_type"
                     name="plot_type"
-                    className="text-center w-40 xl:w-fit py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
+                    className="text-center w-40 py-1 block bg-form_field custom-text sm:text-sm sm:leading-6 pl-5"
                     defaultValue={type}
                     onChange={handleChange}
                 >
@@ -81,7 +83,6 @@ export default function PlotPage() {
                             {plant}
                         </option>
                     ))}
-                    <option value="Add Plant Type">Add Plant Type*</option>
                 </select>
             </div>
         );
@@ -106,8 +107,8 @@ export default function PlotPage() {
             const selectedPlant = event.target.value;
             setSelectedVariety(selectedPlant);
             editedPlotData.current!.variety = selectedPlant;
-        };
-    
+        }
+
         return (
             <div className="flex flex-row items-center">
                 <select
@@ -149,9 +150,9 @@ export default function PlotPage() {
         );
     };
 
-        // MARK: - EditPlotInput Function
+    // MARK: - EditPlotInput Function
     function EditPlotInput({editField}: EditPlotInputProps) {
-        
+
         // This gets the current value of the field being edited
         const value = plotData![editField] as string;
 
@@ -192,11 +193,19 @@ export default function PlotPage() {
     }, [plots.plotState.data, id]);
 
     useEffect(() => {
+       editMode && setDebugLogContent([{status: "update", message: "Plot data updated"}, ...debugLogContent]);
+    }, [editMode]);
+
+    useEffect(() => {
         const harvestData = new Date();
         // This calculates the harvest date based on the plant's harvest length * 7 days
         harvestData.setDate(harvestData.getDate() + (Number(plantNoteData.map((plant)=>{return plant.name===plotData?.type ? plant.metadata.harvest_length : false}).filter(Boolean)) * 7));
-        setHarvestDate(harvestData.toDateString());
+        setHarvestDate(harvestData.toLocaleDateString());
     }, [plotData?.type]);
+
+    const plantDate: Date = new Date(plotData?.planted_date!);
+    
+    // TODO: - Add a way to check if the harvest date is past end of season
 
     return (
         <div className="flex flex-col gap-y-20 custom-bg-background min-h-screen h-full">
@@ -264,7 +273,7 @@ export default function PlotPage() {
                                 <th className="py-5 pr-8">Date Planted</th>
                                 <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
                                     <div className='flex flex-row w-40 justify-end'>
-                                        <span>{String(plotData?.planted_date)}</span>
+                                        <span>{plantDate.toLocaleDateString()}</span>
                                     </div>
                                 </td>
                             </tr>

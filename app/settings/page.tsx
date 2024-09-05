@@ -1,6 +1,7 @@
 'use client'
 
 import { useSettingsDataContext } from "@components/UIProvider";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function SettingsPage() {
@@ -53,6 +54,13 @@ export default function SettingsPage() {
                     >
                         Download Notification Logs*
                     </button>
+                </div> 
+                <div className="text-lg custom-text flex flex-row items-center gap-x-10">
+                    <Link href="/debug"
+                        className="custom-bg-button custom-text-button py-2 px-4"
+                    >
+                        Go to debug log
+                    </Link>
                 </div> 
             </div>
         </div>

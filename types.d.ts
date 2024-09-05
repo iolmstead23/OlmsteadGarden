@@ -10,8 +10,7 @@ export interface PlotData {
         fertility: number;
     };
     status: string;
-    duration: number;
-    planted_date: sting;
+    planted_date: string;
 }
 
 export interface SettingsData {
@@ -36,7 +35,7 @@ interface PlantData {
     temperature: string;
     soil_type: string;
 }
-  
+
 interface PlantMetadata {
     species: string;
     genus: string;
@@ -44,7 +43,12 @@ interface PlantMetadata {
     location: string;
     harvest_length: number;
 }
-  
+
+interface DebugLog {
+    status: string;
+    message: string;
+}
+
 export interface PlantNote {
     name: string;
     description: string;
@@ -72,4 +76,9 @@ export interface NotificationContentState {
 export interface NotificationLogState {
     notifyLogContent: NotificationLogEntry[];
     setNotifyLogContent: (e: NotificationLogEntry[]) => void;
+}
+
+export interface DebugLogState {
+    debugLogContent: DebugLog[];
+    setDebugLogContent: (e:DebugLog[]) => void;
 }

@@ -28,11 +28,11 @@ const navigation = [
   { id: 2, name: 'Files*', href: '#', icon: FolderIcon },
   { id: 3, name: 'Settings', href: '/settings', icon: Cog6ToothIcon },
   { id: 4, name: 'Notifications', href: '/notifications', icon: BellAlertIcon },
-]
+];
   
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ');
-}
+};
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
@@ -144,5 +144,5 @@ export default function Dashboard() {
         </div>
       </div>
     </>
-  )
+  );
 }

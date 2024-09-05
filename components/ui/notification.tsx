@@ -1,8 +1,8 @@
 'use client'
 
-import { CheckCircleIcon, ExclamationCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
-import { XMarkIcon } from '@heroicons/react/20/solid'
-import { useNotifyContentContext, useNotifyToggleContext } from '@components/UIProvider'
+import { CheckCircleIcon, ExclamationCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon } from '@heroicons/react/20/solid';
+import { useNotifyContentContext, useNotifyToggleContext } from '@components/UIProvider';
 import { useEffect } from 'react';
 
 export default function Notification() {

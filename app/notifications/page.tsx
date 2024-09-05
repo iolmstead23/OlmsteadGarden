@@ -44,6 +44,7 @@ export default function NotificationsPage() {
                                     </div>
                                 </li>
                             ))}
+
                             {notifications.length > 10 &&
                                 <div className='text-center font-extrabold'>
                                     To view more notifications, please download your logs file.
