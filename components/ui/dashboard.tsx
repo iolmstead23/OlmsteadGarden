@@ -86,7 +86,10 @@ export default function Dashboard() {
                                     : 'custom-text',
                                   'group flex gap-x-3 p-2 text-sm font-semibold leading-6',
                                 )}
-                                onClick={() => setIsSelected(item.id)}
+                                onClick={() => {
+                                  setIsSelected(item.id);
+                                  setSidebarOpen(false);
+                                }}
                               >
                                 <item.icon aria-hidden="true" className="h-5 w-5 shrink-0" />
                                 {item.name}
@@ -120,7 +123,7 @@ export default function Dashboard() {
                               : 'custom-text ',
                             'group flex gap-x-3  p-2 text-sm font-semibold leading-6',
                           )}
-                          onClick={() => setIsSelected(item.id)}
+                          onClick={() => {setIsSelected(item.id);}}
                         >
                           <item.icon aria-hidden="true" className="h-6 w-6 shrink-0" />
                           {item.name}
