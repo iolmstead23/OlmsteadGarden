@@ -71,7 +71,7 @@ export default function Dashboard() {
 
               {/* MARK: -Mobile Sidebar*/}
               {sidebarOpen &&
-                <div className="lg:hidden custom-bg-sidebar flex slide-component-width flex-col gap-y-5 p-5 ring-1 ring-white/10">
+                <div className="lg:hidden custom-bg-sidebar flex slide-component-width flex-col gap-y-5 p-5">
                   <nav className="flex flex-1 flex-col">
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
                       <li>

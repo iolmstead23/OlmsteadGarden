@@ -22,7 +22,7 @@ export default function PlantInfoCard() {
     }, [plantFocus.type]);
     
     return (
-        <div className="shadow-lg rounded-lg p-8 custom-text absolute custom-bg-plotdrawer w-[32%] h-[40vh] min-h-[310px]">
+        <div className="shadow-lg p-8 custom-text absolute custom-bg-plotdrawer w-[32%] h-[40vh] min-h-[310px]">
             <div>
                 {focusPlantData ? (
                     <>
@@ -87,7 +87,7 @@ export default function PlantInfoCard() {
                 ) : <div>Please Select Plot Type</div>}
             </div>
             <button
-                className="p-2 custom-bg-button custom-text-button rounded-md absolute bottom-0 mb-6 min-w-20"
+                className="p-2 custom-bg-button custom-text-button absolute bottom-0 mb-6 min-w-20"
                 onClick={() => setFocusInfo(focusInfo === "Description" ? "Data" : "Description")}
             >
                 Next

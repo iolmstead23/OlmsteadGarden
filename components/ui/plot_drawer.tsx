@@ -16,6 +16,10 @@ export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOp
     const router = useRouter();
 
     useEffect(() => {
+
+    });
+
+    useEffect(() => {
         // make sure not to set any dependencies in the useEffect hook
         const plotSummaryData: PlotData = plotDataContext.plotState.data[Number(params.get('id'))];
         if (plotSummaryData) {

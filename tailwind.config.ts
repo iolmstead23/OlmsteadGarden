@@ -1,3 +1,4 @@
+import flowbite from "flowbite-react/tailwind";
 import type { Config } from "tailwindcss";
 import { createThemes } from "tw-colors";
 
@@ -6,8 +7,10 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    flowbite.content(),
   ],
   plugins: [
+    flowbite.plugin(),
     createThemes({
       charmander: {
         background: '#FAF2F2',

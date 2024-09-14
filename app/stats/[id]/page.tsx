@@ -9,6 +9,10 @@ import LineChart from '@components/ui/line_chart';
 import PlantInfoCard from '@components/ui/plant_infocard';
 import plants from "@json/plant_data_species.json";
 import plantNotes from "@json/plant_data_notes.json";
+import ModalWrapper from '@/components/ui/modal_wrapper';
+import { Datepicker } from 'flowbite-react';
+import Notification from '@/components/ui/notification';
+
 
 // MARK: - Type Declarations
 interface EditTypeDropdownProps {
@@ -29,6 +33,7 @@ export default function PlotPage() {
     const [editMode, setEditMode] = useState<boolean>(false);
     const [plotData, setPlotData] = useState<PlotData | undefined>(undefined);
     const [harvestDate, setHarvestDate] = useState<string | undefined>(undefined);
+    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
     const editedPlotData = useRef<PlotData | undefined>(undefined);
 
@@ -43,11 +48,42 @@ export default function PlotPage() {
     const plantNoteData = plantNotes.plantNotes;
     editedPlotData.current = plots.plotState.data[id];
 
+    function DatepickerModalWrapper() {
+        return (
+            modalIsOpen && <ModalWrapper isOpen={modalIsOpen} setIsOpen={setModalIsOpen}>
+                <Datepicker
+                    maxDate={ new Date() }
+                    weekStart={0}
+                    defaultDate={plantDate}
+                    inline
+                    onSelectedDateChanged={
+                        (date: Date)=>{
+                            const plantedDate = new Date(date);
+                            const plantNote = plantNotes.plantNotes.find(note => note.name === plotData!.type);
+                            const harvestLength = plantNote?.metadata.harvest_length || 0;
+                    
+                            // Calculate the harvest date
+                            const harvestDate = new Date(plantedDate);
+                            harvestDate.setDate(plantedDate.getDate() + harvestLength * 7);
+                    
+                            setHarvestDate(harvestDate.toLocaleDateString());
+                            editedPlotData.current!.planted_date = date.toLocaleDateString();
+
+                            setModalIsOpen(false);
+                        }
+                    }
+                />
+            </ModalWrapper>
+        );
+    }
+
     // MARK: - handleEdit Function
     const handleEdit = () => {
         plots.plotDispatch({type: 'edit_plot', payload: {id: id, data: editedPlotData.current!}});
-        editMode && setNotifyContent({status: 'success', notification: 'Applied changes to ' + editedPlotData.current?.type, timestamp: new Date()});
-        editMode && setNotifyToggle(true);
+        if (editMode) {
+            setNotifyContent({status: 'success', notification: 'Applied changes to ' + editedPlotData.current?.type, timestamp: new Date()});
+            setNotifyToggle(true);
+        }
         setDebugLogContent([{status: "action", message: `Edit mode ${editMode ? "disabled" : "enabled"}`}, ...debugLogContent]);
         setFocusPlot(editedPlotData.current!);
         setEditMode(!editMode);
@@ -141,10 +177,25 @@ export default function PlotPage() {
                     defaultValue={focusPlotStats}
                     className="text-center block py-1 custom-bg-formfield custom-text sm:text-sm sm:leading-6 pl-5"
                 >
-                    <option onClick={()=>setFocusPlotStats("pH")} id='ph'>pH</option>
-                    <option onClick={()=>setFocusPlotStats("Moisture")} id="moisture">Moisture</option>
-                    <option onClick={()=>setFocusPlotStats("Temperature")} id="temperature">Temperature</option>
-                    <option onClick={()=>setFocusPlotStats("Fertility")} id="fertility">Fertility</option>
+                    <option
+                        onClick={()=>{
+                            setFocusPlotStats("pH");
+                        }}
+                        id='ph'>pH</option>
+                    <option
+                        onClick={()=>{
+                            setFocusPlotStats("Moisture");
+                        }}
+                        id="moisture">Moisture</option>
+                    <option onClick={()=>{
+                            setFocusPlotStats("Temperature");
+                        }}
+                        id="temperature">Temperature</option>
+                    <option
+                        onClick={()=>{
+                            setFocusPlotStats("Fertility");
+                        }}
+                        id="fertility">Fertility</option>
                 </select>
             </div>
         );
@@ -197,11 +248,18 @@ export default function PlotPage() {
     }, [editMode]);
 
     useEffect(() => {
-        const harvestData = new Date();
-        // This calculates the harvest date based on the plant's harvest length * 7 days
-        harvestData.setDate(harvestData.getDate() + (Number(plantNoteData.map((plant)=>{return plant.name===plotData?.type ? plant.metadata.harvest_length : false}).filter(Boolean)) * 7));
-        setHarvestDate(harvestData.toLocaleDateString());
-    }, [plotData?.type]);
+        if (plotData?.planted_date && plotData?.type) {
+            const plantedDate = new Date(plotData.planted_date);
+            const plantNote = plantNoteData.find(note => note.name === plotData.type);
+            const harvestLength = plantNote?.metadata.harvest_length || 0;
+    
+            // Calculate the harvest date
+            const harvestDate = new Date(plantedDate);
+            harvestDate.setDate(plantedDate.getDate() + harvestLength * 7);
+    
+            setHarvestDate(harvestDate.toLocaleDateString());
+        }
+    }, [plotData?.type, plotData?.planted_date]);
 
     const plantDate: Date = new Date(plotData?.planted_date!);
     
@@ -209,6 +267,8 @@ export default function PlotPage() {
 
     return (
         <div className="flex flex-col gap-y-20 custom-bg-background min-h-screen h-full">
+            {modalIsOpen && <DatepickerModalWrapper />}
+
             <div className="w-4/5 xl:w-full">
                 <ResourceStats stats={stats} />
             </div>
@@ -272,9 +332,19 @@ export default function PlotPage() {
                             <tr className="text-2xl leading-6 custom-text">
                                 <th className="py-5 pr-8">Date Planted</th>
                                 <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
-                                    <div className='flex flex-row w-40 justify-end'>
-                                        <span>{plantDate.toLocaleDateString()}</span>
-                                    </div>
+                                    {editMode ? (
+                                        <button
+                                            type="button"
+                                            className="custom-bg-button custom-text-button py-2 px-4"
+                                            onClick={()=>setModalIsOpen(true)}
+                                        >
+                                            <span>{plantDate.toLocaleDateString()}</span>
+                                        </button>
+                                    ) : (
+                                        <div className='flex flex-row w-40 justify-end'>
+                                            <span>{plantDate.toLocaleDateString()}</span>
+                                        </div>
+                                    )}
                                 </td>
                             </tr>
                             <tr className="text-2xl leading-6 custom-text">
@@ -309,7 +379,7 @@ export default function PlotPage() {
             <div className='flex flex-col items-start'>
                 <button
                     type="button"
-                    className="custom-bg-button custom-text-button rounded-md mb-6 min-w-20 py-2"
+                    className="custom-bg-button custom-text-button mb-6 min-w-20 py-2"
                     onClick={handleEdit}
                 >
                     {editMode ?
