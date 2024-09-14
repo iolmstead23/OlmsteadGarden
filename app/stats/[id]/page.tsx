@@ -11,7 +11,6 @@ import plants from "@json/plant_data_species.json";
 import plantNotes from "@json/plant_data_notes.json";
 import ModalWrapper from '@/components/ui/modal_wrapper';
 import { Datepicker } from 'flowbite-react';
-import Notification from '@/components/ui/notification';
 
 
 // MARK: - Type Declarations
@@ -48,6 +47,21 @@ export default function PlotPage() {
     const plantNoteData = plantNotes.plantNotes;
     editedPlotData.current = plots.plotState.data[id];
 
+    // Format using reusable function
+    function padTo2Digits(num: number) {
+        return num.toString().padStart(2, '0');
+    };
+
+    function formatDate(date: Date) {
+        return (
+          [
+            padTo2Digits(date.getMonth() + 1),
+            padTo2Digits(date.getDate()),
+            date.getFullYear(),
+          ].join('/')
+        );
+    };
+
     function DatepickerModalWrapper() {
         return (
             modalIsOpen && <ModalWrapper isOpen={modalIsOpen} setIsOpen={setModalIsOpen}>
@@ -66,7 +80,7 @@ export default function PlotPage() {
                             const harvestDate = new Date(plantedDate);
                             harvestDate.setDate(plantedDate.getDate() + harvestLength * 7);
                     
-                            setHarvestDate(harvestDate.toLocaleDateString());
+                            setHarvestDate(formatDate(harvestDate));
                             editedPlotData.current!.planted_date = date.toLocaleDateString();
 
                             setModalIsOpen(false);
@@ -257,7 +271,7 @@ export default function PlotPage() {
             const harvestDate = new Date(plantedDate);
             harvestDate.setDate(plantedDate.getDate() + harvestLength * 7);
     
-            setHarvestDate(harvestDate.toLocaleDateString());
+            setHarvestDate(formatDate(harvestDate));
         }
     }, [plotData?.type, plotData?.planted_date]);
 
@@ -338,11 +352,11 @@ export default function PlotPage() {
                                             className="custom-bg-button custom-text-button py-2 px-4"
                                             onClick={()=>setModalIsOpen(true)}
                                         >
-                                            <span>{plantDate.toLocaleDateString()}</span>
+                                            <span>{formatDate(plantDate)}</span>
                                         </button>
                                     ) : (
                                         <div className='flex flex-row w-40 justify-end'>
-                                            <span>{plantDate.toLocaleDateString()}</span>
+                                            <span>{formatDate(plantDate)}</span>
                                         </div>
                                     )}
                                 </td>

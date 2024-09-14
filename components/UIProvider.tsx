@@ -108,9 +108,7 @@ function plotReducer(state: PlotState, action: PlotAction): PlotState {
         if (Array.isArray(action.payload)) {
             throw new Error("Payload should be of type PlotData, not PlotData[]");
         }
-        return {
-            data: state.data.map((item) => item.id === editedPlot.id ? editedPlot.data : item) as PlotData[]
-        };
+        return { data: state.data.map((item) => item.id === editedPlot.id ? editedPlot.data : item) as PlotData[]};
     };
 
     switch (action.type) {

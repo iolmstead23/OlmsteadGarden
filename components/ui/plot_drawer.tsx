@@ -15,9 +15,21 @@ export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOp
     const [plotData,setPlotData] = useState<PlotData | undefined>(undefined);
     const router = useRouter();
 
-    useEffect(() => {
+    function padTo2Digits(num: number) {
+        return num.toString().padStart(2, '0');
+    };
 
-    });
+    function formatDate(date: Date) {
+        return (
+          [
+            padTo2Digits(date.getMonth() + 1),
+            padTo2Digits(date.getDate()),
+            date.getFullYear(),
+          ].join('/')
+        );
+    };
+
+    const plantDate: Date = new Date(plotData?.planted_date!);
 
     useEffect(() => {
         // make sure not to set any dependencies in the useEffect hook
@@ -72,7 +84,7 @@ export default function PlotDrawer({isOpen, setIsOpen}:{isOpen: boolean, setIsOp
                                         </div>
                                         <div className="flex justify-between py-3 text-sm font-medium">
                                             <dt className="custom-text">Date Created</dt>
-                                            <dd className="custom-text">{plotData?.planted_date}</dd>
+                                            <dd className="custom-text">{formatDate(plantDate)}</dd>
                                         </div>
                                     </dl>
                                     <div className="flex justify-start pt-5">
