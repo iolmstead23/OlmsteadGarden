@@ -1,49 +1,49 @@
 {
-    "data": [
-      {
-        "id": -1,
-        "type": "Carrot",
-        "variety": "Nantes",
-        "size": 100,
-        "data": {
-          "pH": 7,
-          "moisture": 50,
-          "temperature": 70,
-          "fertility": 5
-        },
-        "status": "Healthy",
-        "duration": 2,
-        "planted_date": "2-15-2024"
+  "data": [
+    {
+      "id": -1,
+      "type": "Carrot",
+      "variety": "Nantes",
+      "size": 100,
+      "data": {
+        "pH": 7,
+        "moisture": 50,
+        "temperature": 70,
+        "fertility": 5
       },
-      {
-        "id": -1,
-        "type": "Cucumber",
-        "variety": "Pickling",
-        "size": 50,
-        "data": {
-          "pH": 6,
-          "moisture": 40,
-          "temperature": 75,
-          "fertility": 6
-        },
-        "status": "Warning",
-        "duration": 1,
-        "planted_date": "2-24-2024"
+      "status": "Healthy",
+      "duration": 2,
+      "planted_date": "2-15-2024"
+    },
+    {
+      "id": -1,
+      "type": "Cucumber",
+      "variety": "Pickling",
+      "size": 50,
+      "data": {
+        "pH": 6,
+        "moisture": 40,
+        "temperature": 75,
+        "fertility": 6
       },
-      {
-        "id": -1,
-        "type": "Tomato",
-        "variety": "Roma",
-        "size": 20,
-        "data": {
-          "pH": 6,
-          "moisture": 40,
-          "temperature": 65,
-          "fertility": 5
-        },
-        "status": "Healthy",
-        "duration": 1,
-        "planted_date": "5-15-2024"
-      }
-    ]
+      "status": "Warning",
+      "duration": 1,
+      "planted_date": "2-24-2024"
+    },
+    {
+      "id": -1,
+      "type": "Tomato",
+      "variety": "Roma",
+      "size": 20,
+      "data": {
+        "pH": 6,
+        "moisture": 40,
+        "temperature": 65,
+        "fertility": 5
+      },
+      "status": "Healthy",
+      "duration": 1,
+      "planted_date": "5-15-2024"
+    }
+  ]
 }

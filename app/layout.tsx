@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import UIProvider from "@components/UIProvider";
+import { Analytics } from "@vercel/analytics/react"
 // import { HydrationOverlay } from '@builder.io/react-hydration-overlay';
 
 export const metadata: Metadata = {
@@ -16,9 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <UIProvider>
-        {/** <HydrationOverlay> */}
-          {children}
-        {/** </HydrationOverlay> */}
+        <Analytics />
+          {/** <HydrationOverlay> */}
+            {children}
+          {/** </HydrationOverlay> */}
       </UIProvider>
     </html>
   );

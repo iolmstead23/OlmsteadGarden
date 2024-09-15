@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,9 +8,9 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import { faker } from '@faker-js/faker';
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import { faker } from "@faker-js/faker";
 
 ChartJS.register(
   CategoryScale,
@@ -20,40 +20,48 @@ ChartJS.register(
   Tooltip
 );
 
-export default function LineChart({statPlotData}:{statPlotData: string}) {
+export default function LineChart({ statPlotData }: { statPlotData: string }) {
   const options = {
     responsive: true,
     interaction: {
-      mode: 'index' as const,
+      mode: "index" as const,
       intersect: false,
     },
     stacked: false,
     scales: {
       y: {
-        type: 'linear' as const,
+        type: "linear" as const,
         display: true,
-        position: 'left' as const,
-      }
+        position: "left" as const,
+      },
     },
   };
-  
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+  const labels = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+  ];
 
   function formatLineColor() {
-    switch(statPlotData) {
-      case 'Temperature':
-        return 'rgb(255, 99, 132)';
-      case 'Fertility':
-        return 'rgb(54, 162, 235)';
-      case 'pH':
-        return 'rgb(255, 205, 86)';
-      case 'Moisture':
-        return 'rgb(75, 192, 192)';
+    switch (statPlotData) {
+      case "Temperature":
+        return "rgb(255, 99, 132)";
+      case "Fertility":
+        return "rgb(54, 162, 235)";
+      case "pH":
+        return "rgb(255, 205, 86)";
+      case "Moisture":
+        return "rgb(75, 192, 192)";
       default:
-        return 'rgb(255, 99, 132)';
+        return "rgb(255, 99, 132)";
     }
-  };
-  
+  }
+
   const data = {
     labels,
     datasets: [
@@ -62,14 +70,14 @@ export default function LineChart({statPlotData}:{statPlotData: string}) {
         data: labels.map(() => faker.number.int({ min: 0, max: 10 })),
         borderColor: formatLineColor(),
         backgroundColor: formatLineColor(),
-        yAxisID: 'y',
-      }
+        yAxisID: "y",
+      },
     ],
   };
 
   return (
-    <div className='flex flex-col items-left w-[50vw]'>
-      <Line options={options} data={data} height={100}/>
+    <div className="flex flex-col items-left w-[50vw]">
+      <Line options={options} data={data} height={100} />
     </div>
   );
 }

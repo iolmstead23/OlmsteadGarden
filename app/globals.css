@@ -3,46 +3,63 @@
 @tailwind utilities;
 
 @layer base {
-    .custom-bg-button {
-        background-color: hsl(var(--twc-button));
-        @apply rounded-md;
-    }
+  .custom-bg-button {
+    background-color: hsl(var(--twc-button));
+    @apply rounded-md;
+  }
 
-    .custom-bg-plotdrawer {
-        background-color: hsl(var(--twc-plot_drawer));
-    }
+  .custom-bg-plotdrawer {
+    background-color: hsl(var(--twc-plot_drawer));
+  }
 
-    .custom-bg-background {
-        background-color: hsl(var(--twc-background));
-        @apply py-20 pl-[15%] md:pl-[20%] lg:pl-[30%];
-    }
+  .custom-bg-background {
+    background-color: hsl(var(--twc-background));
+    @apply py-20 pl-[15%] md:pl-[20%] lg:pl-[30%];
+  }
 
-    .custom-bg-sidebar {
-        background-color: hsl(var(--twc-sidebar));
-    }
+  .custom-bg-sidebar {
+    background-color: hsl(var(--twc-sidebar));
+  }
 
-    .custom-text {
-        color: hsl(var(--twc-text));
-    }
+  .custom-text {
+    color: hsl(var(--twc-text));
+  }
 
-    .custom-text-button {
-        color: hsl(var(--twc-button_text));
-        @apply font-bold drop-shadow-sm hover:font-extrabold;
-    }
+  .custom-text-button {
+    color: hsl(var(--twc-button_text));
+    @apply font-bold drop-shadow-sm hover:font-extrabold;
+  }
 
-    .custom-header {
-        color: hsl(var(--twc-header));
-    }
+  .custom-header {
+    color: hsl(var(--twc-header));
+  }
 
-    .custom-bg-mobilenav {
-        background-color: hsl(var(--twc-mobile_nav));
-    }
+  .custom-bg-mobilenav {
+    background-color: hsl(var(--twc-mobile_nav));
+  }
 
-    .custom-bg-formfield {
-        background-color: hsl(var(--twc-form_field));
-    }
+  .custom-bg-formfield {
+    background-color: hsl(var(--twc-form_field));
+  }
 
-    .slide-component-width {
-        @apply w-[70%] lg:w-[20%];
+  .slide-component-width {
+    @apply w-[70%] lg:w-[20%];
+  }
+
+  .skeleton {
+    background-color: #f0f0f0;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-color: #f0f0f0;
     }
+    50% {
+      background-color: #e0e0e0;
+    }
+    100% {
+      background-color: #f0f0f0;
+    }
+  }
 }
