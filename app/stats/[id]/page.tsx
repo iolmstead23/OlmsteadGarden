@@ -16,6 +16,8 @@ import LineChart from "@components/ui/line_chart";
 import PlantInfoCard from "@components/ui/plant_infocard";
 import plants from "@json/plant_data_species.json";
 import plantNotes from "@json/plant_data_notes.json";
+import ModalWrapper from "@/components/ui/modal_wrapper";
+import { Datepicker } from "flowbite-react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -98,6 +100,37 @@ export default function PlotPage() {
 
   function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
+  }
+
+  function DatepickerModalWrapper() {
+    return (
+      modalIsOpen && (
+        <ModalWrapper isOpen={modalIsOpen} setIsOpen={setModalIsOpen}>
+          <Datepicker
+            maxDate={new Date()}
+            weekStart={0}
+            defaultDate={plantDate}
+            inline
+            onSelectedDateChanged={(date: Date) => {
+              const plantedDate = new Date(date);
+              const plantNote = plantNotes.plantNotes.find(
+                (note) => note.name === plotData!.type
+              );
+              const harvestLength = plantNote?.metadata.harvest_length || 0;
+
+              // Calculate the harvest date
+              const harvestDate = new Date(plantedDate);
+              harvestDate.setDate(plantedDate.getDate() + harvestLength * 7);
+
+              setHarvestDate(harvestDate.toLocaleDateString());
+              editedPlotData.current!.planted_date = date.toLocaleDateString();
+
+              setModalIsOpen(false);
+            }}
+          />
+        </ModalWrapper>
+      )
+    );
   }
 
   const EditTypeDropdown: React.FC<EditTypeDropdownProps> = ({ type }) => {
@@ -302,139 +335,140 @@ export default function PlotPage() {
 
   return (
     <>
-    <Suspense fallback={<Skeleton count={10} containerClassName="flex-1" />}>
-      <div className="flex flex-col gap-y-20 custom-bg-background min-h-screen h-full">
-        <div className="w-4/5 xl:w-full">
-          <ResourceStats stats={stats} />
-        </div>
-        <div className="flex flex-row text-left w-full">
-          <div className="w-4/5 xl:w-[40%]">
-            <table cellPadding={0} cellSpacing={0}>
-              <colgroup>
-                <col className="w-full" />
-                <col className="w-1/2" />
-                <col className="w-1/2" />
-              </colgroup>
-              <tbody>
-                <tr className="text-2xl leading-6 custom-text">
-                  <th className="py-5 pr-8">Type</th>
-                  <td className="text-sm font-extrabold leading-6 lg:pr-20">
-                    <div className="flex flex-row w-40 justify-end">
-                      {editMode ? (
-                        <div className="flex flex-col">
-                          <EditTypeDropdown type={plotData?.type!} />
-                        </div>
-                      ) : (
-                        <div className="flex flex-col">
-                          <span>{plotData?.type}</span>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-                <tr className="text-2xl leading-6 custom-text">
-                  <th className="py-5 pr-8">Variety</th>
-                  <td className="text-sm font-extrabold leading-6 lg:pr-20">
-                    <div className="flex flex-row w-40 justify-end">
-                      {editMode ? (
-                        <div className="flex flex-col">
-                          <EditVarietyDropdown variety={plotData?.variety!} />
-                        </div>
-                      ) : (
-                        <div className="flex flex-col">
-                          <span>{plotData?.variety}</span>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-                <tr className="text-2xl leading-6 custom-text">
-                  <th className="py-5 pr-8">Size</th>
-                  <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
-                    <div className="flex flex-row w-40 justify-end">
-                      {editMode ? (
-                        <div className="flex flex-col">
-                          <EditPlotInput editField="size" />
-                        </div>
-                      ) : (
-                        <div className="flex flex-col">
-                          <span>{plotData?.size} Sqr. Feet</span>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-                <tr className="text-2xl leading-6 custom-text">
-                  <th className="py-5 pr-8">Date Planted</th>
-                  <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
-                    {editMode ? (
-                      <button
-                        type="button"
-                        className="custom-bg-button custom-text-button py-2 px-4"
-                        onClick={() => setModalIsOpen(true)}
-                      >
-                        <span>{formatDate(plantDate)}</span>
-                      </button>
-                    ) : (
-                      <div className="flex flex-row w-40 justify-end">
-                        <span>{formatDate(plantDate)}</span>
-                      </div>
-                    )}
-                  </td>
-                </tr>
-                <tr className="text-2xl leading-6 custom-text">
-                  <th className="py-5 pr-8">Harvest Date</th>
-                  <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
-                    <div className="flex flex-row w-40 justify-end">
-                      <span>{String(harvestDate)}</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr className="text-2xl leading-6 custom-text">
-                  <th className="py-5 pr-8">Status</th>
-                  <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
-                    <div className="flex items-center w-40 gap-x-2 justify-end">
-                      <span>{plotData?.status}</span>
-                      <div
-                        className={classNames(
-                          statuses[plotData?.status!],
-                          "flex-none rounded-full p-1"
-                        )}
-                      >
-                        <div className="h-3 w-3 rounded-full bg-current" />
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+      <Suspense fallback={<Skeleton count={10} />}>
+        {modalIsOpen && <DatepickerModalWrapper />}
+        <div className="flex flex-col gap-y-20 custom-bg-background min-h-screen h-full">
+          <div className="w-4/5 xl:w-full">
+            <ResourceStats stats={stats} />
           </div>
-          <div className="hidden xl:block">
-            <div className="flex flex-col items-start">
-              <PlantInfoCard />
+          <div className="flex flex-row text-left w-full">
+            <div className="w-4/5 xl:w-[40%]">
+              <table cellPadding={0} cellSpacing={0}>
+                <colgroup>
+                  <col className="w-full" />
+                  <col className="w-1/2" />
+                  <col className="w-1/2" />
+                </colgroup>
+                <tbody>
+                  <tr className="text-2xl leading-6 custom-text">
+                    <th className="py-5 pr-8">Type</th>
+                    <td className="text-sm font-extrabold leading-6 lg:pr-20">
+                      <div className="flex flex-row w-40 justify-end">
+                        {editMode ? (
+                          <div className="flex flex-col">
+                            <EditTypeDropdown type={plotData?.type!} />
+                          </div>
+                        ) : (
+                          <div className="flex flex-col">
+                            <span>{plotData?.type}</span>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr className="text-2xl leading-6 custom-text">
+                    <th className="py-5 pr-8">Variety</th>
+                    <td className="text-sm font-extrabold leading-6 lg:pr-20">
+                      <div className="flex flex-row w-40 justify-end">
+                        {editMode ? (
+                          <div className="flex flex-col">
+                            <EditVarietyDropdown variety={plotData?.variety!} />
+                          </div>
+                        ) : (
+                          <div className="flex flex-col">
+                            <span>{plotData?.variety}</span>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr className="text-2xl leading-6 custom-text">
+                    <th className="py-5 pr-8">Size</th>
+                    <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
+                      <div className="flex flex-row w-40 justify-end">
+                        {editMode ? (
+                          <div className="flex flex-col">
+                            <EditPlotInput editField="size" />
+                          </div>
+                        ) : (
+                          <div className="flex flex-col">
+                            <span>{plotData?.size} Sqr. Feet</span>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr className="text-2xl leading-6 custom-text">
+                    <th className="py-5 pr-8">Date Planted</th>
+                    <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
+                      {editMode ? (
+                        <button
+                          type="button"
+                          className="custom-bg-button custom-text-button py-2 px-4"
+                          onClick={() => setModalIsOpen(true)}
+                        >
+                          <span>{formatDate(plantDate)}</span>
+                        </button>
+                      ) : (
+                        <div className="flex flex-row w-40 justify-end">
+                          <span>{formatDate(plantDate)}</span>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                  <tr className="text-2xl leading-6 custom-text">
+                    <th className="py-5 pr-8">Harvest Date</th>
+                    <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
+                      <div className="flex flex-row w-40 justify-end">
+                        <span>{String(harvestDate)}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr className="text-2xl leading-6 custom-text">
+                    <th className="py-5 pr-8">Status</th>
+                    <td className="text-sm font-extrabold leading-6 sm:pr-8 lg:pr-20 w-full">
+                      <div className="flex items-center w-40 gap-x-2 justify-end">
+                        <span>{plotData?.status}</span>
+                        <div
+                          className={classNames(
+                            statuses[plotData?.status!],
+                            "flex-none rounded-full p-1"
+                          )}
+                        >
+                          <div className="h-3 w-3 rounded-full bg-current" />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="hidden xl:block">
+              <div className="flex flex-col items-start">
+                <PlantInfoCard />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex flex-col items-start">
-          <button
-            type="button"
-            className="custom-bg-button custom-text-button mb-6 min-w-20 py-2"
-            onClick={handleEdit}
-          >
-            {editMode ? <span>Save</span> : <span>Edit</span>}
-          </button>
-        </div>
-
-        {/** MARK: ChangeStateDropdown*/}
-        <div className="flex flex-col items-start w-full">
-          <div className="mb-10">
-            <ChangeStatDropdown />
+          <div className="flex flex-col items-start">
+            <button
+              type="button"
+              className="custom-bg-button custom-text-button mb-6 min-w-20 py-2"
+              onClick={handleEdit}
+            >
+              {editMode ? <span>Save</span> : <span>Edit</span>}
+            </button>
           </div>
-          <LineChart statPlotData={focusPlotStats} />
+
+          {/** MARK: ChangeStateDropdown*/}
+          <div className="flex flex-col items-start w-full">
+            <div className="mb-10">
+              <ChangeStatDropdown />
+            </div>
+            <LineChart statPlotData={focusPlotStats} />
+          </div>
         </div>
-      </div>
-    </Suspense>
+      </Suspense>
     </>
   );
 }
