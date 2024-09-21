@@ -1,23 +1,15 @@
 
-# Project Title
-
-A brief description of what this project does and who it's for
-
-
 ## Authors
-
-- [@iolmstead23](https://github.com/iolmstead23)
-
+   - [@iolmstead23](https://github.com/iolmstead23)
 
 ## Demo
-
-[Vercel Deployment](https://olmstead-garden.vercel.app/)
+   [Vercel Deployment](https://olmstead-garden.vercel.app/)
 
 # Project Summary
 
 ## Project Description
 
-This project is a web application designed to manage and visualize garden plots. It allows users to input and track various details about their garden plots, including planting dates, harvest dates, and other relevant information. The application provides a user-friendly interface for managing garden data and visualizing the status of different plots.
+   This project is a web application designed to manage and visualize garden plots. It allows users to input and track various details about their garden plots, including planting dates, harvest dates, and other relevant information. The application provides a user-friendly interface for managing garden data and visualizing the status of different plots.
 
 ## Languages and Frameworks
 
@@ -50,16 +42,17 @@ This project is a web application designed to manage and visualize garden plots.
    git clone https://github.com/your-repo/garden-manager.git
    cd garden-manager
    ```
+
 ### 2. **Install dependencies:**
-``` npm install ```
+   ``` npm install ```
 
 ### 3. **Start the development server:**
-``` npm run dev ```
+   ``` npm run dev ```
 
-Open the application in your browser: Navigate to http://localhost:3000 to view the application.
+   Open the application in your browser: Navigate to http://localhost:3000 to view the application.
 
-Conclusion
-This project provides a comprehensive solution for managing and visualizing garden plots. With its user-friendly interface and robust functionality, it helps users keep track of their garden data efficiently. The use of modern frameworks and libraries ensures a smooth and responsive user experience.
-## License
+### **Conclusion**
+   This project provides a comprehensive solution for managing and visualizing garden plots. With its user-friendly interface and robust functionality, it helps users keep track of their garden data efficiently. The use of modern frameworks and libraries ensures a smooth and responsive user experience.
 
-[GNU Affero General Public License v3.0](https://choosealicense.com/licenses/agpl-3.0/)
+## **License**
+   [GNU Affero General Public License v3.0](https://choosealicense.com/licenses/agpl-3.0/)
